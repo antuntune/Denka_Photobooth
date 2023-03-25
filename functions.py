@@ -39,10 +39,12 @@ def printaj(kolKartica):
 
     conn.printFile(
         PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+    print('printam dve kartice')
 
     if kolKartica == 4:
         conn.printFile(
             PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+        print('printam JOS dve kartice')
 
 
 def napraviKarticu():

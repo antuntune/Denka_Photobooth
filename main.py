@@ -44,6 +44,10 @@ class CameraUi(QMainWindow):
         super(CameraUi, self).__init__()
         uic.loadUi("res/ui/camera.ui", self)
 
+        self.strip = self.findChild(QtWidgets.QLabel, 'strip')
+        stripPixmap = QPixmap('res/event/kartica.png')
+        self.strip.setPixmap(stripPixmap)
+
         self.cardSlot1 = self.findChild(QtWidgets.QLabel, 'img1')
         self.cardSlot2 = self.findChild(QtWidgets.QLabel, 'img2')
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
@@ -71,6 +75,22 @@ class PrintUi(QMainWindow):
         super(PrintUi, self).__init__()
         uic.loadUi("res/ui/print.ui", self)
 
+        self.strip1 = self.findChild(QtWidgets.QLabel, 'strip1')
+        self.strip2 = self.findChild(QtWidgets.QLabel, 'strip2')
+        self.strip3 = self.findChild(QtWidgets.QLabel, 'strip3')
+        self.strip4 = self.findChild(QtWidgets.QLabel, 'strip4')
+        self.strip5 = self.findChild(QtWidgets.QLabel, 'strip5')
+        self.strip6 = self.findChild(QtWidgets.QLabel, 'strip6')
+
+        stripPixmap = QPixmap('res/session/gotovaKartica.png')
+
+        self.strip1.setPixmap(stripPixmap)
+        self.strip2.setPixmap(stripPixmap)
+        self.strip3.setPixmap(stripPixmap)
+        self.strip4.setPixmap(stripPixmap)
+        self.strip5.setPixmap(stripPixmap)
+        self.strip6.setPixmap(stripPixmap)
+
         self.buttonGroup = QtWidgets.QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
             QtWidgets.QRadioButton, "radio2"))
@@ -97,6 +117,18 @@ class AlbumUi(QMainWindow):
     def __init__(self):
         super(AlbumUi, self).__init__()
         uic.loadUi("res/ui/album.ui", self)
+
+        self.img1 = self.findChild(QtWidgets.QLabel, 'img1')
+        self.img2 = self.findChild(QtWidgets.QLabel, 'img2')
+        self.img3 = self.findChild(QtWidgets.QLabel, 'img3')
+
+        img1pixmap = QPixmap('res/session/slika1.jpg')
+        img2pixmap = QPixmap('res/session/slika2.jpg')
+        img3pixmap = QPixmap('res/session/slika3.jpg')
+
+        self.img1.setPixmap(img1pixmap)
+        self.img2.setPixmap(img2pixmap)
+        self.img3.setPixmap(img3pixmap)
 
         self.buttonGroup = QtWidgets.QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
