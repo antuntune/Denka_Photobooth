@@ -69,6 +69,9 @@ QRadioButton::indicator::checked
     <property name="checked">
      <bool>true</bool>
     </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
    </widget>
    <widget class="QRadioButton" name="radio4">
     <property name="geometry">
@@ -106,6 +109,9 @@ QRadioButton::indicator::checked
     <property name="text">
      <string>RadioButton</string>
     </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
    </widget>
    <widget class="QLabel" name="strip2">
     <property name="geometry">
@@ -250,4 +256,7 @@ QPushButton:pressed {
   <include location="res.qrc"/>
  </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
 </ui>

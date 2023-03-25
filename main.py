@@ -19,34 +19,12 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5 import uic
 
 import sys
-import time
-import datetime
 import keyboard
 
 
 import res
 
-import cloudinary
-from cloudinary.uploader import upload
-
-import cups
-from PIL import Image
-
-conn = cups.Connection ()
-printers = conn.getPrinters ()
-# printers is a dictionary containing information about all the printers available
-
-emptyDict = {}
-AvailablePrinters = list(printers.keys())
-PrinterUsing = AvailablePrinters[0]
-
-
-cloudinary.config(
-    cloud_name="dpuhwc49z",
-    api_key="544431793628367",
-    api_secret="jXcv2cki8LffeJ1Wz-FOrYU4sd8",
-    secure=True
-)
+from functions import uploadToAlbum, printaj
 
 
 class SplashUi(QMainWindow):
@@ -92,21 +70,25 @@ class PrintUi(QMainWindow):
     def __init__(self):
         super(PrintUi, self).__init__()
         uic.loadUi("res/ui/print.ui", self)
+
+        self.buttonGroup = QtWidgets.QButtonGroup(self)
+        self.buttonGroup.addButton(self.findChild(
+            QtWidgets.QRadioButton, "radio2"))
+        self.buttonGroup.addButton(self.findChild(
+            QtWidgets.QRadioButton, "radio4"))
+
         self.pushButton.clicked.connect(self.printPressed)
 
     def printPressed(self):
-        im1 = Image.open('res/session/gotovaKartica.png')
 
-        def get_concat_h(im1):
-            dst = Image.new('RGB', (im1.width + im1.width + 35, im1.height))
-            dst.paste(im1, (35, 0))
-            dst.paste(im1, (im1.width + 35, 0))
-            return dst
+        if self.buttonGroup.checkedId() == -2:
+            kolKartica = 2
+        elif self.buttonGroup.checkedId() == -3:
+            kolKartica = 4
+        else:
+            print("No radio button is selected")
 
-        get_concat_h(im1).save('res/session/dupla_kartica.png')
-
-
-        conn.printFile(PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+        printaj(kolKartica)
 
         widget.setCurrentWidget(AlbumUi)
 
@@ -131,17 +113,15 @@ class AlbumUi(QMainWindow):
     def sharePressed(self):
 
         if self.buttonGroup.checkedId() == -2:
-            upload("res/session/slika1.jpg",
-                   public_id="djenka/saraiantonio2904/album/" + str(time.time()))
+            brojSlike = 1
         elif self.buttonGroup.checkedId() == -3:
-            upload("res/session/slika2.jpg",
-                   public_id="djenka/saraiantonio2904/album/" + str(time.time()))
+            brojSlike = 2
         elif self.buttonGroup.checkedId() == -4:
-            upload("res/session/slika3.jpg",
-                   public_id="djenka/saraiantonio2904/album/" + str(time.time()))
+            brojSlike = 3
         else:
             print("No radio button is selected")
-            print(self.buttonGroup.checkedId())
+
+        uploadToAlbum(brojSlike)
 
         widget.setCurrentWidget(SplashUi)
 
