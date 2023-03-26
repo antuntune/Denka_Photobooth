@@ -45,7 +45,7 @@ class SplashUi(QMainWindow):
 
     def changeToCameraUi(self):
 
-        widget.setCurrentWidget(CameraUi)
+        widget.setCurrentWidget(cameraUi)
 
 
 class CameraUi(QMainWindow):
@@ -73,7 +73,7 @@ class CameraUi(QMainWindow):
         self.pushButton.clicked.connect(self.changeToPrintUi)
 
     def changeToPrintUi(self):
-        widget.setCurrentWidget(PrintUi)
+        widget.setCurrentWidget(printUi)
 
 
 class PrintUi(QMainWindow):
@@ -116,7 +116,7 @@ class PrintUi(QMainWindow):
 
         printaj(kolKartica)
 
-        widget.setCurrentWidget(AlbumUi)
+        widget.setCurrentWidget(albumUi)
 
 
 class AlbumUi(QMainWindow):
@@ -166,23 +166,23 @@ class AlbumUi(QMainWindow):
 
         uploadToAlbum(brojSlike, eventId)
 
-        widget.setCurrentWidget(SplashUi)
+        widget.setCurrentWidget(splashUi)
 
 
 app = QApplication(sys.argv)
 widget = QtWidgets.QStackedWidget()
 
-SplashUi = SplashUi()
-widget.addWidget(SplashUi)
+splashUi = SplashUi()
+widget.addWidget(splashUi)
 
-CameraUi = CameraUi()
-widget.addWidget(CameraUi)
+cameraUi = CameraUi()
+widget.addWidget(cameraUi)
 
-PrintUi = PrintUi()
-widget.addWidget(PrintUi)
+printUi = PrintUi()
+widget.addWidget(printUi)
 
-AlbumUi = AlbumUi()
-widget.addWidget(AlbumUi)
+albumUi = AlbumUi()
+widget.addWidget(albumUi)
 
 widget.showFullScreen()
 app.exec_()
