@@ -1,19 +1,7 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QDialog, QWidget, QStackedWidget, QRadioButton
-from PyQt5 import uic, QtCore
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QMovie
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QDialog, QWidget, QStackedWidget
 from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
-from PyQt5.QtGui import QPixmap
-import sys
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
 from PyQt5 import uic
+from PyQt5 import QtWidgets
+from PyQt5.QtGui import QPixmap
 import sys
 import keyboard
 import res
