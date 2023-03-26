@@ -3,11 +3,9 @@ from PyQt5 import uic, QtCore
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QMovie
 from PyQt5.QtCore import Qt, QTimer
-
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap
-
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QPushButton, QDialog, QWidget, QStackedWidget
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtGui
@@ -15,22 +13,43 @@ from PyQt5.QtWidgets import QWidget, QApplication, QLabel, QVBoxLayout
 from PyQt5.QtGui import QPixmap
 import sys
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QThread
-
 from PyQt5 import uic
-
 import sys
 import keyboard
-
-
 import res
+from functions import uploadToAlbum, printaj, napraviQr
+import json
+import subprocess
 
-from functions import uploadToAlbum, printaj
+# ucitavanje config.jsona i metanje u varijable da se lakse koristi
+with open('config.json', 'r') as f:
+    # Load the contents of the file into a dictionary
+    config = json.load(f)
+eventId = config['eventId']
+tema = config['tema']
+
+# konvertiranje qrc u py
+qrc_file = 'res/ui/'+tema+'/res.qrc'
+pyres_file = 'res.py'
+subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
+
+# napravi qr kod
+napraviQr(eventId)
 
 
 class SplashUi(QMainWindow):
     def __init__(self):
         super(SplashUi, self).__init__()
-        uic.loadUi("res/ui/splash.ui", self)
+        uic.loadUi("res/ui/"+tema+"/splash.ui", self)
+
+        # qr kod
+        self.qr = self.findChild(QtWidgets.QLabel, 'qr')
+        qrPixmap = QPixmap(
+            'res/event/' + eventId + '/qr.png')
+        self.qr.setPixmap(qrPixmap)
+        # link
+        self.link = self.findChild(QtWidgets.QLabel, 'link')
+        self.link.setText("djenka.tk/"+eventId)
 
         self.pushButton.clicked.connect(self.changeToCameraUi)
 
@@ -42,10 +61,11 @@ class SplashUi(QMainWindow):
 class CameraUi(QMainWindow):
     def __init__(self):
         super(CameraUi, self).__init__()
-        uic.loadUi("res/ui/camera.ui", self)
+        uic.loadUi("res/ui/"+tema+"/camera.ui", self)
 
         self.strip = self.findChild(QtWidgets.QLabel, 'strip')
-        stripPixmap = QPixmap('res/event/kartica.png')
+        stripPixmap = QPixmap(
+            'res/event/' + eventId + '/kartica.png')
         self.strip.setPixmap(stripPixmap)
 
         self.cardSlot1 = self.findChild(QtWidgets.QLabel, 'img1')
@@ -73,7 +93,7 @@ class CameraUi(QMainWindow):
 class PrintUi(QMainWindow):
     def __init__(self):
         super(PrintUi, self).__init__()
-        uic.loadUi("res/ui/print.ui", self)
+        uic.loadUi("res/ui/"+tema+"/print.ui", self)
 
         self.strip1 = self.findChild(QtWidgets.QLabel, 'strip1')
         self.strip2 = self.findChild(QtWidgets.QLabel, 'strip2')
@@ -116,20 +136,27 @@ class PrintUi(QMainWindow):
 class AlbumUi(QMainWindow):
     def __init__(self):
         super(AlbumUi, self).__init__()
-        uic.loadUi("res/ui/album.ui", self)
+        uic.loadUi("res/ui/"+tema+"/album.ui", self)
 
+        # qr kod
+        self.qr = self.findChild(QtWidgets.QLabel, 'qr')
+        qrPixmap = QPixmap(
+            'res/event/' + eventId + '/qr.png')
+        self.qr.setPixmap(qrPixmap)
+        # link
+        self.link = self.findChild(QtWidgets.QLabel, 'link')
+        self.link.setText("djenka.tk/"+eventId)
+        # slike
         self.img1 = self.findChild(QtWidgets.QLabel, 'img1')
         self.img2 = self.findChild(QtWidgets.QLabel, 'img2')
         self.img3 = self.findChild(QtWidgets.QLabel, 'img3')
-
         img1pixmap = QPixmap('res/session/slika1.jpg')
         img2pixmap = QPixmap('res/session/slika2.jpg')
         img3pixmap = QPixmap('res/session/slika3.jpg')
-
         self.img1.setPixmap(img1pixmap)
         self.img2.setPixmap(img2pixmap)
         self.img3.setPixmap(img3pixmap)
-
+        # radio
         self.buttonGroup = QtWidgets.QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
             QtWidgets.QRadioButton, "radio1"))
@@ -137,13 +164,11 @@ class AlbumUi(QMainWindow):
             QtWidgets.QRadioButton, "radio2"))
         self.buttonGroup.addButton(self.findChild(
             QtWidgets.QRadioButton, "radio3"))
-
-        print(self.buttonGroup.checkedButton())
-
+        # button
         self.pushButton.clicked.connect(self.sharePressed)
 
     def sharePressed(self):
-
+        # provjerava koji je radiobutton ukljucen
         if self.buttonGroup.checkedId() == -2:
             brojSlike = 1
         elif self.buttonGroup.checkedId() == -3:
@@ -153,7 +178,7 @@ class AlbumUi(QMainWindow):
         else:
             print("No radio button is selected")
 
-        uploadToAlbum(brojSlike)
+        uploadToAlbum(brojSlike, eventId)
 
         widget.setCurrentWidget(SplashUi)
 
