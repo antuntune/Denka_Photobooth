@@ -3,7 +3,6 @@ from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
 import sys
-import keyboard
 import res
 from functions import uploadToAlbum, printaj, napraviQr
 import json
@@ -70,10 +69,6 @@ class CameraUi(QMainWindow):
         self.cardSlot2.setPixmap(img2pixmap)
         self.cardSlot3.setPixmap(img3pixmap)
 
-        def daljinskiPritisnut():
-            print("k was pressed")
-
-        keyboard.add_hotkey('k', lambda: daljinskiPritisnut())
         self.pushButton.clicked.connect(self.changeToPrintUi)
 
     def changeToPrintUi(self):
