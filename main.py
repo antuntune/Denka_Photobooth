@@ -16,11 +16,12 @@ with open('config.json', 'r') as f:
 eventId = config['eventId']
 tema = config['tema']
 
-# konvertiranje qrc u py
-qrc_file = 'res/ui/'+tema+'/res.qrc'
-pyres_file = 'res.py'
-subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
-importlib.reload(res)
+# konvertiranje qrc u py, zakomentirano jer  ga jebe memorija
+
+# qrc_file = 'res/ui/'+tema+'/res.qrc'
+# pyres_file = 'res.py'
+# subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
+# importlib.reload(res)
 
 # napravi qr kod
 napraviQr(eventId)
