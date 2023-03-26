@@ -8,6 +8,7 @@ import res
 from functions import uploadToAlbum, printaj, napraviQr
 import json
 import subprocess
+import importlib
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -20,6 +21,7 @@ tema = config['tema']
 qrc_file = 'res/ui/'+tema+'/res.qrc'
 pyres_file = 'res.py'
 subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
+importlib.reload(res)
 
 # napravi qr kod
 napraviQr(eventId)
