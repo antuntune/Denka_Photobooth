@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import uic
+from PyQt5 import uic, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
 from cloudinary.uploader import upload
@@ -32,12 +32,7 @@ class AlbumUi(QMainWindow):
         self.img1 = self.findChild(QtWidgets.QLabel, 'img1')
         self.img2 = self.findChild(QtWidgets.QLabel, 'img2')
         self.img3 = self.findChild(QtWidgets.QLabel, 'img3')
-        img1pixmap = QPixmap('res/session/slika1.jpg')
-        img2pixmap = QPixmap('res/session/slika2.jpg')
-        img3pixmap = QPixmap('res/session/slika3.jpg')
-        self.img1.setPixmap(img1pixmap)
-        self.img2.setPixmap(img2pixmap)
-        self.img3.setPixmap(img3pixmap)
+
         # radio
         self.buttonGroup = QtWidgets.QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
@@ -48,6 +43,17 @@ class AlbumUi(QMainWindow):
             QtWidgets.QRadioButton, "radio3"))
         # button
         self.pushButton.clicked.connect(self.sharePressed)
+
+    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+
+        img1pixmap = QPixmap('res/session/slika1.jpg')
+        img2pixmap = QPixmap('res/session/slika2.jpg')
+        img3pixmap = QPixmap('res/session/slika3.jpg')
+        self.img1.setPixmap(img1pixmap)
+        self.img2.setPixmap(img2pixmap)
+        self.img3.setPixmap(img3pixmap)
+
+        return super().showEvent(a0)
 
     def sharePressed(self):
         # provjerava koji je radiobutton ukljucen

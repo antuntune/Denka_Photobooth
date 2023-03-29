@@ -37,7 +37,7 @@ class CameraUi(QMainWindow):
     def changeToPrintUi(self):
         self.parent().setCurrentIndex(3)
 
-    def napraviKarticu(eventId):
+    def napraviKarticu(self, eventId):
 
         kartica = Image.open('res/event/'+eventId+'/kartica.png')
         im1 = Image.open('res/session/slika1.jpg').resize((800, 533))
@@ -87,3 +87,4 @@ class CameraUi(QMainWindow):
 
         if self.count > 3:
             keyboard.unhook_all_hotkeys()
+            self.napraviKarticu(eventId)

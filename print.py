@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import uic
+from PyQt5 import uic, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
 from functions import printaj
@@ -25,6 +25,16 @@ class PrintUi(QMainWindow):
         self.strip5 = self.findChild(QtWidgets.QLabel, 'strip5')
         self.strip6 = self.findChild(QtWidgets.QLabel, 'strip6')
 
+        self.buttonGroup = QtWidgets.QButtonGroup(self)
+        self.buttonGroup.addButton(self.findChild(
+            QtWidgets.QRadioButton, "radio2"))
+        self.buttonGroup.addButton(self.findChild(
+            QtWidgets.QRadioButton, "radio4"))
+
+        self.pushButton.clicked.connect(self.printPressed)
+
+    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+
         stripPixmap = QPixmap('res/session/gotovaKartica.png')
 
         self.strip1.setPixmap(stripPixmap)
@@ -34,13 +44,7 @@ class PrintUi(QMainWindow):
         self.strip5.setPixmap(stripPixmap)
         self.strip6.setPixmap(stripPixmap)
 
-        self.buttonGroup = QtWidgets.QButtonGroup(self)
-        self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio2"))
-        self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio4"))
-
-        self.pushButton.clicked.connect(self.printPressed)
+        return super().showEvent(a0)
 
     def printPressed(self):
 
