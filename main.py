@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-
 from PyQt5.QtWidgets import QApplication
 from PyQt5 import QtWidgets
 import sys
 import res
-from functions import napraviQr
 import json
 import subprocess
 import importlib
@@ -13,6 +11,7 @@ from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
 from album import AlbumUi
+from config import ConfigUi
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -28,16 +27,17 @@ tema = config['tema']
 # subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
 # importlib.reload(res)
 
-# napravi qr kod
-napraviQr(eventId)
-
 
 app = QApplication(sys.argv)
 widget = QtWidgets.QStackedWidget()
 
-splashUi = SplashUi()
-splashUi.setParent(widget)
+configUi = ConfigUi()
 
+# radi i bez tog ??
+# configUi.setParent(widget)
+widget.addWidget(configUi)
+
+splashUi = SplashUi()
 widget.addWidget(splashUi)
 
 cameraUi = CameraUi()

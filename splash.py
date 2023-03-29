@@ -30,4 +30,4 @@ class SplashUi(QMainWindow):
 
     def changeToCameraUi(self):
 
-        self.parent().setCurrentIndex(1)
+        self.parent().setCurrentIndex(2)

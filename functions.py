@@ -1,9 +1,7 @@
 import cloudinary
-from cloudinary.uploader import upload
 import time
 import cups
 from PIL import Image
-import qrcode
 import json
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -26,12 +24,8 @@ printers = conn.getPrinters()
 
 emptyDict = {}
 AvailablePrinters = list(printers.keys())
+print(printers)
 PrinterUsing = AvailablePrinters[0]
-
-
-def uploadToAlbum(brojSlike, eventId):
-    upload("res/session/slika" + str(brojSlike) + ".jpg",
-           public_id="djenka/" + eventId + "/album/" + str(time.time()))
 
 
 def printaj(kolKartica):
@@ -53,23 +47,3 @@ def printaj(kolKartica):
         conn.printFile(
             PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
         print('printam JOS dve kartice')
-
-
-def napraviKarticu(eventId):
-
-    kartica = Image.open('res/event/'+eventId+'/kartica.png')
-    im1 = Image.open('res/session/slika1.jpg').resize((800, 533))
-    im2 = Image.open('res/session/slika2.jpg').resize((800, 533))
-    im3 = Image.open('res/session/slika3.jpg').resize((800, 533))
-
-    kartica.paste(im1, (100, 187))
-    kartica.paste(im2, (100, 877))
-    kartica.paste(im3, (100, 1567))
-
-    kartica.save('res/session/gotovaKartica.png')
-
-
-def napraviQr(eventId):
-    img = qrcode.make('www.djenka.tk/' + eventId)
-    type(img)  # qrcode.image.pil.PilImage
-    img.save("res/event/" + eventId + "/qr.png")

@@ -53,4 +53,4 @@ class PrintUi(QMainWindow):
 
         printaj(kolKartica)
 
-        self.parent().setCurrentIndex(3)
+        self.parent().setCurrentIndex(4)

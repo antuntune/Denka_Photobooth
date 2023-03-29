@@ -2,8 +2,10 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import uic
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
-from functions import uploadToAlbum
+from cloudinary.uploader import upload
+import functions
 import json
+import time
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -55,9 +57,11 @@ class AlbumUi(QMainWindow):
             brojSlike = 2
         elif self.buttonGroup.checkedId() == -4:
             brojSlike = 3
-        else:
-            print("No radio button is selected")
 
-        uploadToAlbum(brojSlike, eventId)
+        self.uploadToAlbum(brojSlike, eventId)
 
-        self.parent().setCurrentIndex(0)
+        self.parent().setCurrentIndex(1)
+
+    def uploadToAlbum(self, brojSlike, eventId):
+        upload("res/session/slika" + str(brojSlike) + ".jpg",
+               public_id="djenka/" + eventId + "/album/" + str(time.time()))
