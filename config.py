@@ -13,14 +13,16 @@ with open('config.json', 'r') as f:
 eventId = config['eventId']
 
 # mongodb spajanje
-client = pymongo.MongoClient(
-    "mongodb+srv://antuntun:yF0vqRb8HdxMdAKJ@cluster0.io95d.mongodb.net/?retryWrites=true&w=majority")
-db = client['DenkaPhotobooth']
-collection = db['events']
+# client = pymongo.MongoClient(
+#     "mongodb+srv://antuntun:yF0vqRb8HdxMdAKJ@cluster0.io95d.mongodb.net/?retryWrites=true&w=majority")
+# db = client['DenkaPhotobooth']
+# collection = db['events']
 
-field = 'name'
+# field = 'name'
 
-items = collection.distinct(field)
+# items = collection.distinct(field)
+
+items = ['Sara i Antonio']
 
 
 class ConfigUi(QMainWindow):
