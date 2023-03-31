@@ -250,6 +250,28 @@ QPushButton:pressed {
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="skipButton">
+    <property name="geometry">
+     <rect>
+      <x>1720</x>
+      <y>1000</y>
+      <width>181</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>DejaVu Sans</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ffffff</string>
+    </property>
+    <property name="text">
+     <string>PRESKOČI --&gt;</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources>

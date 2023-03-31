@@ -76,6 +76,7 @@ class CameraUi(QMainWindow):
 
         keyboard.add_hotkey('k', lambda: self.slikaj())
 
+        # tu se tek pojavljuje ekran
         return super().showEvent(a0)
 
     def slikaj(self):

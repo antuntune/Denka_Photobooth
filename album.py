@@ -50,6 +50,7 @@ class AlbumUi(QMainWindow):
             QtWidgets.QRadioButton, "radio3"))
         # button
         self.pushButton.clicked.connect(self.sharePressed)
+        self.skipButton.clicked.connect(self.skipPressed)
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
 
@@ -73,6 +74,9 @@ class AlbumUi(QMainWindow):
 
         self.uploadToAlbum(brojSlike, eventId)
 
+        self.parent().setCurrentIndex(1)
+
+    def skipPressed(self):
         self.parent().setCurrentIndex(1)
 
     def uploadToAlbum(self, brojSlike, eventId):

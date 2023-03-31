@@ -20,7 +20,6 @@ printers = conn.getPrinters()
 
 emptyDict = {}
 AvailablePrinters = list(printers.keys())
-print(printers)
 PrinterUsing = AvailablePrinters[0]
 
 
@@ -43,6 +42,7 @@ class PrintUi(QMainWindow):
             QtWidgets.QRadioButton, "radio4"))
 
         self.pushButton.clicked.connect(self.printPressed)
+        self.skipButton.clicked.connect(self.skipPressed)
 
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
 
@@ -68,6 +68,9 @@ class PrintUi(QMainWindow):
 
         self.printaj(kolKartica)
 
+        self.parent().setCurrentIndex(4)
+
+    def skipPressed(self):
         self.parent().setCurrentIndex(4)
 
     def printaj(self, kolKartica):
