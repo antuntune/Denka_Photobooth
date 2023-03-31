@@ -76,6 +76,9 @@
       <height>181</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/newPrefix/transparent.png);</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -95,6 +98,9 @@
       <height>181</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/newPrefix/transparent.png);</string>
+    </property>
     <property name="text">
      <string/>
     </property>
@@ -113,6 +119,9 @@
       <width>271</width>
       <height>181</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-image: url(:/newPrefix/transparent.png);</string>
     </property>
     <property name="text">
      <string/>
