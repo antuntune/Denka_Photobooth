@@ -63,6 +63,12 @@ class CameraUi(QMainWindow):
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
         self.count = 1
 
+        # resetiranje pixmapa
+        transPixmap = QPixmap("res/ui/"+tema+"/transparent.png")
+        self.cardSlot1.setPixmap(transPixmap)
+        self.cardSlot2.setPixmap(transPixmap)
+        self.cardSlot3.setPixmap(transPixmap)
+
         # pokreni strim
         self.thread = CameraThread()
         self.thread.image_data.connect(self.update_image)
