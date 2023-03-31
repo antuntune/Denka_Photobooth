@@ -1,16 +1,4 @@
-
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import uic, QtGui
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-import json
-from PIL import Image
-
-import cv2
-import os
-import keyboard
-import queue
+from imports import *
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
