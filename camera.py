@@ -35,8 +35,6 @@ class CameraUi(QMainWindow):
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
         self.streamLabel = self.findChild(QtWidgets.QLabel, 'stream')
 
-        self.pushButton.clicked.connect(self.changeToPrintUi)
-
     def update_image(self, frame):
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb_frame.shape

@@ -12,6 +12,12 @@ from camera import CameraUi
 from print import PrintUi
 from album import AlbumUi
 from config import ConfigUi
+import os
+
+# pravi mapu session ako je jos nema
+directory = 'res/session'
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
