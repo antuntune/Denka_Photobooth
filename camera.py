@@ -78,6 +78,7 @@ class CameraUi(QMainWindow):
 
         # Stop the camera capture thread
         self.thread.stop()
+        # čeka da se thread ugasi pa onda ide dalje
         self.thread.wait()
 
         # Capture a single frame from the camera

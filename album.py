@@ -3,9 +3,9 @@ from PyQt5 import uic, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
 from cloudinary.uploader import upload
-import functions
 import json
 import time
+import cloudinary
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -13,6 +13,13 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 eventId = config['eventId']
 tema = config['tema']
+
+cloudinary.config(
+    cloud_name="dpuhwc49z",
+    api_key="544431793628367",
+    api_secret="jXcv2cki8LffeJ1Wz-FOrYU4sd8",
+    secure=True
+)
 
 
 class AlbumUi(QMainWindow):

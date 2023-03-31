@@ -2,8 +2,9 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import uic, QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtGui import QPixmap
-from functions import printaj
 import json
+import cups
+from PIL import Image
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -11,6 +12,16 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 eventId = config['eventId']
 tema = config['tema']
+
+# spajanje na cups
+conn = cups.Connection()
+printers = conn.getPrinters()
+# printers is a dictionary containing information about all the printers available
+
+emptyDict = {}
+AvailablePrinters = list(printers.keys())
+print(printers)
+PrinterUsing = AvailablePrinters[0]
 
 
 class PrintUi(QMainWindow):
@@ -55,6 +66,26 @@ class PrintUi(QMainWindow):
         else:
             print("No radio button is selected")
 
-        printaj(kolKartica)
+        self.printaj(kolKartica)
 
         self.parent().setCurrentIndex(4)
+
+    def printaj(self, kolKartica):
+        im1 = Image.open('res/session/gotovaKartica.png')
+
+        def get_concat_h(im1):
+            dst = Image.new('RGB', (im1.width + im1.width + 35, im1.height))
+            dst.paste(im1, (35, 0))
+            dst.paste(im1, (im1.width + 35, 0))
+            return dst
+
+        get_concat_h(im1).save('res/session/dupla_kartica.png')
+
+        conn.printFile(
+            PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+        print('printam dve kartice')
+
+        if kolKartica == 4:
+            conn.printFile(
+                PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+            print('printam JOS dve kartice')
