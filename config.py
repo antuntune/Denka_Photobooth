@@ -1,4 +1,7 @@
-from imports import *
+from PyQt5.QtWidgets import QMainWindow, QComboBox
+from PyQt5 import uic
+import qrcode
+import json
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -24,7 +27,7 @@ class ConfigUi(QMainWindow):
         super(ConfigUi, self).__init__()
         uic.loadUi("res/ui/config.ui", self)
 
-        self.combobox = self.findChild(QtWidgets.QComboBox, 'comboBox')
+        self.combobox = self.findChild(QComboBox, 'comboBox')
 
         self.combobox.addItems(items)
 

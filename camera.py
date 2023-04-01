@@ -1,12 +1,10 @@
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import uic, QtGui
-from PyQt5 import QtWidgets
+from PyQt5 import uic, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 import json
 from PIL import Image
 import threading
-
 import cv2
 from pynput import keyboard
 

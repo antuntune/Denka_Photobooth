@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
+from PyQt5.QtWidgets import QApplication, QStackedWidget
+import os
+import sys
+import json
+from config import ConfigUi
+from splash import SplashUi
+from camera import CameraUi
+from print import PrintUi
+from album import AlbumUi
+import res
 
-from imports import *
 
 # pravi mapu session ako je jos nema
 directory = 'res/session'
@@ -23,7 +32,7 @@ tema = config['tema']
 
 
 app = QApplication(sys.argv)
-widget = QtWidgets.QStackedWidget()
+widget = QStackedWidget()
 
 configUi = ConfigUi()
 

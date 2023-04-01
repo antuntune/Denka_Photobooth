@@ -1,4 +1,7 @@
-from imports import *
+from PyQt5.QtWidgets import QMainWindow, QLabel
+from PyQt5.QtGui import QPixmap
+from PyQt5 import uic
+import json
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -14,12 +17,12 @@ class SplashUi(QMainWindow):
         uic.loadUi("res/ui/"+tema+"/splash.ui", self)
 
         # qr kod
-        self.qr = self.findChild(QtWidgets.QLabel, 'qr')
+        self.qr = self.findChild(QLabel, 'qr')
         qrPixmap = QPixmap(
             'res/event/' + eventId + '/qr.png')
         self.qr.setPixmap(qrPixmap)
         # link
-        self.link = self.findChild(QtWidgets.QLabel, 'link')
+        self.link = self.findChild(QLabel, 'link')
         self.link.setText("djenka.tk/"+eventId)
 
         self.pushButton.clicked.connect(self.changeToCameraUi)

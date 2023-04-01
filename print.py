@@ -1,4 +1,9 @@
-from imports import *
+from PyQt5.QtWidgets import QMainWindow, QLabel, QButtonGroup, QRadioButton
+from PyQt5.QtGui import QPixmap, QShowEvent
+from PyQt5 import uic
+from PIL import Image
+import json
+import cups
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -22,23 +27,23 @@ class PrintUi(QMainWindow):
         super(PrintUi, self).__init__()
         uic.loadUi("res/ui/"+tema+"/print.ui", self)
 
-        self.strip1 = self.findChild(QtWidgets.QLabel, 'strip1')
-        self.strip2 = self.findChild(QtWidgets.QLabel, 'strip2')
-        self.strip3 = self.findChild(QtWidgets.QLabel, 'strip3')
-        self.strip4 = self.findChild(QtWidgets.QLabel, 'strip4')
-        self.strip5 = self.findChild(QtWidgets.QLabel, 'strip5')
-        self.strip6 = self.findChild(QtWidgets.QLabel, 'strip6')
+        self.strip1 = self.findChild(QLabel, 'strip1')
+        self.strip2 = self.findChild(QLabel, 'strip2')
+        self.strip3 = self.findChild(QLabel, 'strip3')
+        self.strip4 = self.findChild(QLabel, 'strip4')
+        self.strip5 = self.findChild(QLabel, 'strip5')
+        self.strip6 = self.findChild(QLabel, 'strip6')
 
-        self.buttonGroup = QtWidgets.QButtonGroup(self)
+        self.buttonGroup = QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio2"))
+            QRadioButton, "radio2"))
         self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio4"))
+            QRadioButton, "radio4"))
 
         self.pushButton.clicked.connect(self.printPressed)
         self.skipButton.clicked.connect(self.skipPressed)
 
-    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+    def showEvent(self, a0: QShowEvent) -> None:
 
         stripPixmap = QPixmap('res/session/gotovaKartica.png')
 

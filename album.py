@@ -1,4 +1,10 @@
-from imports import *
+from PyQt5.QtWidgets import QMainWindow, QLabel, QButtonGroup, QRadioButton
+from PyQt5.QtGui import QPixmap, QShowEvent
+from PyQt5 import uic
+import json
+import cloudinary
+import time
+from cloudinary.uploader import upload
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -21,31 +27,31 @@ class AlbumUi(QMainWindow):
         uic.loadUi("res/ui/"+tema+"/album.ui", self)
 
         # qr kod
-        self.qr = self.findChild(QtWidgets.QLabel, 'qr')
+        self.qr = self.findChild(QLabel, 'qr')
         qrPixmap = QPixmap(
             'res/event/' + eventId + '/qr.png')
         self.qr.setPixmap(qrPixmap)
         # link
-        self.link = self.findChild(QtWidgets.QLabel, 'link')
+        self.link = self.findChild(QLabel, 'link')
         self.link.setText("djenka.tk/"+eventId)
         # slike
-        self.img1 = self.findChild(QtWidgets.QLabel, 'img1')
-        self.img2 = self.findChild(QtWidgets.QLabel, 'img2')
-        self.img3 = self.findChild(QtWidgets.QLabel, 'img3')
+        self.img1 = self.findChild(QLabel, 'img1')
+        self.img2 = self.findChild(QLabel, 'img2')
+        self.img3 = self.findChild(QLabel, 'img3')
 
         # radio
-        self.buttonGroup = QtWidgets.QButtonGroup(self)
+        self.buttonGroup = QButtonGroup(self)
         self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio1"))
+            QRadioButton, "radio1"))
         self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio2"))
+            QRadioButton, "radio2"))
         self.buttonGroup.addButton(self.findChild(
-            QtWidgets.QRadioButton, "radio3"))
+            QRadioButton, "radio3"))
         # button
         self.pushButton.clicked.connect(self.sharePressed)
         self.skipButton.clicked.connect(self.skipPressed)
 
-    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+    def showEvent(self, a0: QShowEvent) -> None:
 
         img1pixmap = QPixmap('res/session/slika1.jpg')
         img2pixmap = QPixmap('res/session/slika2.jpg')
