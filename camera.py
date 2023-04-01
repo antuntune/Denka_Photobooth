@@ -6,11 +6,10 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 import json
 from PIL import Image
+import threading
 
 import cv2
-import os
-import keyboard
-import queue
+from pynput import keyboard
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -74,7 +73,18 @@ class CameraUi(QMainWindow):
         self.thread.image_data.connect(self.update_image)
         self.thread.start()
 
-        keyboard.add_hotkey('k', lambda: self.slikaj())
+        # ZA TASTATURU
+
+        def on_press(key):
+            if key.char == 'k':
+                self.slikaj()
+
+        def listener_thread():
+            with keyboard.Listener(on_press=on_press) as self.listener:
+                self.listener.join()
+
+        self.listener = threading.Thread(target=listener_thread)
+        self.listener.start()
 
         # tu se tek pojavljuje ekran
         return super().showEvent(a0)
@@ -121,7 +131,7 @@ class CameraUi(QMainWindow):
 
         # Nakon zadnje slike
         if self.count > 3:
-            keyboard.unhook_all_hotkeys()
+            self.listener.stop()
             self.napraviKarticu(eventId)
             self.thread.stop()
             self.changeToPrintUi()
