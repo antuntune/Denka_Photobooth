@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel
 from PyQt5.QtGui import QPixmap
 from PyQt5 import uic
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 import json
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -24,9 +26,13 @@ class SplashUi(QMainWindow):
         # link
         self.link = self.findChild(QLabel, 'link')
         self.link.setText("djenka.tk/"+eventId)
+        # Button sound effect
+        self.btn_sfx = QSoundEffect()
+        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/btn.wav'))
+        self.pushButton.pressed.connect(self.btn_sfx.play)
 
-        self.pushButton.clicked.connect(self.changeToCameraUi)
+        self.pushButton.clicked.connect(self.buttonPressed)
 
-    def changeToCameraUi(self):
+    def buttonPressed(self):
 
         self.parent().setCurrentIndex(2)

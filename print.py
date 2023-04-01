@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QButtonGroup, QRadioButton
 from PyQt5.QtGui import QPixmap, QShowEvent
 from PyQt5 import uic
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 from PIL import Image
 import json
 import cups
@@ -39,6 +41,11 @@ class PrintUi(QMainWindow):
             QRadioButton, "radio2"))
         self.buttonGroup.addButton(self.findChild(
             QRadioButton, "radio4"))
+
+        # Button sound effect
+        self.btn_sfx = QSoundEffect()
+        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/btn.wav'))
+        self.pushButton.pressed.connect(self.btn_sfx.play)
 
         self.pushButton.clicked.connect(self.printPressed)
         self.skipButton.clicked.connect(self.skipPressed)
