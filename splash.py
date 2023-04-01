@@ -1,8 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5 import uic
-from PyQt5 import QtWidgets
-from PyQt5.QtGui import QPixmap
-import json
+from imports import *
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:

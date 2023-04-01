@@ -1,18 +1,6 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5 import QtWidgets
-import sys
-import res
-import json
-import subprocess
-import importlib
-from splash import SplashUi
-from camera import CameraUi
-from print import PrintUi
-from album import AlbumUi
-from config import ConfigUi
-import os
+from imports import *
 
 # pravi mapu session ako je jos nema
 directory = 'res/session'

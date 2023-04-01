@@ -1,4 +1,3 @@
-
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import uic, QtGui
 from PyQt5 import QtWidgets
