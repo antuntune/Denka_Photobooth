@@ -2,6 +2,8 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import uic, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 import json
 from PIL import Image
 import threading
@@ -30,6 +32,10 @@ class CameraUi(QMainWindow):
         self.cardSlot2 = self.findChild(QtWidgets.QLabel, 'img2')
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
         self.streamLabel = self.findChild(QtWidgets.QLabel, 'stream')
+
+        # Button sound effect
+        self.btn_sfx = QSoundEffect()
+        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/cam.wav'))
 
     def update_image(self, frame):
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -87,7 +93,8 @@ class CameraUi(QMainWindow):
         return super().showEvent(a0)
 
     def slikaj(self):
-
+        # Button sound effect
+        self.btn_sfx.play()
         # Stop the camera capture thread
         self.thread.stop()
         # čeka da se thread ugasi pa onda ide dalje
