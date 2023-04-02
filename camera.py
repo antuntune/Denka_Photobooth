@@ -17,6 +17,7 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 eventId = config['eventId']
 tema = config['tema']
+mode = config['mode']
 
 
 class CameraUi(QMainWindow):
@@ -77,7 +78,7 @@ class CameraUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
 
-        self.mode = 'odbr'
+        self.mode = mode
 
         self.count = 1
 
