@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QLabel
 from PyQt5 import uic, QtGui, QtWidgets
-from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage, QMovie
 from PyQt5.QtCore import QThread, pyqtSignal, Qt
 from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QSoundEffect
@@ -9,6 +9,7 @@ from PIL import Image
 import threading
 import cv2
 from pynput import keyboard
+import time
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -33,9 +34,21 @@ class CameraUi(QMainWindow):
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
         self.streamLabel = self.findChild(QtWidgets.QLabel, 'stream')
 
-        # Button sound effect
+        # camera sound effect
         self.btn_sfx = QSoundEffect()
         self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/cam.wav'))
+
+        # Create a QLabel widget to display the transparent gif
+        self.gif_label = QLabel(self)
+        self.gif_label.setAlignment(Qt.AlignCenter)
+        self.gif_label.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.gif_label.setFixedSize(834, 790)
+
+        self.gif_label.move(400, 200)
+
+        # Create a QMovie object from the gif file
+        self.movie = QMovie("res/ui/5sec.gif")
+        self.gif_label.setMovie(self.movie)
 
     def update_image(self, frame):
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -63,6 +76,9 @@ class CameraUi(QMainWindow):
 
     # kad se prikaze ekran
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
+
+        self.mode = 'odbr'
+
         self.count = 1
 
         # resetiranje pixmapa
@@ -76,18 +92,26 @@ class CameraUi(QMainWindow):
         self.thread.image_data.connect(self.update_image)
         self.thread.start()
 
-        # ZA TASTATURU
+        if self.mode == "odbr":
 
-        def on_press(key):
-            if key.char == 'k':
-                self.slikaj()
+            self.movie.finished.connect(self.slikaj)
 
-        def listener_thread():
-            with keyboard.Listener(on_press=on_press) as self.listener:
-                self.listener.join()
+            # Start the movie
+            self.movie.start()
+        else:
 
-        self.listener = threading.Thread(target=listener_thread)
-        self.listener.start()
+            # ZA TASTATURU
+
+            def on_press(key):
+                if key.char == 'k':
+                    self.slikaj()
+
+            def listener_thread():
+                with keyboard.Listener(on_press=on_press) as self.listener:
+                    self.listener.join()
+
+            self.listener = threading.Thread(target=listener_thread)
+            self.listener.start()
 
         # tu se tek pojavljuje ekran
         return super().showEvent(a0)
@@ -102,10 +126,6 @@ class CameraUi(QMainWindow):
 
         # Capture a single frame from the camera
         _, frame = cv2.VideoCapture(0).read()
-
-        # Convert the image to a QImage
-        q_image = QImage(
-            frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
 
         # Save image to disk
         filename = f'res/session/slika{self.count}.jpg'
@@ -128,17 +148,27 @@ class CameraUi(QMainWindow):
         # Increment count
         self.count += 1
 
-        # Resume the camera capture thread
-        self.thread = CameraThread()
-        self.thread.image_data.connect(self.update_image)
-        self.thread.start()
-
         # Nakon zadnje slike
         if self.count > 3:
-            self.listener.stop()
+            if self.mode == 'odbr':
+
+                self.movie.finished.disconnect(self.slikaj)
+            else:
+                self.listener.stop()
             self.napraviKarticu(eventId)
             self.thread.stop()
+            self.thread.wait()
+            # time.sleep(2)
             self.changeToPrintUi()
+
+        else:
+            # Resume the camera capture thread
+            self.thread = CameraThread()
+            self.thread.image_data.connect(self.update_image)
+            self.thread.start()
+
+            if self.mode == 'odbr':
+                self.movie.start()
 
 
 class CameraThread(QThread):

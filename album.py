@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QButtonGroup, QRadioButton
 from PyQt5.QtGui import QPixmap, QShowEvent
 from PyQt5 import uic
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QSoundEffect
 import json
 import cloudinary
 import time
@@ -47,6 +49,12 @@ class AlbumUi(QMainWindow):
             QRadioButton, "radio2"))
         self.buttonGroup.addButton(self.findChild(
             QRadioButton, "radio3"))
+
+        # Button sound effect
+        self.btn_sfx = QSoundEffect()
+        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/btn.wav'))
+        self.pushButton.pressed.connect(self.btn_sfx.play)
+
         # button
         self.pushButton.clicked.connect(self.sharePressed)
         self.skipButton.clicked.connect(self.skipPressed)

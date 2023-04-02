@@ -133,6 +133,11 @@
      <bool>true</bool>
     </property>
    </widget>
+   <zorder>stream</zorder>
+   <zorder>strip</zorder>
+   <zorder>img2</zorder>
+   <zorder>img1</zorder>
+   <zorder>img3</zorder>
   </widget>
  </widget>
  <resources>
