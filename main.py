@@ -20,8 +20,8 @@ if not os.path.exists(directory):
 with open('config.json', 'r') as f:
     # Load the contents of the file into a dictionary
     config = json.load(f)
-eventId = config['eventId']
-tema = config['tema']
+    eventId = config['eventId']
+    tema = config['tema']
 
 # konvertiranje qrc u py, zakomentirano jer  ga jebe memorija
 
@@ -29,7 +29,6 @@ tema = config['tema']
 # pyres_file = 'res.py'
 # subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
 # importlib.reload(res)
-
 
 app = QApplication(sys.argv)
 widget = QStackedWidget()

@@ -7,7 +7,7 @@ import json
 with open('config.json', 'r') as f:
     # Load the contents of the file into a dictionary
     config = json.load(f)
-eventId = config['eventId']
+    eventId = config['eventId']
 
 # mongodb spajanje
 # client = pymongo.MongoClient(
