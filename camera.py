@@ -15,7 +15,7 @@ from video_stream import VideoThread
 import dslr
 import shutil, os, signal
 
-sessionPath = "/home/marko/Documents/backup_2/Denka_Photobooth/"
+sessionPath = "/home/djenka/GitHub/Denka_Photobooth/"
 
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -36,7 +36,7 @@ class CameraUi(QMainWindow):
 
         self.strip = self.findChild(QtWidgets.QLabel, 'strip')
         stripPixmap = QPixmap(
-            'res/event/' + eventId + '/kartica.png')
+            'res/event/' + eventId + '/kartica.jpg')
         self.strip.setPixmap(stripPixmap)
 
         self.cardSlot1 = self.findChild(QtWidgets.QLabel, 'img1')
@@ -77,16 +77,16 @@ class CameraUi(QMainWindow):
 
     def napraviKarticu(self, eventId):
 
-        kartica = Image.open('res/event/'+eventId+'/kartica.png')
-        im1 = Image.open('res/session/slika1.jpg').resize((800, 533))
-        im2 = Image.open('res/session/slika2.jpg').resize((800, 533))
-        im3 = Image.open('res/session/slika3.jpg').resize((800, 533))
+        kartica = Image.open('res/event/'+eventId+'/kartica.jpg')
+        im1 = Image.open('res/session/slika1.jpg').resize((892, 596))
+        im2 = Image.open('res/session/slika2.jpg').resize((892, 596))
+        im3 = Image.open('res/session/slika3.jpg').resize((892, 596))
 
-        kartica.paste(im1, (100, 187))
-        kartica.paste(im2, (100, 877))
-        kartica.paste(im3, (100, 1567))
+        kartica.paste(im1, (54, 253))
+        kartica.paste(im2, (54, 915))
+        kartica.paste(im3, (54, 1577))
 
-        kartica.save('res/session/gotovaKartica.png')
+        kartica.save('res/session/gotovaKartica.jpg')
 
     # kad se prikaze ekran
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
@@ -160,9 +160,9 @@ class CameraUi(QMainWindow):
             self.streamLabel.show()
             new_filename = "slika1" + shot_time +".jpg"
             shutil.copy("slika1.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika1.jpg", sessionPath + "/res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "/res/event/sia2904_session")
-            os.remove(sessionPath + "/slika1.jpg")
+            shutil.copy2(sessionPath + "slika1.jpg", sessionPath + "res/session/")
+            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
+            os.remove(sessionPath + "slika1.jpg")
             img1pixmap = QPixmap('res/session/slika1.jpg')
             self.cardSlot1.setPixmap(img1pixmap)
 
@@ -174,8 +174,8 @@ class CameraUi(QMainWindow):
             dslr.resizeImage("slika2.jpg")
             new_filename = "slika2" + shot_time +".jpg"
             shutil.copy("slika2.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika2.jpg", sessionPath + "/res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "/res/event/sia2904_session")
+            shutil.copy2(sessionPath + "slika2.jpg", sessionPath + "res/session/")
+            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
             os.remove(sessionPath + "/slika2.jpg")
             img1pixmap = QPixmap('res/session/slika2.jpg')
             img2pixmap = QPixmap('res/session/slika2.jpg')
@@ -186,9 +186,9 @@ class CameraUi(QMainWindow):
             dslr.resizeImage("slika3.jpg")
             new_filename = "slika3" + shot_time +".jpg"
             shutil.copy("slika3.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika3.jpg", sessionPath + "/res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "/res/event/sia2904_session")
-            os.remove(sessionPath + "/slika3.jpg")
+            shutil.copy2(sessionPath + "slika3.jpg", sessionPath + "res/session/")
+            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
+            os.remove(sessionPath + "slika3.jpg")
             img1pixmap = QPixmap('res/session/slika3.jpg')
             img3pixmap = QPixmap('res/session/slika3.jpg')
             self.cardSlot3.setPixmap(img3pixmap)

@@ -259,8 +259,8 @@ QPushButton:pressed {
     </property>
     <property name="font">
      <font>
-      <family>DejaVu Sans</family>
-      <pointsize>26</pointsize>
+      <family>Espiritu Condensed</family>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="styleSheet">

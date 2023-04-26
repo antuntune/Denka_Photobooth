@@ -25,7 +25,7 @@ class SplashUi(QMainWindow):
         self.qr.setPixmap(qrPixmap)
         # link
         self.link = self.findChild(QLabel, 'link')
-        self.link.setText("djenka.tk/"+eventId)
+        self.link.setText("denka.live/"+eventId)
         # Button sound effect
         self.btn_sfx = QSoundEffect()
         self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/btn.wav'))

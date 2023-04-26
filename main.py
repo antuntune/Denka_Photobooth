@@ -27,7 +27,7 @@ with open('config.json', 'r') as f:
 
 # qrc_file = 'res/ui/'+tema+'/res.qrc'
 # pyres_file = 'res.py'
-# subprocess.run(['pyrcc5', qrc_file, '-o', pyres_file])
+# subprocess.run(['pyrcc5', qrc_fil e, '-o', pyres_file])
 # importlib.reload(res)
 
 app = QApplication(sys.argv)

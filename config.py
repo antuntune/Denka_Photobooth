@@ -41,6 +41,6 @@ class ConfigUi(QMainWindow):
         self.napraviQr(eventId)
 
     def napraviQr(self, eventId):
-        img = qrcode.make('www.djenka.tk/' + eventId)
+        img = qrcode.make('www.denka.live/' + eventId)
         type(img)  # qrcode.image.pil.PilImage
         img.save("res/event/" + eventId + "/qr.png")

@@ -52,7 +52,7 @@ class PrintUi(QMainWindow):
 
     def showEvent(self, a0: QShowEvent) -> None:
 
-        stripPixmap = QPixmap('res/session/gotovaKartica.png')
+        stripPixmap = QPixmap('res/session/gotovaKartica.jpg')
 
         self.strip1.setPixmap(stripPixmap)
         self.strip2.setPixmap(stripPixmap)
@@ -80,7 +80,7 @@ class PrintUi(QMainWindow):
         self.parent().setCurrentIndex(4)
 
     def printaj(self, kolKartica):
-        im1 = Image.open('res/session/gotovaKartica.png')
+        im1 = Image.open('res/session/gotovaKartica.jpg')
 
         def get_concat_h(im1):
             dst = Image.new('RGB', (im1.width + im1.width + 35, im1.height))
@@ -88,13 +88,13 @@ class PrintUi(QMainWindow):
             dst.paste(im1, (im1.width + 35, 0))
             return dst
 
-        get_concat_h(im1).save('res/session/dupla_kartica.png')
+        get_concat_h(im1).save('res/session/dupla_kartica.jpg')
 
         conn.printFile(
-            PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+            PrinterUsing, "res/session/dupla_kartica.jpg", "title", emptyDict)
         print('printam dve kartice')
 
         if kolKartica == 4:
             conn.printFile(
-                PrinterUsing, "res/session/dupla_kartica.png", "title", emptyDict)
+                PrinterUsing, "res/session/dupla_kartica.jpg", "title", emptyDict)
             print('printam JOS dve kartice')

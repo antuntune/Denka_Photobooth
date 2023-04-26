@@ -29,7 +29,7 @@ SDcard = ["--set-config", "capturetarget=1"]
 def renameImage(name):
     for filename in os.listdir("."):
         if len(filename) < 13:
-            if filename.endswith("JPG"):
+            if filename.endswith("jpg"):
                 os.rename(filename, (name + ".jpg"))
 
 
@@ -37,7 +37,7 @@ def captureImage():
     killStream()
     killGphoto2Process()
     sleep(1.5)
-    cmd = "gphoto2 --capture-image-and-download --type=jpeg"
+    cmd = "gphoto2 --capture-image-and-download "
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     # Wait for the command to finish and get the return code
     return_code = process.wait()

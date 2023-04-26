@@ -35,7 +35,7 @@ class AlbumUi(QMainWindow):
         self.qr.setPixmap(qrPixmap)
         # link
         self.link = self.findChild(QLabel, 'link')
-        self.link.setText("djenka.tk/"+eventId)
+        self.link.setText("denka.live/"+eventId)
         # slike
         self.img1 = self.findChild(QLabel, 'img1')
         self.img2 = self.findChild(QLabel, 'img2')

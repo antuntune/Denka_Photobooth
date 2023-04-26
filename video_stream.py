@@ -20,14 +20,14 @@ class VideoThread(QThread):
 
     def start(self):
         dslr.killGphoto2Process()
-        cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video2"
+        cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video0"
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        time.sleep(3)
+        time.sleep(4)
         self.stopped = False
         super().start()
 
     def run(self):
-        cap = cv2.VideoCapture('/dev/video2', cv2.CAP_V4L2)
+        cap = cv2.VideoCapture('/dev/video0', cv2.CAP_V4L2)
         cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
         while not self.stopped:
             ret, frame = cap.read()
