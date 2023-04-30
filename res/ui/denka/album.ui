@@ -251,10 +251,10 @@ QPushButton:pressed {
    <widget class="QLabel" name="link">
     <property name="geometry">
      <rect>
-      <x>1420</x>
-      <y>570</y>
+      <x>1430</x>
+      <y>560</y>
       <width>341</width>
-      <height>61</height>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
@@ -277,20 +277,23 @@ color: #ffffff;</string>
       <x>1710</x>
       <y>1000</y>
       <width>181</width>
-      <height>61</height>
+      <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>DejaVu Sans</family>
+      <family>Espiritu Condensed</family>
       <pointsize>14</pointsize>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #ffffff</string>
+     <string notr="true">color: #eeeeee</string>
     </property>
     <property name="text">
      <string>PRESKOČI  --&gt;</string>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

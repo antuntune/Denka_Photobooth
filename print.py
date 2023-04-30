@@ -74,10 +74,10 @@ class PrintUi(QMainWindow):
 
         self.printaj(kolKartica)
 
-        self.parent().setCurrentIndex(4)
+        self.parent().setCurrentIndex(5)
 
     def skipPressed(self):
-        self.parent().setCurrentIndex(4)
+        self.parent().setCurrentIndex(5)
 
     def printaj(self, kolKartica):
         im1 = Image.open('res/session/gotovaKartica.jpg')

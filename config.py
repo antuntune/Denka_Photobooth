@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import QMainWindow, QComboBox
 from PyQt5 import uic
 import qrcode
 import json
+import subprocess
 
 # ucitavanje config.jsona i metanje u varijable da se lakse koristi
 with open('config.json', 'r') as f:
@@ -36,6 +37,10 @@ class ConfigUi(QMainWindow):
         self.pushButton.clicked.connect(self.buttonPressed)
 
     def buttonPressed(self):
+
+        #subprocess.Popen('modprobe v4l2loopback', shell=True)
+        #subprocess.Popen('snap connect ffmpeg:camera', shell=True)
+
 
         self.parent().setCurrentIndex(1)
         self.napraviQr(eventId)

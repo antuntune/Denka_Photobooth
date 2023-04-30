@@ -34,39 +34,35 @@ def renameImage(name):
 
 
 def captureImage():
-    killStream()
-    killGphoto2Process()
-    sleep(1.5)
-    cmd = "gphoto2 --capture-image-and-download "
+    #killStream()
+    #killGphoto2Process()
+    #sleep(1)
+    cmd = "gphoto2 --set-config autofocusdrive=1; gphoto2 --capture-image-and-download "
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     # Wait for the command to finish and get the return code
     return_code = process.wait()
-    while return_code != 0:
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        return_code = process.wait()
-        if return_code == 0:
-            print("Command executed successfully.")
-        else:
-           killGphoto2Process()
-           print(f"Command failed with return code {return_code}")
+
 
 
 def killGphoto2Process():
     p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
     out, err = p.communicate()
     for line in out.splitlines():     
-        if b'gphoto2' in line:
+        if b'gphoto' in line:
                 # Kill the process!
             pid = int (line.split(None,1) [0] )
             os.kill (pid, signal.SIGKILL)
+            print("ubio gphoto2")
 
-    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
-    out, err = p.communicate()
-    for line in out.splitlines():     
-        if b'gvfsd-gphoto2' in line:
-                # Kill tte process!
-            pid = int (line.split(None,1) [0] )
-            os.kill (pid, signal.SIGKILL)
+    #p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
+    #out, err = p.communicate()
+    #for line in out.splitlines():     
+    #    if b'gvfsd-gphoto2' in line:
+    #            # Kill tte process!
+    #        pid = int (line.split(None,1) [0] )
+    #        os.kill (pid, signal.SIGKILL)
+    #        print("ubio gvadsfasd")
+
 
 def killStream():
     p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
@@ -82,7 +78,7 @@ def resizeImage(name):
     # read an image from file
     img = Image.open(name)
     # define the desired output size
-    new_size = (1500, 800)
+    new_size = (1500, 1000)
     resized_img = ImageOps.fit(img, new_size, method=Image.BILINEAR)
     resized_img.save(name)
 

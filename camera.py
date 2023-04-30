@@ -14,6 +14,8 @@ from datetime import datetime
 from video_stream import VideoThread
 import dslr
 import shutil, os, signal
+import time
+
 
 sessionPath = "/home/djenka/GitHub/Denka_Photobooth/"
 
@@ -44,6 +46,12 @@ class CameraUi(QMainWindow):
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
         self.streamLabel = self.findChild(QtWidgets.QLabel, 'stream')
 
+        self.fullscreenlabel = self.findChild(QtWidgets.QLabel, 'fullscreenlabel')
+        gledajte = QPixmap("res/ui/denka/gledajteukameru.png")
+        self.fullscreenlabel.setPixmap(gledajte)
+        self.fullscreenlabel.hide()
+
+
         # camera sound effect
         self.btn_sfx = QSoundEffect()
         self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/cam.wav'))
@@ -51,7 +59,7 @@ class CameraUi(QMainWindow):
         # Create a QLabel widget to display the transparent gif
         self.gif_label = QLabel(self)
         self.gif_label.setAlignment(Qt.AlignCenter)
-        self.gif_label.setWindowFlags(Qt.WindowStaysOnTopHint)
+        #self.gif_label.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.gif_label.setFixedSize(834, 790)
 
         self.gif_label.move(400, 200)
@@ -72,9 +80,6 @@ class CameraUi(QMainWindow):
     def updateFrame(self, pixmap):
         self.streamLabel.setPixmap(pixmap)
 
-    def changeToPrintUi(self):
-        self.parent().setCurrentIndex(3)
-
     def napraviKarticu(self, eventId):
 
         kartica = Image.open('res/event/'+eventId+'/kartica.jpg')
@@ -91,6 +96,8 @@ class CameraUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, a0: QtGui.QShowEvent) -> None:
 
+        #dslr.killGphoto2Process()
+
         # pokreni strim
         self.camera_thread_1.start()
         self.mode = mode
@@ -101,10 +108,12 @@ class CameraUi(QMainWindow):
         self.cardSlot2.setPixmap(transPixmap)
         self.cardSlot3.setPixmap(transPixmap)
 
+
         if self.mode == "odbr":
             self.movie.finished.connect(self.slikaj)
             # Start the movie
             self.movie.start()
+
         else:
             # ZA TASTATURU
             def on_press(key):
@@ -120,16 +129,23 @@ class CameraUi(QMainWindow):
         return super().showEvent(a0)
 
     def captureImageThread(self):
-        dslr.killGphoto2Process()
         dslr.captureImage()
-
 
     def slikaj(self):
         # Stop the camera capture thread
-        dslr.killStream()
+        #self.camera_thread_1.stop()
+        #dslr.killStream()
+
+        print("ubio stream prije slikanja")
+        #dslr.killGphoto2Process()
+        
+
+
         if self.count==1:
+
             self.camera_thread_1.stop() 
             self.camera_thread_1.quit()
+            #self.camera_thread_1.wait()
 
         if self.count==2:
             self.camera_thread_2.stop() 
@@ -138,6 +154,7 @@ class CameraUi(QMainWindow):
         if self.count==3:
             self.camera_thread_3.stop() 
             self.camera_thread_3.quit()
+        
 
         t = threading.Thread(target=self.captureImageThread)
         t.start()
@@ -150,6 +167,7 @@ class CameraUi(QMainWindow):
         if self.count == 1:
             # pokreni stream
             self.camera_thread_2.start()
+
 
             dslr.renameImage("slika1")
             # resajzaj sliku
@@ -165,6 +183,7 @@ class CameraUi(QMainWindow):
             os.remove(sessionPath + "slika1.jpg")
             img1pixmap = QPixmap('res/session/slika1.jpg')
             self.cardSlot1.setPixmap(img1pixmap)
+
 
         elif self.count == 2:
             # pokreni stream
@@ -203,10 +222,19 @@ class CameraUi(QMainWindow):
             else:
                 self.listener.stop()
             self.napraviKarticu(eventId)
-            self.changeToPrintUi()
+
+            #prebacuje na ekran drugi
+            self.parent().setCurrentIndex(4)
         else:
             if self.mode == 'odbr':
+                
+        
                 self.movie.start()
+
+
+
+    
+
 
 
 
