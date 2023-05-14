@@ -1,44 +1,60 @@
-from PyQt5.QtWidgets import QMainWindow, QLabel
+from PyQt5.QtWidgets import QMainWindow, QLabel, QApplication
 from PyQt5 import uic, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap, QImage, QMovie
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QThread, pyqtSignal, Qt, pyqtSlot
+from PyQt5.QtCore import QUrl, QCoreApplication
 from PyQt5.QtMultimedia import QSoundEffect
-import json
-from PIL import Image, ImageOps, Image
+from PIL import Image, ImageOps
 import threading
 import cv2
-from pynput import keyboard
 from time import sleep
 from datetime import datetime
 from video_stream import VideoThread
 import dslr
 import shutil, os, signal
 import time
+import importlib
+import json
 
 
-sessionPath = "/home/djenka/GitHub/Denka_Photobooth/"
+class WorkerThread(QThread):
+    finished = pyqtSignal()  # Custom signal to indicate thread completion
 
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
 
-# ucitavanje config.jsona i metanje u varijable da se lakse koristi
-with open('config.json', 'r') as f:
-    # Load the contents of the file into a dictionary
-    config = json.load(f)
-    eventId = config['eventId']
-    tema = config['tema']
-    mode = config['mode']
+    def run(self):
+        # Access objects and data from the parent (MainWindow) class
+        # using self.parent
+        # Example: Accessing an object and calling its method
+        #self.parent.some_object.some_method()
+        self.parent.slikanje()
+        self.finished.emit()  # Emit the 'finished' signal when the work is done
 
-src_path = '/path/to/source/file.jpg'
-dest_path = '/path/to/destination/'
 
 class CameraUi(QMainWindow):
     def __init__(self):
         super(CameraUi, self).__init__()
-        uic.loadUi("res/ui/"+tema+"/camera.ui", self)
+
+        self.loaded_resources = False
+        self.count = 1
+        self.flag = 0
+
+        self.worker_thread = WorkerThread(parent=self)
+        self.worker_thread.finished.connect(self.threadFinished)
+
+        self.movie = QMovie(os.getcwd() + "/res/ui/5sec.gif")
+
+        self.camera_thread = VideoThread()
+        self.camera_thread.frameCaptured.connect(self.updateFrame)
+
+    def loadResources(self):
+
+        uic.loadUi(os.getcwd() + "/res/ui/"+self.tema+"/camera.ui", self)
 
         self.strip = self.findChild(QtWidgets.QLabel, 'strip')
-        stripPixmap = QPixmap(
-            'res/event/' + eventId + '/kartica.jpg')
+        stripPixmap = QPixmap(self.cardPath)
         self.strip.setPixmap(stripPixmap)
 
         self.cardSlot1 = self.findChild(QtWidgets.QLabel, 'img1')
@@ -46,195 +62,141 @@ class CameraUi(QMainWindow):
         self.cardSlot3 = self.findChild(QtWidgets.QLabel, 'img3')
         self.streamLabel = self.findChild(QtWidgets.QLabel, 'stream')
 
-        self.fullscreenlabel = self.findChild(QtWidgets.QLabel, 'fullscreenlabel')
-        gledajte = QPixmap("res/ui/denka/gledajteukameru.png")
-        self.fullscreenlabel.setPixmap(gledajte)
-        self.fullscreenlabel.hide()
-
-
         # camera sound effect
-        self.btn_sfx = QSoundEffect()
-        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/cam.wav'))
+        #self.btn_sfx = QSoundEffect()
+        #self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/cam.wav'))
 
         # Create a QLabel widget to display the transparent gif
         self.gif_label = QLabel(self)
         self.gif_label.setAlignment(Qt.AlignCenter)
         #self.gif_label.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.gif_label.setFixedSize(834, 790)
-
         self.gif_label.move(400, 200)
 
         # Create a QMovie object from the gif file
-        self.movie = QMovie("res/ui/5sec.gif")
+        
         self.gif_label.setMovie(self.movie)
+        self.movie.finished.connect(self.countdownFinished)
 
-        self.camera_thread_1 = VideoThread()
-        self.camera_thread_1.frameCaptured.connect(self.updateFrame)
+        gledaj = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/gledajteukameru.png")
+        self.fullscreenlabel.setPixmap(gledaj)
+        self.fullscreenlabel.setVisible(False)
+        QApplication.processEvents()
 
-        self.camera_thread_2 = VideoThread()
-        self.camera_thread_2.frameCaptured.connect(self.updateFrame)
 
-        self.camera_thread_3 = VideoThread()
-        self.camera_thread_3.frameCaptured.connect(self.updateFrame)
+    def loadFromJson(self):
+        # ucitavanje config.jsona i metanje u varijable da se lakse koristi
+        with open('config.json', 'r') as f:
+            # Load the contents of the file into a dictionary
+            config = json.load(f)
+            self.eventId = config['eventId']
+            self.tema = config['tema']
+            self.albumPath = config['albumPath']
+            self.eventAlbumPath = config['eventAlbumPath']
+            self.cardPath = config['cardPath']
+
 
     def updateFrame(self, pixmap):
         self.streamLabel.setPixmap(pixmap)
 
-    def napraviKarticu(self, eventId):
+    def napraviKarticu(self):
 
-        kartica = Image.open('res/event/'+eventId+'/kartica.jpg')
-        im1 = Image.open('res/session/slika1.jpg').resize((892, 596))
-        im2 = Image.open('res/session/slika2.jpg').resize((892, 596))
-        im3 = Image.open('res/session/slika3.jpg').resize((892, 596))
+        kartica = Image.open(self.cardPath)
+        im1 = Image.open(self.eventAlbumPath + "/slika1.jpg").resize((892, 596))
+        im2 = Image.open(self.eventAlbumPath + "/slika2.jpg").resize((892, 596))
+        im3 = Image.open(self.eventAlbumPath + "/slika3.jpg").resize((892, 596))
 
         kartica.paste(im1, (54, 253))
         kartica.paste(im2, (54, 915))
         kartica.paste(im3, (54, 1577))
 
-        kartica.save('res/session/gotovaKartica.jpg')
+        kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
     # kad se prikaze ekran
-    def showEvent(self, a0: QtGui.QShowEvent) -> None:
+    def showEvent(self, event):
 
-        #dslr.killGphoto2Process()
+        if not self.loaded_resources:
+            self.loadFromJson()
+            self.loadResources()
+            self.loaded_resources = True
+
+        self.count = 1
 
         # pokreni strim
-        self.camera_thread_1.start()
-        self.mode = mode
-        self.count = 1
+        self.camera_thread.start()
+        
         # resetiranje pixmapa
-        transPixmap = QPixmap("res/ui/"+tema+"/transparent.png")
+        transPixmap = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/transparent.png")
         self.cardSlot1.setPixmap(transPixmap)
         self.cardSlot2.setPixmap(transPixmap)
         self.cardSlot3.setPixmap(transPixmap)
-
-
-        if self.mode == "odbr":
-            self.movie.finished.connect(self.slikaj)
-            # Start the movie
-            self.movie.start()
-
-        else:
-            # ZA TASTATURU
-            def on_press(key):
-                if key.char == 'k':
-                    self.slikaj()
-            def listener_thread():
-                with keyboard.Listener(on_press=on_press) as self.listener:
-                    self.listener.join()
-            self.listener = threading.Thread(target=listener_thread)
-            self.listener.start()
-
+        # Start the movie
+        self.movie.start()
+        self.gif_label.show()
         # tu se tek pojavljuje ekran
-        return super().showEvent(a0)
+        return super().showEvent(event)
 
-    def captureImageThread(self):
+    def countdownFinished(self):
+        # pokazi gledaj u kameru sliku
+        self.fullscreenlabel.setVisible(True)
+        self.fullscreenlabel.raise_()
+        QApplication.processEvents()
+        self.worker_thread.start()
+
+    def threadFinished(self):
+        self.fullscreenlabel.setVisible(False)
+        QApplication.processEvents()
+        if self.flag == 1:
+            self.movie.start()
+        self.flag = 0
+        if self.count == 4:
+            self.parent().setCurrentIndex(3)
+        
+
+    def slikanje(self):
+        # zaustavi stream
+        self.camera_thread.stop()
+        # okini sliku
         dslr.captureImage()
 
-    def slikaj(self):
-        # Stop the camera capture thread
-        #self.camera_thread_1.stop()
-        #dslr.killStream()
-
-        print("ubio stream prije slikanja")
-        #dslr.killGphoto2Process()
-        
-
-
-        if self.count==1:
-
-            self.camera_thread_1.stop() 
-            self.camera_thread_1.quit()
-            #self.camera_thread_1.wait()
-
-        if self.count==2:
-            self.camera_thread_2.stop() 
-            self.camera_thread_2.quit()
-
-        if self.count==3:
-            self.camera_thread_3.stop() 
-            self.camera_thread_3.quit()
-        
-
-        t = threading.Thread(target=self.captureImageThread)
-        t.start()
-        t.join()
+        if self.count == 1 or self.count == 2:
+            self.camera_thread.start()
+            # indikator za sljedeci krug slikanja
+            self.flag = 1
 
         # timestamp
-        shot_time = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        shot_time = datetime.now().strftime("_%d-%m-%Y_%H:%M:%S")
 
-        # prikaz slike na karticu
+        # slika (1/2/3) zbog pozicioniranja na karticu
+        slika = "slika" + str(self.count)
+        # priprema slike za karticu
+        dslr.renameImage(slika)
+
+        shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
+
+        dslr.resizeImage(slika + ".jpg")
+        # premjestanje u mapu dogadaja
+        shutil.move(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + slika + ".jpg")
+        QCoreApplication.processEvents()
+        
         if self.count == 1:
-            # pokreni stream
-            self.camera_thread_2.start()
-
-
-            dslr.renameImage("slika1")
-            # resajzaj sliku
-            dslr.resizeImage("slika1.jpg")
-            # ne radi lodanje slike u label poslje slikanja
-            pixmap = QPixmap('slika1.jpg')
-            self.streamLabel.setPixmap(pixmap)
-            self.streamLabel.show()
-            new_filename = "slika1" + shot_time +".jpg"
-            shutil.copy("slika1.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika1.jpg", sessionPath + "res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
-            os.remove(sessionPath + "slika1.jpg")
-            img1pixmap = QPixmap('res/session/slika1.jpg')
+            img1pixmap = QPixmap(self.eventAlbumPath + slika + ".jpg")
             self.cardSlot1.setPixmap(img1pixmap)
-
-
-        elif self.count == 2:
-            # pokreni stream
-            self.camera_thread_3.start()
             
-            dslr.renameImage("slika2")
-            dslr.resizeImage("slika2.jpg")
-            new_filename = "slika2" + shot_time +".jpg"
-            shutil.copy("slika2.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika2.jpg", sessionPath + "res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
-            os.remove(sessionPath + "/slika2.jpg")
-            img1pixmap = QPixmap('res/session/slika2.jpg')
-            img2pixmap = QPixmap('res/session/slika2.jpg')
+        elif self.count == 2:
+            img2pixmap = QPixmap(self.eventAlbumPath + slika + ".jpg")
             self.cardSlot2.setPixmap(img2pixmap)
 
         elif self.count == 3:
-            dslr.renameImage("slika3")
-            dslr.resizeImage("slika3.jpg")
-            new_filename = "slika3" + shot_time +".jpg"
-            shutil.copy("slika3.jpg", new_filename)
-            shutil.copy2(sessionPath + "slika3.jpg", sessionPath + "res/session/")
-            shutil.move(sessionPath + new_filename, sessionPath +  "res/event/sia2904_session")
-            os.remove(sessionPath + "slika3.jpg")
-            img1pixmap = QPixmap('res/session/slika3.jpg')
-            img3pixmap = QPixmap('res/session/slika3.jpg')
+            img3pixmap = QPixmap(self.eventAlbumPath + slika + ".jpg")
             self.cardSlot3.setPixmap(img3pixmap)
+            # zavrsi slikanje, pravi karticu i prebac ekran
+            #self.movie.finished.disconnect(self.slikaj)
+            self.napraviKarticu()
 
-        
+
         # Increment count
         self.count += 1
-        # Nakon zadnje slike
-        if self.count > 3:
-            if self.mode == 'odbr':
-                self.movie.finished.disconnect(self.slikaj)
-            else:
-                self.listener.stop()
-            self.napraviKarticu(eventId)
 
-            #prebacuje na ekran drugi
-            self.parent().setCurrentIndex(4)
-        else:
-            if self.mode == 'odbr':
-                
         
-                self.movie.start()
-
-
-
-    
-
-
-
-
+        

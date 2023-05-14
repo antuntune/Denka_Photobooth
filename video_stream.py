@@ -15,18 +15,14 @@ class VideoThread(QThread):
         self.threadId = self.currentThreadId()
 
     def stop(self):
-
-        dslr.killStream()
-        #dslr.killGphoto2Process()
         self.stopped = True
+        dslr.killStream()
 
     def start(self):
-        dslr.killStream()
-        print("ubio stream na pocetku threada")
-        #dslr.killGphoto2Process()
-        cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video0"
+        cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -s 1024x680 -threads 1 -f v4l2 /dev/video0"
+        #cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv422p -threads 1 -f v4l2 /dev/video0"
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        time.sleep(3.2)
+        time.sleep(3)
         self.stopped = False
         super().start()
 
@@ -41,3 +37,5 @@ class VideoThread(QThread):
                 pixmap = QPixmap.fromImage(image)
                 self.frameCaptured.emit(pixmap)
             self.msleep(1)
+
+

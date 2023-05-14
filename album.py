@@ -1,19 +1,15 @@
 from PyQt5.QtWidgets import QMainWindow, QLabel, QButtonGroup, QRadioButton
 from PyQt5.QtGui import QPixmap, QShowEvent
 from PyQt5 import uic
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import QThread, pyqtSignal, Qt, pyqtSlot, QUrl
 from PyQt5.QtMultimedia import QSoundEffect
 import json
 import cloudinary
-import time
+import time, os
 from cloudinary.uploader import upload
+import importlib
 
-# ucitavanje config.jsona i metanje u varijable da se lakse koristi
-with open('config.json', 'r') as f:
-    # Load the contents of the file into a dictionary
-    config = json.load(f)
-eventId = config['eventId']
-tema = config['tema']
+
 
 cloudinary.config(
     cloud_name="dpuhwc49z",
@@ -23,19 +19,52 @@ cloudinary.config(
 )
 
 
+class TimeOutThread(QThread):
+    finished = pyqtSignal()  # Custom signal to indicate thread completion
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.parent = parent
+
+    def run(self):
+        time.sleep(25)
+        self.finished.emit()  # Emit the 'finished' signal when the work is done
+
+
 class AlbumUi(QMainWindow):
     def __init__(self):
         super(AlbumUi, self).__init__()
-        uic.loadUi("res/ui/"+tema+"/album.ui", self)
+
+        self.loaded_resources = False
+
+        self.timeout_thread = TimeOutThread(parent=self)
+        self.timeout_thread.finished.connect(self.timeoutThreadFinished)
+
+    def timeoutThreadFinished(self):
+        self.parent().setCurrentIndex(1)
+
+    def loadFromJson(self):
+        # ucitavanje config.jsona i metanje u varijable da se lakse koristi
+        with open('config.json', 'r') as f:
+            # Load the contents of the file into a dictionary
+            config = json.load(f)
+            self.eventId = config['eventId']
+            self.tema = config['tema']
+            self.albumPath = config['albumPath']
+            self.eventAlbumPath = config['eventAlbumPath']
+            self.cardPath = config['cardPath']
+
+    def loadResources(self):
+
+        uic.loadUi(os.getcwd() + "/res/ui/"+self.tema+"/album.ui", self)
 
         # qr kod
         self.qr = self.findChild(QLabel, 'qr')
-        qrPixmap = QPixmap(
-            'res/event/' + eventId + '/qr.png')
+        qrPixmap = QPixmap(self.albumPath + self.eventId + "/qr.png")
         self.qr.setPixmap(qrPixmap)
         # link
         self.link = self.findChild(QLabel, 'link')
-        self.link.setText("denka.live/"+eventId)
+        self.link.setText("denka.live/"+self.eventId)
         # slike
         self.img1 = self.findChild(QLabel, 'img1')
         self.img2 = self.findChild(QLabel, 'img2')
@@ -52,7 +81,7 @@ class AlbumUi(QMainWindow):
 
         # Button sound effect
         self.btn_sfx = QSoundEffect()
-        self.btn_sfx.setSource(QUrl.fromLocalFile('res/ui/btn.wav'))
+        self.btn_sfx.setSource(QUrl.fromLocalFile(os.getcwd() + '/res/ui/btn.wav'))
         self.pushButton.pressed.connect(self.btn_sfx.play)
 
         # button
@@ -61,12 +90,20 @@ class AlbumUi(QMainWindow):
 
     def showEvent(self, a0: QShowEvent) -> None:
 
-        img1pixmap = QPixmap('res/session/slika1.jpg')
-        img2pixmap = QPixmap('res/session/slika2.jpg')
-        img3pixmap = QPixmap('res/session/slika3.jpg')
+        if not self.loaded_resources:
+            self.loadFromJson()
+            self.loadResources()
+            self.loaded_resources = True
+
+
+        img1pixmap = QPixmap(self.eventAlbumPath + "slika1.jpg")
+        img2pixmap = QPixmap(self.eventAlbumPath + "slika2.jpg")
+        img3pixmap = QPixmap(self.eventAlbumPath + "slika3.jpg")
         self.img1.setPixmap(img1pixmap)
         self.img2.setPixmap(img2pixmap)
         self.img3.setPixmap(img3pixmap)
+
+        self.timeout_thread.start()
 
         return super().showEvent(a0)
 
@@ -79,7 +116,7 @@ class AlbumUi(QMainWindow):
         elif self.buttonGroup.checkedId() == -4:
             brojSlike = 3
 
-        self.uploadToAlbum(brojSlike, eventId)
+        self.uploadToAlbum(brojSlike, self.eventId)
 
         self.parent().setCurrentIndex(1)
 
@@ -87,5 +124,5 @@ class AlbumUi(QMainWindow):
         self.parent().setCurrentIndex(1)
 
     def uploadToAlbum(self, brojSlike, eventId):
-        upload("res/session/slika" + str(brojSlike) + ".jpg",
-               public_id="djenka/" + eventId + "/album/" + str(time.time()))
+        upload(self.eventAlbumPath + "slika" + str(brojSlike) + ".jpg",
+               public_id="djenka/" + self.eventId + "/album/" + str(time.time()))

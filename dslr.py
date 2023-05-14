@@ -8,7 +8,7 @@ import json
 import os
 from sh import gphoto2 as gp
 import subprocess
-from PIL import ImageOps, Image
+from PIL import Image
 
 
 # Load configuration from config.json
@@ -16,15 +16,6 @@ with open('config.json', 'r') as f:
     config = json.load(f)
     eventId = config['eventId']
     tema = config['tema']
-    mode = config['mode']
-
-capturetarget = ["--set-config", "capturetarget=1"]
-clearCommand = ["--folder", "/store_00010001/DCIM/100EOS5D", "-R", "--delete-all-files"]
-#triggerCommand = ["--debug", "--capture-image-and-download"]
-triggerCommand = ["--trigger-capture"]
-downloadCommand = ["--get-all-files"]
-autoFocusCommand = ["--set-config", "manualfocusdrive=1"]
-SDcard = ["--set-config", "capturetarget=1"]
 
 def renameImage(name):
     for filename in os.listdir("."):
@@ -34,34 +25,10 @@ def renameImage(name):
 
 
 def captureImage():
-    #killStream()
-    #killGphoto2Process()
-    #sleep(1)
-    cmd = "gphoto2 --set-config autofocusdrive=1; gphoto2 --capture-image-and-download "
+    cmd = "gphoto2 --set-config autofocusdrive=0; sleep 0.3; gphoto2 --capture-image-and-download"
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     # Wait for the command to finish and get the return code
     return_code = process.wait()
-
-
-
-def killGphoto2Process():
-    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
-    out, err = p.communicate()
-    for line in out.splitlines():     
-        if b'gphoto' in line:
-                # Kill the process!
-            pid = int (line.split(None,1) [0] )
-            os.kill (pid, signal.SIGKILL)
-            print("ubio gphoto2")
-
-    #p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
-    #out, err = p.communicate()
-    #for line in out.splitlines():     
-    #    if b'gvfsd-gphoto2' in line:
-    #            # Kill tte process!
-    #        pid = int (line.split(None,1) [0] )
-    #        os.kill (pid, signal.SIGKILL)
-    #        print("ubio gvadsfasd")
 
 
 def killStream():
@@ -73,12 +40,20 @@ def killStream():
             pid = int (line.split(None,1) [0] )
             os.kill (pid, signal.SIGKILL)
 
+    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    for line in out.splitlines():     
+        if b'gvfs-gphoto2-volume-monitor' in line:
+                # Kill the process!
+            pid = int (line.split(None,1) [0] )
+            os.kill (pid, signal.SIGKILL)
+
 
 def resizeImage(name):
-    # read an image from file
-    img = Image.open(name)
-    # define the desired output size
+    # New image size
     new_size = (1500, 1000)
-    resized_img = ImageOps.fit(img, new_size, method=Image.BILINEAR)
-    resized_img.save(name)
-
+    # Open image
+    image = Image.open(name)
+    # resize with Lanczos method
+    resized_image = image.resize(new_size, resample = Image.LANCZOS)
+    resized_image.save(name)
