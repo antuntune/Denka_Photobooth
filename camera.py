@@ -106,9 +106,9 @@ class CameraUi(QMainWindow):
         im2 = Image.open(self.eventAlbumPath + "/slika2.jpg").resize((892, 596))
         im3 = Image.open(self.eventAlbumPath + "/slika3.jpg").resize((892, 596))
 
-        kartica.paste(im1, (54, 253))
-        kartica.paste(im2, (54, 915))
-        kartica.paste(im3, (54, 1577))
+        kartica.paste(im1, (54, 217))
+        kartica.paste(im2, (54, 879))
+        kartica.paste(im3, (54, 1541))
 
         kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
