@@ -52,6 +52,24 @@
      <string>START BJUTN</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="promotivnaButton">
+    <property name="geometry">
+     <rect>
+      <x>1370</x>
+      <y>190</y>
+      <width>401</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Printaj 4 promotivne</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

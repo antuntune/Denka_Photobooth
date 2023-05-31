@@ -69,6 +69,9 @@ class PrintUi(QMainWindow):
         self.pushButton.clicked.connect(self.printPressed)
         self.skipButton.clicked.connect(self.skipPressed)
 
+
+        
+
     def loadFromJson(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
         with open('config.json', 'r') as f:
@@ -121,7 +124,7 @@ class PrintUi(QMainWindow):
 
     def printaj(self, kolKartica):
         self.skipButtonPressed = True
-        
+
         im1 = Image.open(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
         def get_concat_h(im1):

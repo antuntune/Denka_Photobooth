@@ -5,6 +5,19 @@ import json
 import subprocess
 import os
 import shutil
+from PIL import Image
+import cups
+
+
+
+# spajanje na cups
+conn = cups.Connection()
+printers = conn.getPrinters()
+# printers is a dictionary containing information about all the printers available
+
+emptyDict = {}
+AvailablePrinters = list(printers.keys())
+PrinterUsing = AvailablePrinters[0]
 
 
 
@@ -20,6 +33,26 @@ class ConfigUi(QMainWindow):
         self.combobox.setCurrentIndex(0)
         self.combobox.currentIndexChanged.connect(self.onComboBoxIndexChanged)
         self.pushButton.clicked.connect(self.buttonPressed)
+
+        self.promotivnaButton.clicked.connect(self.printajPromotivne)
+
+    def printajPromotivne(self):
+
+        im1 = Image.open("promotivna.jpg")
+
+        def get_concat_h(im1):
+            dst = Image.new('RGB', (im1.width + im1.width + 35, im1.height))
+            dst.paste(im1, (35, 0))
+            dst.paste(im1, (im1.width + 35, 0))
+            return dst
+
+        get_concat_h(im1).save("promotivnaFinished.jpg")
+
+        conn.printFile(
+            PrinterUsing, "promotivnaFinished.jpg", "title", emptyDict)
+        conn.printFile(
+            PrinterUsing, "promotivnaFinished.jpg", "title", emptyDict)
+
 
   
 
