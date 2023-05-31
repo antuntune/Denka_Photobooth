@@ -36,12 +36,14 @@ class AlbumUi(QMainWindow):
         super(AlbumUi, self).__init__()
 
         self.loaded_resources = False
+        self.skipButtonPressed = False
 
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
     def timeoutThreadFinished(self):
-        self.parent().setCurrentIndex(1)
+        if self.skipButtonPressed == False:
+            self.parent().setCurrentIndex(1)
 
     def loadFromJson(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -95,6 +97,7 @@ class AlbumUi(QMainWindow):
             self.loadResources()
             self.loaded_resources = True
 
+        self.skipButtonPressed = False
 
         img1pixmap = QPixmap(self.eventAlbumPath + "slika1.jpg")
         img2pixmap = QPixmap(self.eventAlbumPath + "slika2.jpg")
@@ -118,9 +121,12 @@ class AlbumUi(QMainWindow):
 
         self.uploadToAlbum(brojSlike, self.eventId)
 
+        self.skipButtonPressed = True
+
         self.parent().setCurrentIndex(1)
 
     def skipPressed(self):
+        self.skipButtonPressed = True
         self.parent().setCurrentIndex(1)
 
     def uploadToAlbum(self, brojSlike, eventId):

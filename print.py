@@ -114,11 +114,14 @@ class PrintUi(QMainWindow):
 
         self.parent().setCurrentIndex(4)
 
+
     def skipPressed(self):
         self.skipButtonPressed = True
         self.parent().setCurrentIndex(4)
 
     def printaj(self, kolKartica):
+        self.skipButtonPressed = True
+        
         im1 = Image.open(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
         def get_concat_h(im1):
