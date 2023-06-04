@@ -8,6 +8,7 @@ import cloudinary
 import time, os
 from cloudinary.uploader import upload
 import importlib
+import threading
 
 
 
@@ -37,6 +38,11 @@ class AlbumUi(QMainWindow):
 
         self.loaded_resources = False
         self.skipButtonPressed = False
+
+        self.brojSlike = 1
+        self.eventId = ""
+
+        self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
 
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
@@ -113,13 +119,16 @@ class AlbumUi(QMainWindow):
     def sharePressed(self):
         # provjerava koji je radiobutton ukljucen
         if self.buttonGroup.checkedId() == -2:
-            brojSlike = 1
+            self.brojSlike = 1
         elif self.buttonGroup.checkedId() == -3:
-            brojSlike = 2
+            self.brojSlike = 2
         elif self.buttonGroup.checkedId() == -4:
-            brojSlike = 3
+            self.brojSlike = 3
 
-        self.uploadToAlbum(brojSlike, self.eventId)
+        
+        self.uploadThread.start()
+
+        #self.uploadToAlbum(brojSlike, self.eventId)
 
         self.skipButtonPressed = True
 
@@ -132,3 +141,5 @@ class AlbumUi(QMainWindow):
     def uploadToAlbum(self, brojSlike, eventId):
         upload(self.eventAlbumPath + "slika" + str(brojSlike) + ".jpg",
                public_id="djenka/" + self.eventId + "/album/" + str(time.time()))
+
+
