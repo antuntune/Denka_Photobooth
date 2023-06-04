@@ -25,7 +25,8 @@ def renameImage(name):
 
 
 def captureImage():
-    cmd = "gphoto2 --set-config autofocusdrive=0; sleep 0.3; gphoto2 --capture-image-and-download"
+    sleep(0.5)
+    cmd = "gphoto2 --capture-image-and-download"
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
     # Wait for the command to finish and get the return code
     return_code = process.wait()
@@ -40,13 +41,7 @@ def killStream():
             pid = int (line.split(None,1) [0] )
             os.kill (pid, signal.SIGKILL)
 
-    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
-    out, err = p.communicate()
-    for line in out.splitlines():     
-        if b'gvfs-gphoto2-volume-monitor' in line:
-                # Kill the process!
-            pid = int (line.split(None,1) [0] )
-            os.kill (pid, signal.SIGKILL)
+
 
 
 def resizeImage(name):
