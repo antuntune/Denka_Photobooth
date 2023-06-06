@@ -51,4 +51,4 @@ def resizeImage(name):
     image = Image.open(name)
     # resize with Lanczos method
     resized_image = image.resize(new_size, resample = Image.LANCZOS)
-    resized_image.save(name)
+    resized_image.save(name, quality=96)
