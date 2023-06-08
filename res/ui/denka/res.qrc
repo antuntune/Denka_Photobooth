@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>unchecked.png</file>
     <file>gledajteukameru.png</file>
     <file>camera_bg.png</file>
     <file>imgPlaceholder.jpg</file>
