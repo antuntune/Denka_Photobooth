@@ -126,9 +126,9 @@ class AlbumUi(QMainWindow):
             self.brojSlike = 3
 
         
-        self.uploadThread.start()
+        #self.uploadThread.start()
 
-        #self.uploadToAlbum(brojSlike, self.eventId)
+        self.uploadToAlbum(brojSlike, self.eventId)
 
         self.skipButtonPressed = True
 
