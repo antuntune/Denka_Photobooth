@@ -54,7 +54,7 @@ QRadioButton::indicator
 }
 QRadioButton::indicator::unchecked
 {
-	image: url(:/newPrefix/transparent.png);
+	image: url(:/newPrefix/print_radio_unchecked.png);
 }
 
 QRadioButton::indicator::checked 
@@ -97,7 +97,7 @@ QRadioButton::indicator
 }
 QRadioButton::indicator::unchecked
 {
-	image: url(:/newPrefix/transparent.png);
+	image: url(:/newPrefix/print_radio_unchecked.png);
 }
 
 QRadioButton::indicator::checked 

@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>print_radio_unchecked.png</file>
     <file>unchecked.png</file>
     <file>gledajteukameru.png</file>
     <file>camera_bg.png</file>
