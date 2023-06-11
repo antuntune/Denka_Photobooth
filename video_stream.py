@@ -22,7 +22,7 @@ class VideoThread(QThread):
         cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -s 1024x680 -threads 1 -f v4l2 /dev/video0"
         #cmd = "gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv422p -threads 1 -f v4l2 /dev/video0"
         process = subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True)
-        time.sleep(3)
+        #time.sleep(0.5)
         self.stopped = False
         super().start()
 

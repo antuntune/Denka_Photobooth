@@ -60,12 +60,16 @@ class SplashUi(QMainWindow):
             self.btn_sfx.setSource(QUrl.fromLocalFile(os.getcwd() + '/res/ui/btn.wav'))
             self.pushButton.pressed.connect(self.btn_sfx.play)
             self.pushButton.clicked.connect(self.buttonPressed)
-
             self.load_thread.start()
             self.loaded_resources = True
 
+        self.pushButton.show()
+        QApplication.processEvents()
         return super().showEvent(event)
         
 
     def buttonPressed(self):
+
+        self.pushButton.hide()
+        QApplication.processEvents()
         self.parent().setCurrentIndex(2)

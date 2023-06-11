@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QComboBox
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox
 from PyQt5 import uic
 import qrcode
 import json
@@ -33,8 +33,76 @@ class ConfigUi(QMainWindow):
         self.combobox.setCurrentIndex(0)
         self.combobox.currentIndexChanged.connect(self.onComboBoxIndexChanged)
         self.pushButton.clicked.connect(self.buttonPressed)
+        self.karticaButton.clicked.connect(self.odaberiKarticu)
+        self.albumButton.clicked.connect(self.lokacijaAlbuma)
+        self.deleteID.clicked.connect(self.deleteWarning)
+        self.addID.clicked.connect(self.addWarning)
 
+        self.albumLabel.setWordWrap(True)
         self.promotivnaButton.clicked.connect(self.printajPromotivne)
+    
+    
+    def deleteWarning(self):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setWindowTitle("Upozorenje!")
+        msg_box.setText("Jeste li sigurni da želite obrisati eventID: " + self.eventId)
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+
+        button_clicked = msg_box.exec_()
+        if button_clicked == QMessageBox.Ok:
+            self.eventId_.remove(self.eventId)
+            self.combobox.clear()
+            self.combobox.addItems(self.eventId_)
+            print("Change confirmed.")
+        else:
+            print("Change canceled.")
+
+    def addWarning(self):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setWindowTitle("Upozorenje!")
+        msg_box.setText("Jeste li sigurni da želite dodati eventID: " + self.eventId)
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+
+        button_clicked = msg_box.exec_()
+        if button_clicked == QMessageBox.Ok:
+            newEventID = self.inputID.text()
+            self.inputID.clear()
+            self.eventId_.append(newEventID)
+            self.combobox.clear()
+            self.combobox.addItems(self.eventId_)
+            print("Change confirmed.")
+        else:
+            print("Change canceled.")
+
+
+    # kad se prikaze ekran
+    def showEvent(self, event):
+
+        self.initJsonVar()
+        self.albumLabel.setText(self.albumPath)
+        card_name = os.path.basename(self.cardPath)
+        self.cardLabel.setText(card_name)
+        self.cardLabel.setText(card_name)
+
+        return super().showEvent(event)
+
+    def lokacijaAlbuma(self):
+        file_dialog = QFileDialog()
+        folder_path = file_dialog.getExistingDirectory(self, 'Select Folder')
+        self.albumPath = folder_path
+        self.albumPath = self.albumPath + "/" + "Albumi dogadaja/"
+        self.albumLabel.setText(self.albumPath)
+        
+
+    def odaberiKarticu(self):
+        file_dialog = QFileDialog()
+        kartica_path, _ = file_dialog.getOpenFileName(self, 'Select File')
+        self.cardPath = kartica_path
+        if self.cardPath:
+            card_name = os.path.basename(self.cardPath)
+            self.cardLabel.setText(card_name)
 
     def printajPromotivne(self):
 
@@ -66,7 +134,10 @@ class ConfigUi(QMainWindow):
 
         self.eventId = self.eventId_[0]
         self.tema = self.tema_[0]
-        self.albumPath = os.path.expanduser("~") + "/EventAlbums/"
+        self.EventAlbumPath = config['eventAlbumPath']
+        self.albumPath = config['eventAlbumPath']
+        self.albumPath = config['albumPath']
+        self.cardPath = config['cardPath']
 
     def onComboBoxIndexChanged(self, index):
         # update selected event to variable
@@ -74,7 +145,7 @@ class ConfigUi(QMainWindow):
 
     def loadJson(self):
         self.eventAlbumPath = self.albumPath + self.eventId + "/"
-        self.cardPath = self.eventAlbumPath + "/" + self.eventId + ".jpg"
+        #self.cardPath = self.eventAlbumPath + "/" + self.eventId + ".jpg"
         # Create a dictionary with the specific key-value pair
         data = {
             "eventId_": self.eventId_,
@@ -127,4 +198,5 @@ class ConfigUi(QMainWindow):
 
     def copyEventCard(self):
         # kopiraj karticu dogadaja u mapu dogadaja
-        shutil.copy2(os.getcwd() +"/res/cardPool/" + self.eventId + ".jpg", self.albumPath + self.eventId)
+        #shutil.copy2(os.getcwd() +"/res/cardPool/" + self.eventId + ".jpg", self.albumPath + self.eventId)
+        shutil.copy2(self.cardPath, self.albumPath + self.eventId)

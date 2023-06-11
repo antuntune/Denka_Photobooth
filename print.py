@@ -115,12 +115,12 @@ class PrintUi(QMainWindow):
 
         self.printaj(kolKartica)
 
-        self.parent().setCurrentIndex(4)
+        self.parent().setCurrentIndex(1)
 
 
     def skipPressed(self):
         self.skipButtonPressed = True
-        self.parent().setCurrentIndex(4)
+        self.parent().setCurrentIndex(1)
 
     def printaj(self, kolKartica):
         self.skipButtonPressed = True

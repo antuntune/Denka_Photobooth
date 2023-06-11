@@ -46,8 +46,11 @@ class CameraUi(QMainWindow):
 
         self.movie = QMovie(os.getcwd() + "/res/ui/5sec.gif")
 
+        self.videoLoading = QMovie(os.getcwd() + "/res/ui/videoLoading.gif")
+
         self.camera_thread = VideoThread()
         self.camera_thread.frameCaptured.connect(self.updateFrame)
+
 
     def loadResources(self):
 
@@ -78,6 +81,9 @@ class CameraUi(QMainWindow):
         self.gif_label.setMovie(self.movie)
         self.movie.finished.connect(self.countdownFinished)
 
+        self.videoLabel.setMovie(self.videoLoading)
+        
+
         gledaj = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/gledajteukameru.png")
         self.fullscreenlabel.setPixmap(gledaj)
         self.fullscreenlabel.setVisible(False)
@@ -94,7 +100,15 @@ class CameraUi(QMainWindow):
             self.albumPath = config['albumPath']
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
+        print(self.cardPath, "   u camera.py")
 
+    def showStream(self):
+        self.videoLabel.hide()
+        self.gif_label.show()
+        self.gif_label.raise_()
+        self.camera_thread.run()
+        QApplication.processEvents()
+        
 
     def updateFrame(self, pixmap):
         self.streamLabel.setPixmap(pixmap)
@@ -115,15 +129,23 @@ class CameraUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, event):
 
+
         if not self.loaded_resources:
             self.loadFromJson()
             self.loadResources()
             self.loaded_resources = True
 
+        self.videoLabel.show()
+        self.videoLoading.start()
+        QApplication.processEvents()
+
         self.count = 1
 
         # pokreni strim
         self.camera_thread.start()
+
+        self.loadingThread = threading.Timer(3, self.showStream)
+        self.loadingThread.start()
         
         # resetiranje pixmapa
         transPixmap = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/transparent.png")
@@ -132,7 +154,7 @@ class CameraUi(QMainWindow):
         self.cardSlot3.setPixmap(transPixmap)
         # Start the movie
         self.movie.start()
-        self.gif_label.show()
+        self.gif_label.hide()
         # tu se tek pojavljuje ekran
         return super().showEvent(event)
 
@@ -148,6 +170,7 @@ class CameraUi(QMainWindow):
         QApplication.processEvents()
         if self.flag == 1:
             self.movie.start()
+            self.gif_label.hide()
         self.flag = 0
         if self.count == 4:
             self.parent().setCurrentIndex(3)
@@ -161,6 +184,12 @@ class CameraUi(QMainWindow):
 
         if self.count == 1 or self.count == 2:
             self.camera_thread.start()
+            self.loadingThread1 = threading.Timer(3, self.showStream)
+            self.loadingThread1.start()
+            self.videoLabel.show()
+            self.videoLoading.start()
+            QApplication.processEvents()
+
             # indikator za sljedeci krug slikanja
             self.flag = 1
 

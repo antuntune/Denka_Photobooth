@@ -126,17 +126,17 @@ class AlbumUi(QMainWindow):
             self.brojSlike = 3
 
         
-        #self.uploadThread.start()
+        self.uploadThread.start()
 
-        self.uploadToAlbum(brojSlike, self.eventId)
+        #self.uploadToAlbum(self.brojSlike, self.eventId)
 
         self.skipButtonPressed = True
 
-        self.parent().setCurrentIndex(1)
+        self.parent().setCurrentIndex(4)
 
     def skipPressed(self):
         self.skipButtonPressed = True
-        self.parent().setCurrentIndex(1)
+        self.parent().setCurrentIndex(4)
 
     def uploadToAlbum(self, brojSlike, eventId):
         upload(self.eventAlbumPath + "slika" + str(brojSlike) + ".jpg",

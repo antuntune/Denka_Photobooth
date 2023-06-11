@@ -26,14 +26,13 @@ splashUi = SplashUi()
 widget.addWidget(splashUi)
 
 cameraUi = CameraUi()
-
 widget.addWidget(cameraUi)
-
-printUi = PrintUi()
-widget.addWidget(printUi)
 
 albumUi = AlbumUi()
 widget.addWidget(albumUi)
+
+printUi = PrintUi()
+widget.addWidget(printUi)
 
 
 
