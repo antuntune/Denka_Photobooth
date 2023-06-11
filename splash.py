@@ -25,7 +25,7 @@ class LoadingThread(QThread):
         self.parent.qr.show()
         # link
         self.parent.link = self.parent.findChild(QLabel, 'link')
-        self.parent.link.setText("denka.live/"+self.parent.eventId)
+        self.parent.link.setText("www.denka.live/"+self.parent.eventId)
         self.parent.link.show()
         QApplication.processEvents()
         #self.finished.emit()  # Emit the 'finished' signal when the work is done

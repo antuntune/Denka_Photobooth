@@ -142,6 +142,10 @@ class ConfigUi(QMainWindow):
     def onComboBoxIndexChanged(self, index):
         # update selected event to variable
         self.eventId = self.combobox.currentText()
+        index = self.eventId_.index(self.eventId)
+        element = self.eventId_.pop(index)  # Remove the element from its original position
+        self.eventId_.insert(0, element)  # Insert the element at the beginning of the array
+        print(" index eventaid : ", index)
 
     def loadJson(self):
         self.eventAlbumPath = self.albumPath + self.eventId + "/"

@@ -42,8 +42,6 @@ class AlbumUi(QMainWindow):
         self.brojSlike = 1
         self.eventId = ""
 
-        self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
-
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
@@ -125,7 +123,7 @@ class AlbumUi(QMainWindow):
         elif self.buttonGroup.checkedId() == -4:
             self.brojSlike = 3
 
-        
+        self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
         self.uploadThread.start()
 
         #self.uploadToAlbum(self.brojSlike, self.eventId)
