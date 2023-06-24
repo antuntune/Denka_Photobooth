@@ -4,3 +4,4 @@ pycups==2.0.1
 pymongo==4.3.3
 PyQt5==5.15.6
 PyQt5-sip==12.9.1
+sh-2.0.4

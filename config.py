@@ -27,6 +27,7 @@ class ConfigUi(QMainWindow):
 
         super(ConfigUi, self).__init__()
         uic.loadUi("res/ui/config.ui", self)
+
         self.initJsonVar()
         self.combobox = self.findChild(QComboBox, 'comboBox')
         self.combobox.addItems(self.eventId_)
@@ -40,8 +41,15 @@ class ConfigUi(QMainWindow):
 
         self.albumLabel.setWordWrap(True)
         self.promotivnaButton.clicked.connect(self.printajPromotivne)
+
+        self.brightSlider.valueChanged.connect(self.changeBright)
+        self.brightSlider.setValue(int(self.cardBright))
+        self.brightLabel.setText(self.cardBright)
     
-    
+    def changeBright(self, value):
+        self.cardBright = str(value)
+        self.brightLabel.setText(self.cardBright)
+
     def deleteWarning(self):
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Warning)
@@ -80,7 +88,7 @@ class ConfigUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, event):
 
-        self.initJsonVar()
+        #self.initJsonVar()
         self.albumLabel.setText(self.albumPath)
         card_name = os.path.basename(self.cardPath)
         self.cardLabel.setText(card_name)
@@ -122,7 +130,6 @@ class ConfigUi(QMainWindow):
             PrinterUsing, "promotivnaFinished.jpg", "title", emptyDict)
 
 
-  
 
     def initJsonVar(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -135,9 +142,10 @@ class ConfigUi(QMainWindow):
         self.eventId = self.eventId_[0]
         self.tema = self.tema_[0]
         self.EventAlbumPath = config['eventAlbumPath']
-        self.albumPath = config['eventAlbumPath']
         self.albumPath = config['albumPath']
         self.cardPath = config['cardPath']
+        self.cardBright = config['cardBright']
+
 
     def onComboBoxIndexChanged(self, index):
         # update selected event to variable
@@ -158,7 +166,8 @@ class ConfigUi(QMainWindow):
             "tema": self.tema,
             "albumPath": self.albumPath,
             "eventAlbumPath": self.eventAlbumPath,
-            "cardPath": self.cardPath
+            "cardPath": self.cardPath,
+            "cardBright": self.cardBright
         }
 
         # Write data to the JSON file

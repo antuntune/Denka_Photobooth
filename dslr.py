@@ -41,7 +41,21 @@ def killStream():
             pid = int (line.split(None,1) [0] )
             os.kill (pid, signal.SIGKILL)
 
+    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    for line in out.splitlines():     
+        if b'gvfs-gphoto2-volume-monitor' in line:
+                # Kill the process!
+            pid = int (line.split(None,1) [0] )
+            os.kill (pid, signal.SIGKILL)
 
+    p = subprocess.Popen([ 'ps', '-A'], stdout=subprocess.PIPE)
+    out, err = p.communicate()
+    for line in out.splitlines():     
+        if b'gvfsd-gphoto2' in line:
+                # Kill the process!
+            pid = int (line.split(None,1) [0] )
+            os.kill (pid, signal.SIGKILL)
 
 
 def resizeImage(name):
@@ -49,6 +63,8 @@ def resizeImage(name):
     new_size = (1500, 1000)
     # Open image
     image = Image.open(name)
+    # Get image info
+    exif = image.info['exif']
     # resize with Lanczos method
     resized_image = image.resize(new_size, resample = Image.LANCZOS)
-    resized_image.save(name, quality=96)
+    resized_image.save(name, quality=96, exif=exif)

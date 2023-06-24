@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap, QImage, QMovie
 from PyQt5.QtCore import QThread, pyqtSignal, Qt, pyqtSlot
 from PyQt5.QtCore import QUrl, QCoreApplication
 from PyQt5.QtMultimedia import QSoundEffect
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageEnhance
 import threading
 import cv2
 from time import sleep
@@ -100,7 +100,7 @@ class CameraUi(QMainWindow):
             self.albumPath = config['albumPath']
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
-        print(self.cardPath, "   u camera.py")
+            self.cardBright = config['cardBright']
 
     def showStream(self):
         self.videoLabel.hide()
@@ -124,7 +124,11 @@ class CameraUi(QMainWindow):
         kartica.paste(im2, (54, 879))
         kartica.paste(im3, (54, 1541))
 
-        kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
+        # Promijeni svijetlinu kartice
+        enhancer = ImageEnhance.Brightness(kartica)
+        kartica = enhancer.enhance(int(self.cardBright)/100)
+
+        kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)
 
     # kad se prikaze ekran
     def showEvent(self, event):
