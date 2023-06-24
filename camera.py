@@ -126,9 +126,7 @@ class CameraUi(QMainWindow):
 
         # Promijeni svijetlinu kartice
         enhancer = ImageEnhance.Brightness(kartica)
-
         kartica = enhancer.enhance(int(self.cardBright)/100)
-        # spremi sliku
         kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)
 
     # kad se prikaze ekran
