@@ -10,6 +10,7 @@ from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
 from album import AlbumUi
+from whatsapp import WhatsAppUi
 import res
 
 
@@ -30,6 +31,9 @@ widget.addWidget(cameraUi)
 
 albumUi = AlbumUi()
 widget.addWidget(albumUi)
+
+whatsappUi = WhatsAppUi()
+widget.addWidget(whatsappUi)
 
 printUi = PrintUi()
 widget.addWidget(printUi)

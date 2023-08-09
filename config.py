@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox, QCheckBox
 from PyQt5 import uic
 import qrcode
 import json
@@ -45,7 +45,35 @@ class ConfigUi(QMainWindow):
         self.brightSlider.valueChanged.connect(self.changeBright)
         self.brightSlider.setValue(int(self.cardBright))
         self.brightLabel.setText(self.cardBright)
-    
+
+        # Connect checkboxes to a slot
+        self.ArduinoCheckBox.stateChanged.connect(self.arduinocheckbox_changed)
+        if self.arduinoStatus == "1":
+            self.ArduinoCheckBox.setChecked(True)
+
+        self.WhatsAppCheckBox.stateChanged.connect(self.whatsappcheckbox_changed)
+        if self.whatsapp == "1":
+            self.WhatsAppCheckBox.setChecked(True)
+
+    def arduinocheckbox_changed(self, state):
+        sender = self.sender()
+
+        if sender.isChecked():
+            self.arduinoStatus = "1"
+        else:
+            self.arduinoStatus = "0"
+
+    def whatsappcheckbox_changed(self, state):
+        sender = self.sender()
+
+        if sender.isChecked():
+            self.whatsapp = "1"
+        else:
+            self.whatsapp = "0"
+
+
+
+
     def changeBright(self, value):
         self.cardBright = str(value)
         self.brightLabel.setText(self.cardBright)
@@ -145,6 +173,8 @@ class ConfigUi(QMainWindow):
         self.albumPath = config['albumPath']
         self.cardPath = config['cardPath']
         self.cardBright = config['cardBright']
+        self.arduinoStatus = config['Arduino']
+        self.whatsapp = config['WhatsApp']
 
 
     def onComboBoxIndexChanged(self, index):
@@ -167,7 +197,9 @@ class ConfigUi(QMainWindow):
             "albumPath": self.albumPath,
             "eventAlbumPath": self.eventAlbumPath,
             "cardPath": self.cardPath,
-            "cardBright": self.cardBright
+            "cardBright": self.cardBright,
+            "Arduino": self.arduinoStatus,
+            "WhatsApp": self.whatsapp
         }
 
         # Write data to the JSON file

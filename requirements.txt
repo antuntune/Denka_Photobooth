@@ -6,6 +6,7 @@ pip install gphoto2
 pip install cloudinary
 
 
-
 sudo apt-get install gphoto2
 sudo apt-get install libxcb-xinerama0
+sudo apt install v4l-utils
+sudo apt install ffmpeg

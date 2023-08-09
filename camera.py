@@ -16,6 +16,8 @@ import time
 import importlib
 import json
 
+from arduino_eye import ArduinoController
+
 
 class WorkerThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
@@ -36,6 +38,8 @@ class WorkerThread(QThread):
 class CameraUi(QMainWindow):
     def __init__(self):
         super(CameraUi, self).__init__()
+
+        self.arduino = ArduinoController()
 
         self.loaded_resources = False
         self.count = 1
@@ -101,6 +105,7 @@ class CameraUi(QMainWindow):
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
             self.cardBright = config['cardBright']
+            self.arduinoStatus = config['Arduino']
 
     def showStream(self):
         self.videoLabel.hide()
@@ -128,16 +133,23 @@ class CameraUi(QMainWindow):
         enhancer = ImageEnhance.Brightness(kartica)
         kartica = enhancer.enhance(int(self.cardBright)/100)
 
+        # Šarpirag ga malo
+        enhancer = ImageEnhance.Sharpness(kartica)
+        kartica = enhancer.enhance(10.0)
+
+
         kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)
 
     # kad se prikaze ekran
     def showEvent(self, event):
 
-
         if not self.loaded_resources:
             self.loadFromJson()
             self.loadResources()
             self.loaded_resources = True
+
+        if self.arduinoStatus == "1":
+            self.arduino.send_command_off()
 
         self.videoLabel.show()
         self.videoLoading.start()
@@ -170,6 +182,9 @@ class CameraUi(QMainWindow):
         self.worker_thread.start()
 
     def threadFinished(self):
+        if self.arduinoStatus == "1":
+            self.arduino.send_command_off()
+
         self.fullscreenlabel.setVisible(False)
         QApplication.processEvents()
         if self.flag == 1:
@@ -181,6 +196,8 @@ class CameraUi(QMainWindow):
         
 
     def slikanje(self):
+        if self.arduinoStatus == "1":
+            self.arduino.send_command_on()
         # zaustavi stream
         self.camera_thread.stop()
         # okini sliku
@@ -226,6 +243,9 @@ class CameraUi(QMainWindow):
             # zavrsi slikanje, pravi karticu i prebac ekran
             #self.movie.finished.disconnect(self.slikaj)
             self.napraviKarticu()
+
+            if self.arduinoStatus == "1":
+                self.arduino.send_command_idle()
 
 
         # Increment count

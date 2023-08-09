@@ -22,6 +22,11 @@
     <height>1080</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>15</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -302,6 +307,42 @@
     </property>
     <property name="text">
      <string>SVJETLINA KARTICE</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="ArduinoCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>690</y>
+      <width>171</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Arduino</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="WhatsAppCheckBox">
+    <property name="geometry">
+     <rect>
+      <x>110</x>
+      <y>780</y>
+      <width>191</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>WhatsApp</string>
     </property>
    </widget>
   </widget>

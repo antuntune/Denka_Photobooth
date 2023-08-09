@@ -27,7 +27,7 @@ class TimeOutThread(QThread):
         self.parent = parent
 
     def run(self):
-        time.sleep(25)
+        time.sleep(60)  # Timeout for splash screen
         self.finished.emit()  # Emit the 'finished' signal when the work is done
 
 
@@ -133,7 +133,7 @@ class PrintUi(QMainWindow):
             dst.paste(im1, (im1.width + 35, 0))
             return dst
 
-        get_concat_h(im1).save(self.eventAlbumPath + self.eventId + "double" + ".jpg")
+        get_concat_h(im1).save(self.eventAlbumPath + self.eventId + "double" + ".jpg", quality=96)
 
         conn.printFile(
             PrinterUsing, self.eventAlbumPath + self.eventId + "double" + ".jpg", "title", emptyDict)

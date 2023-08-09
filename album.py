@@ -28,7 +28,7 @@ class TimeOutThread(QThread):
         self.parent = parent
 
     def run(self):
-        time.sleep(25)
+        time.sleep(60)  # Timeout for splash screen
         self.finished.emit()  # Emit the 'finished' signal when the work is done
 
 
@@ -59,6 +59,7 @@ class AlbumUi(QMainWindow):
             self.albumPath = config['albumPath']
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
+            self.whatsapp = config['WhatsApp']
 
     def loadResources(self):
 
@@ -130,11 +131,17 @@ class AlbumUi(QMainWindow):
 
         self.skipButtonPressed = True
 
-        self.parent().setCurrentIndex(4)
+        if self.whatsapp == "1":
+            self.parent().setCurrentIndex(4)
+        else:
+            self.parent().setCurrentIndex(5)
 
     def skipPressed(self):
         self.skipButtonPressed = True
-        self.parent().setCurrentIndex(4)
+        if self.whatsapp == "1":
+            self.parent().setCurrentIndex(4)
+        else:
+            self.parent().setCurrentIndex(5)
 
     def uploadToAlbum(self, brojSlike, eventId):
         upload(self.eventAlbumPath + "slika" + str(brojSlike) + ".jpg",
