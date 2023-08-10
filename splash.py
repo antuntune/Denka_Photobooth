@@ -9,7 +9,6 @@ import importlib
 
 
 
-
 class LoadingThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
 

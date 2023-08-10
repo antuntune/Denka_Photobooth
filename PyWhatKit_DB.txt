@@ -1,0 +1,102 @@
+Date: 9/8/2023
+Time: 20:38
+Phone Number: +385977504846
+Image: /home/denka/Desktop/Albumi dogadaja/test/slika1.jpg
+Caption: Hello
+--------------------
+Date: 9/8/2023
+Time: 20:40
+Phone Number: +385977504846
+Image: /home/denka/Desktop/Albumi dogadaja/test/slika1.jpg
+Caption: Hello
+--------------------
+Date: 9/8/2023
+Time: 20:41
+Phone Number: +385977504846
+Image: /home/denka/Desktop/Albumi dogadaja/test/slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 20:59
+Phone Number: +385977504846
+Image: promotivna.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:1
+Phone Number: +385977504846
+Image: promotivna.png
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:6
+Phone Number: +385977504846
+Image: promotivna.png
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:29
+Phone Number: +385977504846
+Image: /home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/promotivna.png
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:32
+Phone Number: +385977504846
+Image: /home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/promotivna.png
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:35
+Phone Number: +385977504846
+Image: /home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/promotivna.png
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:44
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:47
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 21:53
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 22:44
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 22:52
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 23:8
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 23:9
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------
+Date: 9/8/2023
+Time: 23:10
+Phone Number: +385977504846
+Image: slika1.jpg
+Caption: 
+--------------------

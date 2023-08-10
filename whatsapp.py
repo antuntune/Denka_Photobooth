@@ -9,6 +9,7 @@ import time, os
 from cloudinary.uploader import upload
 import importlib
 import threading
+import pywhatkit
 
 
 
@@ -213,10 +214,13 @@ class WhatsAppUi(QMainWindow):
         elif self.buttonGroup.checkedId() == -4:
             self.brojSlike = 3
 
-        self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
-        self.uploadThread.start()
+        #self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
+        #self.uploadThread.start()
 
         #self.uploadToAlbum(self.brojSlike, self.eventId)
+
+        # Send an Image to a Group with the Caption as Hello
+        pywhatkit.sendwhats_image("+385977504846", "promotivna.png")
 
         self.skipButtonPressed = True
 

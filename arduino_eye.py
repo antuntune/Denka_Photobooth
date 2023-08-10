@@ -14,9 +14,13 @@ class ArduinoController:
         else:
             serial_port = available_ports[0].device
             baud_rate = 9600
-            self.ser = serial.Serial(serial_port, baud_rate, timeout=1)
-            time.sleep(2)
-            self.arduino_connected = True
+            try:
+                self.ser = serial.Serial(serial_port, baud_rate, timeout=1)
+                time.sleep(2)
+                self.arduino_connected = True
+            except serial.SerialException as e:
+                print(f"Failed to establish connection to {serial_port}: {e}")
+
 
     def send_command_on(self):
         if self.arduino_connected == True:
