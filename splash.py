@@ -71,4 +71,4 @@ class SplashUi(QMainWindow):
 
         self.pushButton.hide()
         QApplication.processEvents()
-        self.parent().setCurrentIndex(3)
+        self.parent().setCurrentIndex(2)
