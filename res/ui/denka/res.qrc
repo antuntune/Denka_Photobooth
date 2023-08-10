@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>skip_button.png</file>
+    <file>skip_buttonPressed.png</file>
     <file>print_radio_unchecked.png</file>
     <file>unchecked.png</file>
     <file>gledajteukameru.png</file>

@@ -212,10 +212,10 @@ QRadioButton::indicator::checked
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1420</x>
-      <y>840</y>
-      <width>271</width>
-      <height>81</height>
+      <x>1360</x>
+      <y>770</y>
+      <width>387</width>
+      <height>126</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -274,10 +274,10 @@ color: #ffffff;</string>
    <widget class="QPushButton" name="skipButton">
     <property name="geometry">
      <rect>
-      <x>1710</x>
-      <y>1000</y>
-      <width>181</width>
-      <height>60</height>
+      <x>1590</x>
+      <y>950</y>
+      <width>291</width>
+      <height>91</height>
      </rect>
     </property>
     <property name="font">
@@ -287,10 +287,17 @@ color: #ffffff;</string>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: #eeeeee</string>
+     <string notr="true">QPushButton {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/skip_button.png);
+}
+QPushButton:pressed {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/skip_buttonPressed.png);
+}</string>
     </property>
     <property name="text">
-     <string>PRESKOČI  --&gt;</string>
+     <string/>
     </property>
     <property name="flat">
      <bool>true</bool>
