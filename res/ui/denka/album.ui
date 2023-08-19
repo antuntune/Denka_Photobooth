@@ -251,16 +251,17 @@ QPushButton:pressed {
    <widget class="QLabel" name="link">
     <property name="geometry">
      <rect>
-      <x>1430</x>
-      <y>560</y>
+      <x>1420</x>
+      <y>570</y>
       <width>341</width>
       <height>60</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Espiritu Condensed</family>
+      <family>Noto Sans</family>
       <pointsize>20</pointsize>
+      <italic>true</italic>
      </font>
     </property>
     <property name="styleSheet">

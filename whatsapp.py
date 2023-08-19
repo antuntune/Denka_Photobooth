@@ -9,7 +9,7 @@ import time, os
 from cloudinary.uploader import upload
 import importlib
 import threading
-import pywhatkit
+#import pywhatkit
 
 
 

@@ -135,7 +135,7 @@ class CameraUi(QMainWindow):
 
         # Šarpirag ga malo
         enhancer = ImageEnhance.Sharpness(kartica)
-        kartica = enhancer.enhance(10.0)
+        kartica = enhancer.enhance(5.0)
 
 
         kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)

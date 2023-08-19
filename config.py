@@ -116,7 +116,6 @@ class ConfigUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, event):
 
-        #self.initJsonVar()
         self.albumLabel.setText(self.albumPath)
         card_name = os.path.basename(self.cardPath)
         self.cardLabel.setText(card_name)

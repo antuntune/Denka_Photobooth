@@ -37,7 +37,6 @@ class AlbumUi(QMainWindow):
         super(AlbumUi, self).__init__()
 
         self.loaded_resources = False
-        self.skipButtonPressed = False
 
         self.brojSlike = 1
         self.eventId = ""
@@ -46,8 +45,8 @@ class AlbumUi(QMainWindow):
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
     def timeoutThreadFinished(self):
-        if self.skipButtonPressed == False:
-            self.parent().setCurrentIndex(1)
+
+        self.parent().setCurrentIndex(1)
 
     def loadFromJson(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -102,7 +101,6 @@ class AlbumUi(QMainWindow):
             self.loadResources()
             self.loaded_resources = True
 
-        self.skipButtonPressed = False
 
         img1pixmap = QPixmap(self.eventAlbumPath + "slika1.jpg")
         img2pixmap = QPixmap(self.eventAlbumPath + "slika2.jpg")
@@ -116,6 +114,10 @@ class AlbumUi(QMainWindow):
         return super().showEvent(a0)
 
     def sharePressed(self):
+
+        # kill timeout thread which set up splash window if timeout happend beacuse share button is pressed
+        self.timeout_thread.terminate()
+
         # provjerava koji je radiobutton ukljucen
         if self.buttonGroup.checkedId() == -2:
             self.brojSlike = 1
@@ -127,9 +129,6 @@ class AlbumUi(QMainWindow):
         self.uploadThread = threading.Thread(target = self.uploadToAlbum, args=(self.brojSlike, self.eventId))
         self.uploadThread.start()
 
-        #self.uploadToAlbum(self.brojSlike, self.eventId)
-
-        self.skipButtonPressed = True
 
         if self.whatsapp == "1":
             self.parent().setCurrentIndex(4)
@@ -137,7 +136,10 @@ class AlbumUi(QMainWindow):
             self.parent().setCurrentIndex(5)
 
     def skipPressed(self):
-        self.skipButtonPressed = True
+
+        # kill timeout thread which set up splash window if timeout happend beacuse skip button is pressed
+        self.timeout_thread.terminate()
+
         if self.whatsapp == "1":
             self.parent().setCurrentIndex(4)
         else:

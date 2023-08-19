@@ -36,14 +36,13 @@ class PrintUi(QMainWindow):
         super(PrintUi, self).__init__()
 
         self.loaded_resources = False
-        self.skipButtonPressed = False
+        
 
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
     def timeoutThreadFinished(self):
-        if self.skipButtonPressed == False:
-            self.parent().setCurrentIndex(1)
+        self.parent().setCurrentIndex(1)
 
     def loadResources(self):
         uic.loadUi(os.getcwd() + "/res/ui/"+self.tema+"/print.ui", self)
@@ -99,12 +98,15 @@ class PrintUi(QMainWindow):
         self.strip5.setPixmap(stripPixmap)
         self.strip6.setPixmap(stripPixmap)
 
-        self.skipButtonPressed = False
         self.timeout_thread.start()
 
         return super().showEvent(a0)
 
     def printPressed(self):
+
+        # kill timeout thread which set up splash window if timeout happend beacuse print button is pressed
+        self.timeout_thread.terminate()
+
 
         if self.buttonGroup.checkedId() == -2:
             kolKartica = 2
@@ -119,11 +121,14 @@ class PrintUi(QMainWindow):
 
 
     def skipPressed(self):
-        self.skipButtonPressed = True
+
+        # kill timeout thread which set up splash window if timeout happend beacuse skip button is pressed
+        self.timeout_thread.terminate()
+
         self.parent().setCurrentIndex(1)
 
     def printaj(self, kolKartica):
-        self.skipButtonPressed = True
+
 
         im1 = Image.open(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 

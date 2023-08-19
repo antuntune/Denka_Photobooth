@@ -19,23 +19,28 @@ app.setOverrideCursor(QCursor(Qt.BlankCursor))
 
 widget = QStackedWidget()
 
+
+splashUi = SplashUi()
+cameraUi = CameraUi()
+albumUi = AlbumUi()
+whatsappUi = WhatsAppUi()
+printUi = PrintUi()
 configUi = ConfigUi()
 
 widget.addWidget(configUi)
 
-splashUi = SplashUi()
 widget.addWidget(splashUi)
 
-cameraUi = CameraUi()
+
 widget.addWidget(cameraUi)
 
-albumUi = AlbumUi()
+
 widget.addWidget(albumUi)
 
-whatsappUi = WhatsAppUi()
+
 widget.addWidget(whatsappUi)
 
-printUi = PrintUi()
+
 widget.addWidget(printUi)
 
 

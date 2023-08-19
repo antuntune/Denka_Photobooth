@@ -345,6 +345,27 @@
      <string>WhatsApp</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>700</y>
+      <width>511</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>17</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(165, 29, 45);</string>
+    </property>
+    <property name="text">
+     <string>Provjeri USB kabel ako ne radi (uštekaj/ištekaj)</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
