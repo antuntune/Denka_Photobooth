@@ -293,7 +293,7 @@ class ConfigUi(QMainWindow):
             self.napraviQr()
             self.copyEventCard()
             self.runSh()
-            self.parent().setCurrentIndex(2)
+            self.parent().setCurrentIndex(1)
 
 
     def napraviQr(self):

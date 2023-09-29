@@ -4,6 +4,7 @@ pip install opencv-python-headless
 pip install sh
 pip install gphoto2
 pip install cloudinary
+pip install pyserial
 
 
 sudo apt-get install gphoto2
