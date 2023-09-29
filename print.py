@@ -98,6 +98,9 @@ class PrintUi(QMainWindow):
         self.strip5.setPixmap(stripPixmap)
         self.strip6.setPixmap(stripPixmap)
 
+        # Set "radio2" as the initially checked button
+        self.findChild(QRadioButton, "radio2").setChecked(True)
+
         self.timeout_thread.start()
 
         return super().showEvent(a0)

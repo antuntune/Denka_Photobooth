@@ -12,20 +12,26 @@ from print import PrintUi
 from album import AlbumUi
 from whatsapp import WhatsAppUi
 import res
+from arduino_eye import ArduinoController
+
 
 
 app = QApplication(sys.argv)
-app.setOverrideCursor(QCursor(Qt.BlankCursor))	
+
+# hide cursor in app
+#app.setOverrideCursor(QCursor(Qt.BlankCursor))	
 
 widget = QStackedWidget()
 
+arduino = ArduinoController()
+
 
 splashUi = SplashUi()
-cameraUi = CameraUi()
+cameraUi = CameraUi(arduino)
 albumUi = AlbumUi()
 whatsappUi = WhatsAppUi()
 printUi = PrintUi()
-configUi = ConfigUi()
+configUi = ConfigUi(arduino)
 
 widget.addWidget(configUi)
 
@@ -42,81 +48,6 @@ widget.addWidget(whatsappUi)
 
 
 widget.addWidget(printUi)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 widget.showFullScreen()

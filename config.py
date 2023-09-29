@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox, QCheckBox
+from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox, QCheckBox, QApplication
+from PyQt5.QtGui import QColor  # This line is necessary to import QColor
 from PyQt5 import uic
 import qrcode
 import json
@@ -7,7 +8,8 @@ import os
 import shutil
 from PIL import Image
 import cups
-
+import time
+from slideshow import SlideshowUi
 
 
 # spajanje na cups
@@ -22,18 +24,28 @@ PrinterUsing = AvailablePrinters[0]
 
 
 class ConfigUi(QMainWindow):
-    def __init__(self):
-        #self.ID = eventId[0]
+    def __init__(self, arduinoInstance):
+        
+        self.slideshowUi = SlideshowUi()
 
         super(ConfigUi, self).__init__()
         uic.loadUi("res/ui/config.ui", self)
 
         self.initJsonVar()
+
         self.combobox = self.findChild(QComboBox, 'comboBox')
         self.combobox.addItems(self.eventId_)
         self.combobox.setCurrentIndex(0)
         self.combobox.currentIndexChanged.connect(self.onComboBoxIndexChanged)
         self.pushButton.clicked.connect(self.buttonPressed)
+
+        # Slideshow button
+        self.slideshowButton.clicked.connect(self.slideshow)
+
+        self.arduinoTest.clicked.connect(self.arduinoTestButton)
+        self.arduino = arduinoInstance
+        self.status = False  # Initialize the status attribute
+
         self.karticaButton.clicked.connect(self.odaberiKarticu)
         self.albumButton.clicked.connect(self.lokacijaAlbuma)
         self.deleteID.clicked.connect(self.deleteWarning)
@@ -48,20 +60,59 @@ class ConfigUi(QMainWindow):
 
         # Connect checkboxes to a slot
         self.ArduinoCheckBox.stateChanged.connect(self.arduinocheckbox_changed)
-        if self.arduinoStatus == "1":
+        if self.arduinoStatus == True:
             self.ArduinoCheckBox.setChecked(True)
+
 
         self.WhatsAppCheckBox.stateChanged.connect(self.whatsappcheckbox_changed)
         if self.whatsapp == "1":
             self.WhatsAppCheckBox.setChecked(True)
 
+
+    def slideshow(self):
+        self.slideshowUi.show()
+
+
+    def arduinoTestButton(self):
+        self.testArduinoConnection()        
+
+    def testArduinoConnection(self):
+        if self.arduinoStatus:
+            self.arduinoTest.hide()
+            QApplication.processEvents()
+            self.status = self.arduino.establishConnection()
+
+            if self.status:
+                # Create a QColor object using RGB values
+                greenColor = QColor(0, 255, 0)
+                self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
+                self.arduinoLabel.setText("Arduino je uspješno povezan.")
+            else:
+                # Create a QColor object using RGB values
+                greenColor = QColor(255, 0, 0)
+                self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
+                self.arduinoLabel.setText("Arduino se nije uspio povezati..")
+        else:
+            # Create a QColor object using RGB values
+            greenColor = QColor(150, 100, 25)
+            self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
+            self.arduinoLabel.setText("Stavi kvačicu na check box Arduino:")
+        self.arduinoTest.show()
+        QApplication.processEvents()
+
     def arduinocheckbox_changed(self, state):
         sender = self.sender()
 
         if sender.isChecked():
-            self.arduinoStatus = "1"
+            self.arduinoStatus = True
+            self.arduinocheckbox = True
         else:
-            self.arduinoStatus = "0"
+            self.arduinoStatus = False
+            self.arduinocheckbox = False
+            # Create a QColor object using RGB values
+            greenColor = QColor(0, 0, 0)
+            self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()};")
+
 
     def whatsappcheckbox_changed(self, state):
         sender = self.sender()
@@ -98,7 +149,7 @@ class ConfigUi(QMainWindow):
         msg_box = QMessageBox()
         msg_box.setIcon(QMessageBox.Warning)
         msg_box.setWindowTitle("Upozorenje!")
-        msg_box.setText("Jeste li sigurni da želite dodati eventID: " + self.eventId)
+        msg_box.setText("Jeste li sigurni da želite dodati eventID: " + self.inputID.text())
         msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
 
         button_clicked = msg_box.exec_()
@@ -115,6 +166,10 @@ class ConfigUi(QMainWindow):
 
     # kad se prikaze ekran
     def showEvent(self, event):
+
+        self.arduinocheckbox = self.arduinoStatus
+        if self.arduinoStatus:
+            self.testArduinoConnection()
 
         self.albumLabel.setText(self.albumPath)
         card_name = os.path.basename(self.cardPath)
@@ -212,12 +267,34 @@ class ConfigUi(QMainWindow):
 
 
     def buttonPressed(self):
-        self.loadJson()
-        self.createEventMap()
-        self.napraviQr()
-        self.copyEventCard()
-        self.runSh()
-        self.parent().setCurrentIndex(1)
+        if not self.status and self.arduinocheckbox:
+            self.testArduinoConnection()
+            if not self.status:
+                self.acknowledge = self.arduinoPupup()
+                if self.acknowledge:
+                    self.loadJson()
+                    self.createEventMap()
+                    self.napraviQr()
+                    self.copyEventCard()
+                    self.runSh()
+                    self.parent().setCurrentIndex(1)
+            else:
+                time.sleep(4)
+                self.loadJson()
+                self.createEventMap()
+                self.napraviQr()
+                self.copyEventCard()
+                self.runSh()
+                self.parent().setCurrentIndex(1)
+
+        else :
+            self.loadJson()
+            self.createEventMap()
+            self.napraviQr()
+            self.copyEventCard()
+            self.runSh()
+            self.parent().setCurrentIndex(2)
+
 
     def napraviQr(self):
         img = qrcode.make('www.denka.live/' + self.eventId)
@@ -244,3 +321,20 @@ class ConfigUi(QMainWindow):
         # kopiraj karticu dogadaja u mapu dogadaja
         #shutil.copy2(os.getcwd() +"/res/cardPool/" + self.eventId + ".jpg", self.albumPath + self.eventId)
         shutil.copy2(self.cardPath, self.albumPath + self.eventId)
+
+
+    def arduinoPupup(self):
+        msg_box = QMessageBox()
+        msg_box.setIcon(QMessageBox.Warning)
+        msg_box.setWindowTitle("Upozorenje!")
+        msg_box.setText("Arduino se nije uspio spojiti. Jeste li sigurni da želite nastaviti.")
+        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+
+        button_clicked = msg_box.exec_()
+        if button_clicked == QMessageBox.Ok:
+            print("Change confirmed.")
+            return True
+        else:
+            print("Change canceled.")
+            return False
+            

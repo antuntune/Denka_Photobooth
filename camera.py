@@ -16,7 +16,7 @@ import time
 import importlib
 import json
 
-from arduino_eye import ArduinoController
+#from arduino_eye import ArduinoController
 
 
 class WorkerThread(QThread):
@@ -36,10 +36,11 @@ class WorkerThread(QThread):
 
 
 class CameraUi(QMainWindow):
-    def __init__(self):
+    def __init__(self, arduinoInstance):
         super(CameraUi, self).__init__()
 
-        self.arduino = ArduinoController()
+        #self.arduino = ArduinoController()
+        self.arduino = arduinoInstance
 
         self.loaded_resources = False
         self.count = 1
@@ -148,7 +149,7 @@ class CameraUi(QMainWindow):
             self.loadResources()
             self.loaded_resources = True
 
-        if self.arduinoStatus == "1":
+        if self.arduinoStatus == True:
             self.arduino.send_command_off()
 
         self.videoLabel.show()
@@ -182,7 +183,8 @@ class CameraUi(QMainWindow):
         self.worker_thread.start()
 
     def threadFinished(self):
-        if self.arduinoStatus == "1":
+        if self.arduinoStatus == True:
+            print("poslije odbrojavanja")
             self.arduino.send_command_off()
 
         self.fullscreenlabel.setVisible(False)
@@ -196,8 +198,10 @@ class CameraUi(QMainWindow):
         
 
     def slikanje(self):
-        if self.arduinoStatus == "1":
+        # Turn on arduino eye
+        if self.arduinoStatus == True:
             self.arduino.send_command_on()
+
         # zaustavi stream
         self.camera_thread.stop()
         # okini sliku
@@ -244,7 +248,7 @@ class CameraUi(QMainWindow):
             #self.movie.finished.disconnect(self.slikaj)
             self.napraviKarticu()
 
-            if self.arduinoStatus == "1":
+            if self.arduinoStatus == True:
                 self.arduino.send_command_idle()
 
 

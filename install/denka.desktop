@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Denka Photobooth
+Icon=/home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/install/logo.png
+Path=/home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/
+Exec= python3 /home/denka/Documents/Denka_Software_Stable/Denka_Photobooth/main.py
+Terminal=true
+TerminalOptions=\s--noclose
+Type=Application

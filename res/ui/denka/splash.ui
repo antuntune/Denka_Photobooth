@@ -28,67 +28,7 @@
   <property name="styleSheet">
    <string notr="true">background-image: url(:/newPrefix/splash_bg.png);</string>
   </property>
-  <widget class="QWidget" name="centralwidget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1350</width>
-     <height>1540</height>
-    </rect>
-   </property>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>490</x>
-      <y>730</y>
-      <width>387</width>
-      <height>126</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QPushButton {
-    background-color: rgba(0, 255, 255, 0);
-	background-image: url(:/newPrefix/splash_button.png);
-}
-QPushButton:pressed {
-    background-color: rgba(0, 255, 255, 0);
-	background-image: url(:/newPrefix/splash_buttonPressed.png);
-}</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QLabel" name="qr">
-   <property name="geometry">
-    <rect>
-     <x>1530</x>
-     <y>200</y>
-     <width>291</width>
-     <height>281</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-image: url(:/newPrefix/transparent.png);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="scaledContents">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="link">
-   <property name="geometry">
-    <rect>
-     <x>1520</x>
-     <y>588</y>
-     <width>341</width>
-     <height>61</height>
-    </rect>
-   </property>
    <property name="font">
     <font>
      <family>Noto Sans</family>
@@ -105,7 +45,54 @@ color: #ffffff;</string>
    <property name="scaledContents">
     <bool>true</bool>
    </property>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>660</x>
+      <y>740</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="qr">
+    <property name="geometry">
+     <rect>
+      <x>1590</x>
+      <y>320</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
+  <widget class="QToolBar" name="toolbar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionSettings"/>
+  </widget>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset>
+     <normaloff>../../../../../../Pictures/config.png</normaloff>../../../../../../Pictures/config.png</iconset>
+   </property>
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="res.qrc"/>

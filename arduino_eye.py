@@ -6,7 +6,9 @@ import json
 class ArduinoController:
     def __init__(self):
 
-        self.initJsonVar()
+        pass
+
+    def establishConnection(self):
 
         # List available serial ports
         available_ports = list(serial.tools.list_ports.comports())
@@ -14,7 +16,7 @@ class ArduinoController:
         if not available_ports:
             print("No available serial ports found. Arduino not connected.")
             self.arduino_connected = False
-            self.arduinoStatus = False
+            #self.arduinoStatus = False
         else:
             serial_port = available_ports[0].device
             baud_rate = 9600
@@ -24,15 +26,19 @@ class ArduinoController:
                 self.arduino_connected = True
             except serial.SerialException as e:
                 print(f"Failed to establish connection to {serial_port}: {e}")
-
-        self.loadJson()
+        return self.arduino_connected
 
 
     def send_command_on(self):
+        print("saljem on")
         if self.arduino_connected == True:
+            print("povezan je i ne pali")
             self.ser.write(b'1')
+        else:
+            print("nije povezan")
 
     def send_command_off(self):
+        print("saljem off")
         if self.arduino_connected == True:
             self.ser.write(b'0')
 
