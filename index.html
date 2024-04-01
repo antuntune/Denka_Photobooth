@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Download Images</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /*background-color: #f0f0f0;*/
+            background-color: #d78523; /* Light gray background color */
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        input[type="text"], button {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #1d91d0;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="textInput" placeholder="Unesite PIN">
+        <br>
+        <button id="downloadButton">Preuzmite fotografije</button>
+    </div>
+
+    <script>
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            const userInput = document.getElementById('textInput').value;
+            const predefinedText = "1519";
+            const imageFilenames = [
+                'slika1.jpg',
+                'slika2.jpg',
+                'slika3.jpg'
+            ];
+
+            if (userInput === predefinedText) {
+                imageFilenames.forEach(filename => {
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = `/images/${filename}?text=${encodeURIComponent(userInput)}`;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                });
+                // Clear the input field after download
+                document.getElementById('textInput').value = "";
+            } else {
+                alert("Pogrešan PIN!");
+            }
+        });
+    </script>
+</body>
+</html>

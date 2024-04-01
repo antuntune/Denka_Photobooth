@@ -27,16 +27,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">background-image: url(:/newPrefix/print_bg.png);
+    <string notr="true">background-image: url(:/newPrefix/print_bg_.png);
 </string>
    </property>
    <widget class="QRadioButton" name="radio2">
     <property name="geometry">
      <rect>
-      <x>900</x>
-      <y>600</y>
-      <width>252</width>
-      <height>252</height>
+      <x>1160</x>
+      <y>610</y>
+      <width>300</width>
+      <height>300</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -73,165 +73,11 @@ QRadioButton::indicator::checked
      <string notr="true">buttonGroup</string>
     </attribute>
    </widget>
-   <widget class="QRadioButton" name="radio4">
-    <property name="geometry">
-     <rect>
-      <x>1440</x>
-      <y>590</y>
-      <width>252</width>
-      <height>252</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">QRadioButton
-{
-background-image: url(:/newPrefix/transparent.png);
-}
-
-
-QRadioButton::indicator
-{
-    width: 252px;
-    height: 252px;
-	
-}
-QRadioButton::indicator::unchecked
-{
-	image: url(:/newPrefix/print_radio_unchecked.png);
-}
-
-QRadioButton::indicator::checked 
-{
-	
-	image: url(:/newPrefix/print_radio.png);
-}</string>
-    </property>
-    <property name="text">
-     <string>RadioButton</string>
-    </property>
-    <attribute name="buttonGroup">
-     <string notr="true">buttonGroup</string>
-    </attribute>
-   </widget>
-   <widget class="QLabel" name="strip2">
-    <property name="geometry">
-     <rect>
-      <x>1060</x>
-      <y>100</y>
-      <width>163</width>
-      <height>489</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="strip1">
-    <property name="geometry">
-     <rect>
-      <x>850</x>
-      <y>100</y>
-      <width>163</width>
-      <height>489</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="strip6">
-    <property name="geometry">
-     <rect>
-      <x>1650</x>
-      <y>50</y>
-      <width>151</width>
-      <height>454</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="strip5">
-    <property name="geometry">
-     <rect>
-      <x>1580</x>
-      <y>80</y>
-      <width>151</width>
-      <height>454</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="strip4">
-    <property name="geometry">
-     <rect>
-      <x>1520</x>
-      <y>110</y>
-      <width>151</width>
-      <height>454</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QLabel" name="strip3">
-    <property name="geometry">
-     <rect>
-      <x>1450</x>
-      <y>140</y>
-      <width>151</width>
-      <height>454</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>1170</x>
-      <y>880</y>
+      <x>1110</x>
+      <y>900</y>
       <width>387</width>
       <height>126</height>
      </rect>
@@ -294,6 +140,248 @@ QPushButton:pressed {
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="plusButton">
+    <property name="geometry">
+     <rect>
+      <x>1580</x>
+      <y>680</y>
+      <width>152</width>
+      <height>167</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/plus_button.png);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/plus_buttonPressed.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="minusButton">
+    <property name="geometry">
+     <rect>
+      <x>870</x>
+      <y>680</y>
+      <width>152</width>
+      <height>167</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/minus_button.png);
+}
+
+QPushButton:pressed {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/minus_buttonPressed.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip1">
+    <property name="geometry">
+     <rect>
+      <x>1080</x>
+      <y>170</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip2">
+    <property name="geometry">
+     <rect>
+      <x>1120</x>
+      <y>150</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>1240</x>
+      <y>690</y>
+      <width>115</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(61, 56, 70);</string>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip8">
+    <property name="geometry">
+     <rect>
+      <x>1360</x>
+      <y>30</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip7">
+    <property name="geometry">
+     <rect>
+      <x>1320</x>
+      <y>50</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip3">
+    <property name="geometry">
+     <rect>
+      <x>1160</x>
+      <y>130</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip4">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>110</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip6">
+    <property name="geometry">
+     <rect>
+      <x>1280</x>
+      <y>70</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip5">
+    <property name="geometry">
+     <rect>
+      <x>1240</x>
+      <y>90</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <zorder>label</zorder>
+   <zorder>radio2</zorder>
+   <zorder>strip8</zorder>
+   <zorder>strip7</zorder>
+   <zorder>strip6</zorder>
+   <zorder>strip5</zorder>
+   <zorder>strip4</zorder>
+   <zorder>strip3</zorder>
+   <zorder>strip2</zorder>
+   <zorder>pushButton</zorder>
+   <zorder>skipButton</zorder>
+   <zorder>plusButton</zorder>
+   <zorder>minusButton</zorder>
+   <zorder>strip1</zorder>
   </widget>
  </widget>
  <resources>

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QComboBox, QFileDialog, QLineEdit, QMessageBox, QCheckBox, QApplication
 from PyQt5.QtGui import QColor  # This line is necessary to import QColor
 from PyQt5 import uic
+from PyQt5.QtCore import QThread, pyqtSignal, QObject
 import qrcode
 import json
 import subprocess
@@ -10,7 +11,10 @@ from PIL import Image
 import cups
 import time
 from slideshow import SlideshowUi
-
+from share_server import startServer
+import dslr
+import time
+from share_server import update_predefined_text
 
 # spajanje na cups
 conn = cups.Connection()
@@ -22,9 +26,21 @@ AvailablePrinters = list(printers.keys())
 PrinterUsing = AvailablePrinters[0]
 
 
+class ServerThread(QThread):
+    started = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self.server_started = False
+
+    def run(self):
+        if not self.server_started:
+            startServer()
+            self.server_started = True
+            self.started.emit()
 
 class ConfigUi(QMainWindow):
-    def __init__(self, arduinoInstance):
+    def __init__(self):
         
         self.slideshowUi = SlideshowUi()
 
@@ -38,13 +54,14 @@ class ConfigUi(QMainWindow):
         self.combobox.setCurrentIndex(0)
         self.combobox.currentIndexChanged.connect(self.onComboBoxIndexChanged)
         self.pushButton.clicked.connect(self.buttonPressed)
+        self.saveButton.clicked.connect(self.savePressed)
+
+        self.shareButton.clicked.connect(self.popout_terminal_and_execute)
+
+        self.cameraCheck.clicked.connect(self.cameraCheck_pressed)
 
         # Slideshow button
         self.slideshowButton.clicked.connect(self.slideshow)
-
-        self.arduinoTest.clicked.connect(self.arduinoTestButton)
-        self.arduino = arduinoInstance
-        self.status = False  # Initialize the status attribute
 
         self.karticaButton.clicked.connect(self.odaberiKarticu)
         self.albumButton.clicked.connect(self.lokacijaAlbuma)
@@ -58,71 +75,70 @@ class ConfigUi(QMainWindow):
         self.brightSlider.setValue(int(self.cardBright))
         self.brightLabel.setText(self.cardBright)
 
+        self.picNumSlider.valueChanged.connect(self.picNum)
+        self.picNumSlider.setValue(int(int(self.print_limit_num)/2))
+        self.picNumLabel.setText(str(self.print_limit_num))
+
+        self.cameraPortComboBox.addItem("0")
+        self.cameraPortComboBox.addItem("1")
+        self.cameraPortComboBox.addItem("2")
+
+        # Connect the currentIndexChanged signal to the on_combobox_changed slot
+        self.cameraPortComboBox.currentIndexChanged.connect(self.cameraPort_changed)
+
         # Connect checkboxes to a slot
-        self.ArduinoCheckBox.stateChanged.connect(self.arduinocheckbox_changed)
-        if self.arduinoStatus == True:
-            self.ArduinoCheckBox.setChecked(True)
+        self.shareImagesCheckBox.stateChanged.connect(self.shareImages_changed)
+        if self.shareImages == True:
+            self.shareImagesCheckBox.setChecked(True)
 
+        # Connect checkboxes to a slot
+        self.testAlbumCheckBox.stateChanged.connect(self.testAlbum_changed)
+        if self.testAlbum == True:
+            self.testAlbumCheckBox.setChecked(True)
 
-        self.WhatsAppCheckBox.stateChanged.connect(self.whatsappcheckbox_changed)
-        if self.whatsapp == "1":
-            self.WhatsAppCheckBox.setChecked(True)
+    def cameraPort_changed(self, index):
+        self.cameraPort = self.cameraPortComboBoxs.currentText()
+        print("Selected:", self.cameraPort)
 
+    def cameraCheck_pressed(self):
+        cameraModel = dslr.get_camera_info()
+        print(cameraModel)
+        cameraShuuterCount = "\nCurrent Shutter Count: " + str(dslr.shutterCounter())
+        text = str(cameraModel)  + cameraShuuterCount
+        self.cameraLabel.setText(text)
+
+    def popout_terminal_and_execute(self):
+        # Command to execute
+        command = "ngrok http --domain denka.ngrok.app 5001"
+        # Replace 'gnome-terminal' with the terminal emulator of your choice
+        terminal_emulator = 'gnome-terminal'
+        # Replace 'bash' with the shell you want to use in the new terminal window
+        shell = 'bash'
+        process = subprocess.Popen([terminal_emulator, '--', shell, '-c', command])
 
     def slideshow(self):
         self.slideshowUi.show()
 
+    def picNum(self, value):
+        self.pic_num_print_limit = str(value * 2)
+        self.print_limit_num = int(value * 2)
+        self.picNumLabel.setText(self.pic_num_print_limit)
 
-    def arduinoTestButton(self):
-        self.testArduinoConnection()        
-
-    def testArduinoConnection(self):
-        if self.arduinoStatus:
-            self.arduinoTest.hide()
-            QApplication.processEvents()
-            self.status = self.arduino.establishConnection()
-
-            if self.status:
-                # Create a QColor object using RGB values
-                greenColor = QColor(0, 255, 0)
-                self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
-                self.arduinoLabel.setText("Arduino je uspješno povezan.")
-            else:
-                # Create a QColor object using RGB values
-                greenColor = QColor(255, 0, 0)
-                self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
-                self.arduinoLabel.setText("Arduino se nije uspio povezati..")
-        else:
-            # Create a QColor object using RGB values
-            greenColor = QColor(150, 100, 25)
-            self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()}; color: white;")
-            self.arduinoLabel.setText("Stavi kvačicu na check box Arduino:")
-        self.arduinoTest.show()
-        QApplication.processEvents()
-
-    def arduinocheckbox_changed(self, state):
+    def testAlbum_changed(self, state):
         sender = self.sender()
 
         if sender.isChecked():
-            self.arduinoStatus = True
-            self.arduinocheckbox = True
+            self.testAlbum = True
         else:
-            self.arduinoStatus = False
-            self.arduinocheckbox = False
-            # Create a QColor object using RGB values
-            greenColor = QColor(0, 0, 0)
-            self.arduinoLabel.setStyleSheet(f"background-color: {greenColor.name()};")
+            self.testAlbum = False
 
-
-    def whatsappcheckbox_changed(self, state):
+    def shareImages_changed(self, state):
         sender = self.sender()
 
         if sender.isChecked():
-            self.whatsapp = "1"
+            self.shareImages = True
         else:
-            self.whatsapp = "0"
-
-
+            self.shareImages = False
 
 
     def changeBright(self, value):
@@ -135,7 +151,6 @@ class ConfigUi(QMainWindow):
         msg_box.setWindowTitle("Upozorenje!")
         msg_box.setText("Jeste li sigurni da želite obrisati eventID: " + self.eventId)
         msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-
         button_clicked = msg_box.exec_()
         if button_clicked == QMessageBox.Ok:
             self.eventId_.remove(self.eventId)
@@ -163,19 +178,15 @@ class ConfigUi(QMainWindow):
         else:
             print("Change canceled.")
 
-
     # kad se prikaze ekran
     def showEvent(self, event):
-
-        self.arduinocheckbox = self.arduinoStatus
-        if self.arduinoStatus:
-            self.testArduinoConnection()
-
         self.albumLabel.setText(self.albumPath)
         card_name = os.path.basename(self.cardPath)
         self.cardLabel.setText(card_name)
         self.cardLabel.setText(card_name)
-
+        self.server_thread = ServerThread()
+        self.server_thread.start()
+        self.comboBox.setCurrentIndex(int(self.cameraPort))
         return super().showEvent(event)
 
     def lokacijaAlbuma(self):
@@ -184,7 +195,6 @@ class ConfigUi(QMainWindow):
         self.albumPath = folder_path
         self.albumPath = self.albumPath + "/" + "Albumi dogadaja/"
         self.albumLabel.setText(self.albumPath)
-        
 
     def odaberiKarticu(self):
         file_dialog = QFileDialog()
@@ -195,22 +205,17 @@ class ConfigUi(QMainWindow):
             self.cardLabel.setText(card_name)
 
     def printajPromotivne(self):
-
         im1 = Image.open("promotivna.jpg")
-
         def get_concat_h(im1):
             dst = Image.new('RGB', (im1.width + im1.width + 35, im1.height))
             dst.paste(im1, (35, 0))
             dst.paste(im1, (im1.width + 35, 0))
             return dst
-
         get_concat_h(im1).save("promotivnaFinished.jpg")
-
         conn.printFile(
             PrinterUsing, "promotivnaFinished.jpg", "title", emptyDict)
         conn.printFile(
             PrinterUsing, "promotivnaFinished.jpg", "title", emptyDict)
-
 
 
     def initJsonVar(self):
@@ -227,8 +232,10 @@ class ConfigUi(QMainWindow):
         self.albumPath = config['albumPath']
         self.cardPath = config['cardPath']
         self.cardBright = config['cardBright']
-        self.arduinoStatus = config['Arduino']
-        self.whatsapp = config['WhatsApp']
+        self.testAlbum = config['testAlbum']
+        self.print_limit_num = config['print_limit_num']
+        self.shareImages = config['shareImages']
+        self.cameraPort =config['cameraPort']
 
 
     def onComboBoxIndexChanged(self, index):
@@ -252,8 +259,10 @@ class ConfigUi(QMainWindow):
             "eventAlbumPath": self.eventAlbumPath,
             "cardPath": self.cardPath,
             "cardBright": self.cardBright,
-            "Arduino": self.arduinoStatus,
-            "WhatsApp": self.whatsapp
+            "testAlbum": self.testAlbum,
+            "print_limit_num": self.print_limit_num,
+            "shareImages": self.shareImages,
+            "cameraPort": self.cameraPort
         }
 
         # Write data to the JSON file
@@ -261,47 +270,22 @@ class ConfigUi(QMainWindow):
             json.dump(data, file)
 
     def runSh(self):
-
         script_path = os.getcwd() + "/modprobe.sh"
         subprocess.run(['sh', script_path], check=True)
 
 
     def buttonPressed(self):
-        if not self.status and self.arduinocheckbox:
-            self.testArduinoConnection()
-            if not self.status:
-                self.acknowledge = self.arduinoPupup()
-                if self.acknowledge:
-                    self.loadJson()
-                    self.createEventMap()
-                    self.napraviQr()
-                    self.copyEventCard()
-                    self.runSh()
-                    self.parent().setCurrentIndex(1)
-            else:
-                time.sleep(4)
-                self.loadJson()
-                self.createEventMap()
-                self.napraviQr()
-                self.copyEventCard()
-                self.runSh()
-                self.parent().setCurrentIndex(1)
-
-        else :
             self.loadJson()
             self.createEventMap()
-            self.napraviQr()
             self.copyEventCard()
             self.runSh()
             self.parent().setCurrentIndex(1)
 
-
-    def napraviQr(self):
-        img = qrcode.make('www.denka.live/' + self.eventId)
-        type(img)  # qrcode.image.pil.PilImage
-        img.save(self.albumPath + self.eventId + "/qr.png")
+    def savePressed(self):
+        self.loadJson()
 
     def createEventMap(self):
+        directory = ""
         # root mapa albuma
         directory = self.albumPath
         if not os.path.exists(directory):
@@ -317,24 +301,15 @@ class ConfigUi(QMainWindow):
         if not os.path.exists(directory):
             os.makedirs(directory)
 
+        # unutar mape događaja kreiraj mapu za slike
+        directory = self.albumPath + self.eventId + "/testAlbum"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
     def copyEventCard(self):
         # kopiraj karticu dogadaja u mapu dogadaja
         #shutil.copy2(os.getcwd() +"/res/cardPool/" + self.eventId + ".jpg", self.albumPath + self.eventId)
+        print("Album Path:", self.albumPath)
+        print("Event ID:", self.eventId)
+
         shutil.copy2(self.cardPath, self.albumPath + self.eventId)
-
-
-    def arduinoPupup(self):
-        msg_box = QMessageBox()
-        msg_box.setIcon(QMessageBox.Warning)
-        msg_box.setWindowTitle("Upozorenje!")
-        msg_box.setText("Arduino se nije uspio spojiti. Jeste li sigurni da želite nastaviti.")
-        msg_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-
-        button_clicked = msg_box.exec_()
-        if button_clicked == QMessageBox.Ok:
-            print("Change confirmed.")
-            return True
-        else:
-            print("Change canceled.")
-            return False
-            

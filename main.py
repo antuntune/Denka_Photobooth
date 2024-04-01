@@ -9,11 +9,8 @@ from config import ConfigUi
 from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
-from album import AlbumUi
-from whatsapp import WhatsAppUi
+from share import ShareUi
 import res
-from arduino_eye import ArduinoController
-
 
 
 app = QApplication(sys.argv)
@@ -23,32 +20,22 @@ app = QApplication(sys.argv)
 
 widget = QStackedWidget()
 
-arduino = ArduinoController()
-
 
 splashUi = SplashUi()
-cameraUi = CameraUi(arduino)
-albumUi = AlbumUi()
-whatsappUi = WhatsAppUi()
+cameraUi = CameraUi()
 printUi = PrintUi()
-configUi = ConfigUi(arduino)
+shareUi = ShareUi()
+configUi = ConfigUi()
 
 widget.addWidget(configUi)
 
 widget.addWidget(splashUi)
 
-
 widget.addWidget(cameraUi)
-
-
-widget.addWidget(albumUi)
-
-
-widget.addWidget(whatsappUi)
-
 
 widget.addWidget(printUi)
 
+widget.addWidget(shareUi)
 
 widget.showFullScreen()
 app.exec_()

@@ -3,13 +3,30 @@ from PyQt5.QtGui import QPixmap
 from PyQt5 import uic, QtGui
 from PyQt5.QtCore import QUrl, QThread, pyqtSignal, Qt, pyqtSlot, QEvent, QTimer
 from PyQt5.QtMultimedia import QSoundEffect
+from PyQt5.QtWidgets import QMainWindow, QToolBar
+from PyQt5.QtCore import QPoint, QTimer, QSize
+from PyQt5.QtGui import QIcon
 import json
 import os, time
 import importlib
 import pyautogui, threading
+import random
+from share_server import update_predefined_text
 
 from PyQt5.QtGui import QCursor  # Add this import
 
+
+class MouseMoveThread(QThread):
+    mouseMoved = pyqtSignal(QPoint)  # Signal emitted when mouse moves
+
+    def run(self):
+        prev_pos = None
+        while True:
+            current_pos = QCursor.pos()
+            if current_pos != prev_pos:
+                prev_pos = current_pos
+                self.mouseMoved.emit(current_pos)
+            time.sleep(0.05)  # Adjust sleep time as needed
 
 
 class LoadingThread(QThread):
@@ -21,25 +38,17 @@ class LoadingThread(QThread):
 
     def run(self):
         # qr kod
-        self.parent.qr = self.parent.findChild(QLabel, 'qr')
-        qrPixmap = QPixmap(self.parent.eventAlbumPath + '/qr.png')
-        self.parent.qr.setPixmap(qrPixmap)
-        self.parent.qr.show()
+        #self.parent.qr = self.parent.findChild(QLabel, 'qr')
+        #qrPixmap = QPixmap(self.parent.eventAlbumPath + '/qr.png')
+        #self.parent.qr.setPixmap(qrPixmap)
+        #self.parent.qr.show()
         # link
-        self.parent.link = self.parent.findChild(QLabel, 'link')
-        self.parent.link.setText("www.denka.live/"+self.parent.eventId)
-        self.parent.link.show()
-
-                # Detect the toolbar area
-        self.parent.detect_toolbar_area()
-        #self.toolbar.addAction(action1)
-        #self.parent.mouse_thread.start()
-        
-
-
-
-        QApplication.processEvents()
-        #self.finished.emit()  # Emit the 'finished' signal when the work is done
+        #self.parent.link = self.parent.findChild(QLabel, 'link')
+        #print("www.denka.live/"+self.parent.eventId)
+        #self.parent.link.setText("www.denka.live/"+self.parent.eventId)
+        #self.parent.link.show()
+        pass
+        #QApplication.processEvents()
 
 
 class SplashUi(QMainWindow):
@@ -48,59 +57,8 @@ class SplashUi(QMainWindow):
 
         self.loaded_resources = False
         self.load_thread = LoadingThread(parent=self)
-        #self.load_thread.finished.connect(self.loading_thread_finished)
 
-        # Set up variables
-        self.mouse_moving = False
-        self.toolbar_visible = False
-
-        # Detect the toolbar area
-        #self.detect_toolbar_area()
-
-        # Create a QTimer to check mouse movement
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.check_mouse_movement)
-        
-
-
-    
-    def detect_toolbar_area(self):
-        # Get the position and dimensions of the toolbar
-        self.toolbar_geometry = self.toolbar.geometry()
-        
-        # Extract the toolbar area coordinates (x1, y1, x2, y2)
-        self.toolbar_area = (
-            self.toolbar_geometry.left(),
-            self.toolbar_geometry.top(),
-            self.toolbar_geometry.right(),
-            self.toolbar_geometry.bottom()
-        )
-        print(self.toolbar_area)
-
-
-
-    def check_mouse_movement(self):
-        # Get the cursor position
-        cursor_pos = QCursor.pos()
-        cursor_x, cursor_y = cursor_pos.x(), cursor_pos.y()
-
-        # Check if the cursor is within the toolbar area
-        if (self.toolbar_area[0] <= cursor_x <= self.toolbar_area[2] and
-                self.toolbar_area[1] <= cursor_y <= self.toolbar_area[3]):
-            if not self.toolbar_visible:
-                print("Show toolbar (implement your code here)")
-                self.toolbar.setHidden(False)
-                self.toolbar_visible = True
-        else:
-            if self.toolbar_visible:
-                print("Hide toolbar (implement your code here)")
-                self.toolbar.setHidden(True)
-                self.toolbar_visible = False
-
-
-
-    def settings(self):
-        # Back to the config screen
+    def return_to_conf(self):
         self.parent().setCurrentIndex(0)
 
 
@@ -112,6 +70,44 @@ class SplashUi(QMainWindow):
             self.eventId = config['eventId']
             self.tema = config['tema']
             self.eventAlbumPath = config['eventAlbumPath']
+
+
+    def mouseMoved(self, pos):
+        # Handle mouse movement
+        toolbar_rect = self.toolbar.geometry()
+        toolbar_global_pos = self.toolbar.mapToGlobal(QPoint(0, 0))
+        if toolbar_rect.contains(pos - toolbar_global_pos):
+            self.toolbar.show()
+            self.timer.stop()  # Stop the timer
+        else:
+            if not self.timer.isActive():
+                self.timer.start(500)  # Start the timer with a delay of 500 milliseconds
+
+
+    def hideToolbar(self):
+        self.toolbar.hide()
+
+    def readPIN(self):
+        # ucitavanje config.jsona i metanje u varijable da se lakse koristi
+        with open('pin.json', 'r') as f:
+            # Load the contents of the file into a dictionary
+            pin = json.load(f)
+        self.lastSessionPin = pin['PIN']
+
+    def loadPIN(self):
+        self.readPIN()
+        self.sessionPin = random.randint(1000, 9999)
+        pin = {
+            "PIN": self.sessionPin,
+            "lastPin": self.lastSessionPin
+        }
+        print("Splash actual PIN ", self.sessionPin)
+        #print("Splash last PIN ", self.self.lastSessionPin)
+        # Write data to the JSON file
+        with open("pin.json", "w") as file:
+            json.dump(pin, file)
+        update_predefined_text(self.sessionPin, self.lastSessionPin)
+
 
     # kad se prikaze ekran
     def showEvent(self, event):
@@ -129,18 +125,50 @@ class SplashUi(QMainWindow):
             self.load_thread.start()
             self.loaded_resources = True
 
-        self.pushButton.show()
+        # Create a toolbar
+        self.toolbar = QToolBar()
+        self.addToolBar(self.toolbar)
+        self.toolbar.hide()  # Hide the toolbar initially
 
-        self.actionSettings.triggered.connect(self.settings)
-        self.toolbar.setHidden(True)
-        self.timer.start(1000)  # Check every second
+        # Set the icon size for toolbar buttons
+        icon_size = QSize(64, 64)  # Width, Height
+        self.toolbar.setIconSize(icon_size)
+
+        # Create actions for the toolbar
+        self.conf = QAction(QIcon(os.getcwd() + "/res/ui/"+self.tema+"/config.png"), "Configuration", self)
+        # Add actions to the toolbar
+        self.toolbar.addAction(self.conf)
+        self.conf.triggered.connect(self.return_to_conf)
+
+        # Track mouse movement in a separate thread
+        self.mouse_thread = MouseMoveThread()
+        self.mouse_thread.mouseMoved.connect(self.mouseMoved)
+        self.mouse_thread.start()
+
+        # Timer for delayed hiding of toolbar
+        self.timer = QTimer()
+        self.timer.setSingleShot(True)
+        self.timer.timeout.connect(self.hideToolbar)
+
+        self.loadPIN()
+
+        self.pushButton.show()
 
         QApplication.processEvents()
         return super().showEvent(event)
         
 
     def buttonPressed(self):
+        # Thread for building WhatsApp qr code for contact
+        thread = threading.Thread(target=self.buildWappQr)
+        # Start the thread
+        thread.start()
 
         self.pushButton.hide()
         QApplication.processEvents()
         self.parent().setCurrentIndex(2)
+
+    def buildWappQr(self):
+        # Create Qr code for WhatsApp contact
+        #createWappQr()
+        pass

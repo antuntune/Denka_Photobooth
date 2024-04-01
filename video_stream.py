@@ -9,10 +9,11 @@ class VideoThread(QThread):
     frameCaptured = pyqtSignal(QPixmap)
 
 
-    def __init__(self):
+    def __init__(self, port):
         super().__init__()
         self.stopped = False
         self.threadId = self.currentThreadId()
+        self.port = port
 
     def stop(self):
         self.stopped = True
@@ -27,7 +28,10 @@ class VideoThread(QThread):
         super().start()
 
     def run(self):
-        cap = cv2.VideoCapture('/dev/video0', cv2.CAP_V4L2)
+        port = '/dev/video' + str(self.port)
+        #print(port)
+        #cap = cv2.VideoCapture('/dev/video0', cv2.CAP_V4L2)
+        cap = cv2.VideoCapture(port, cv2.CAP_V4L2)
         cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
         while not self.stopped:
             ret, frame = cap.read()

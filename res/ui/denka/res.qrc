@@ -1,17 +1,23 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>share_bg.png</file>
+    <file>minus_buttonPressed.png</file>
+    <file>minus_button.png</file>
+    <file>print_bg_.png</file>
     <file>skip_button.png</file>
     <file>skip_buttonPressed.png</file>
     <file>print_radio_unchecked.png</file>
+    <file>plus_buttonPressed.png</file>
+    <file>plus_button.png</file>
     <file>unchecked.png</file>
     <file>gledajteukameru.png</file>
     <file>camera_bg.png</file>
     <file>imgPlaceholder.jpg</file>
     <file>stripPlaceholder.png</file>
     <file>transparent.png</file>
-    <file>album_bg.png</file>
     <file>album_button.png</file>
     <file>album_buttonPressed.png</file>
+    <file>share_bg.png</file>
     <file>album_radio.png</file>
     <file>print_bg.png</file>
     <file>print_button.png</file>

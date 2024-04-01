@@ -16,8 +16,6 @@ import time
 import importlib
 import json
 
-#from arduino_eye import ArduinoController
-
 
 class WorkerThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
@@ -36,11 +34,8 @@ class WorkerThread(QThread):
 
 
 class CameraUi(QMainWindow):
-    def __init__(self, arduinoInstance):
+    def __init__(self):
         super(CameraUi, self).__init__()
-
-        #self.arduino = ArduinoController()
-        self.arduino = arduinoInstance
 
         self.loaded_resources = False
         self.count = 1
@@ -53,8 +48,15 @@ class CameraUi(QMainWindow):
 
         self.videoLoading = QMovie(os.getcwd() + "/res/ui/videoLoading.gif")
 
-        self.camera_thread = VideoThread()
+        self.loadPort()
+        self.camera_thread = VideoThread(self.cameraPort)
         self.camera_thread.frameCaptured.connect(self.updateFrame)
+
+    def loadPort(self):
+        with open('config.json', 'r') as f:
+            # Load the contents of the file into a dictionary
+            config = json.load(f)
+            self.cameraPort = config['cameraPort']
 
 
     def loadResources(self):
@@ -94,6 +96,17 @@ class CameraUi(QMainWindow):
         self.fullscreenlabel.setVisible(False)
         QApplication.processEvents()
 
+#    def threadFinished(self):
+#
+#        self.fullscreenlabel.setVisible(False)
+#        QApplication.processEvents()
+#        if self.flag == 1:
+#            self.movie.start()
+#            self.gif_label.hide()
+#        self.flag = 0
+#        if self.count == 4:
+#            self.parent().setCurrentIndex(3)
+
 
     def loadFromJson(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -106,7 +119,8 @@ class CameraUi(QMainWindow):
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
             self.cardBright = config['cardBright']
-            self.arduinoStatus = config['Arduino']
+            self.testAlbum = config['testAlbum']
+            self.cameraPort = config['cameraPort']
 
     def showStream(self):
         self.videoLabel.hide()
@@ -144,13 +158,12 @@ class CameraUi(QMainWindow):
     # kad se prikaze ekran
     def showEvent(self, event):
 
+        self.loadPort()
+
         if not self.loaded_resources:
             self.loadFromJson()
             self.loadResources()
             self.loaded_resources = True
-
-        if self.arduinoStatus == True:
-            self.arduino.send_command_off()
 
         self.videoLabel.show()
         self.videoLoading.start()
@@ -183,24 +196,17 @@ class CameraUi(QMainWindow):
         self.worker_thread.start()
 
     def threadFinished(self):
-        if self.arduinoStatus == True:
-            print("poslije odbrojavanja")
-            self.arduino.send_command_off()
-
-        self.fullscreenlabel.setVisible(False)
-        QApplication.processEvents()
         if self.flag == 1:
             self.movie.start()
             self.gif_label.hide()
         self.flag = 0
         if self.count == 4:
             self.parent().setCurrentIndex(3)
+        self.fullscreenlabel.setVisible(False)
+        QApplication.processEvents()
         
 
     def slikanje(self):
-        # Turn on arduino eye
-        if self.arduinoStatus == True:
-            self.arduino.send_command_on()
 
         # zaustavi stream
         self.camera_thread.stop()
@@ -226,9 +232,16 @@ class CameraUi(QMainWindow):
         # priprema slike za karticu
         dslr.renameImage(slika)
 
-        shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
+        if self.testAlbum == True:
+            shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "testAlbum/" + slika + shot_time + ".jpg")
+        else:
+            shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
+
+        # prebaci u share folder     
 
         dslr.resizeImage(slika + ".jpg")
+        # prebaci u share folder
+        shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", os.getcwd() + "/images/" + slika + ".jpg")
         # premjestanje u mapu dogadaja
         shutil.move(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + slika + ".jpg")
         QCoreApplication.processEvents()
@@ -247,9 +260,6 @@ class CameraUi(QMainWindow):
             # zavrsi slikanje, pravi karticu i prebac ekran
             #self.movie.finished.disconnect(self.slikaj)
             self.napraviKarticu()
-
-            if self.arduinoStatus == True:
-                self.arduino.send_command_idle()
 
 
         # Increment count

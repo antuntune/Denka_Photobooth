@@ -8,6 +8,8 @@ import json
 import cups
 import os
 import time
+import threading
+#from cloudinaryUpload import uploadImage
 
 
 # spajanje na cups
@@ -41,6 +43,7 @@ class PrintUi(QMainWindow):
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
+
     def timeoutThreadFinished(self):
         self.parent().setCurrentIndex(1)
 
@@ -53,12 +56,10 @@ class PrintUi(QMainWindow):
         self.strip4 = self.findChild(QLabel, 'strip4')
         self.strip5 = self.findChild(QLabel, 'strip5')
         self.strip6 = self.findChild(QLabel, 'strip6')
+        self.strip7 = self.findChild(QLabel, 'strip7')
+        self.strip8 = self.findChild(QLabel, 'strip8')
 
-        self.buttonGroup = QButtonGroup(self)
-        self.buttonGroup.addButton(self.findChild(
-            QRadioButton, "radio2"))
-        self.buttonGroup.addButton(self.findChild(
-            QRadioButton, "radio4"))
+
 
         # Button sound effect
         self.btn_sfx = QSoundEffect()
@@ -68,6 +69,26 @@ class PrintUi(QMainWindow):
         self.pushButton.clicked.connect(self.printPressed)
         self.skipButton.clicked.connect(self.skipPressed)
 
+        self.plusButton.clicked.connect(self.plus_strip_num)
+        self.minusButton.clicked.connect(self.minus_strip_num)
+
+    def plus_strip_num(self):
+        # Increment the current image index
+        self.current_image_index = (self.current_image_index + 1) % len(self.pixmaps) 
+        if self.current_image_index > self.max_pic_num or self.current_image_index == 0:
+            self.current_image_index = int(self.max_pic_num)
+        # Update the image displayed
+        self.update_print_num_image()
+        print(self.max_pic_num)
+
+    def minus_strip_num(self):
+        # Increment the current image index
+        self.current_image_index = (self.current_image_index - 1) % len(self.pixmaps)
+        if self.current_image_index == len(self.pixmaps) - 1:
+            self.current_image_index = 0
+        print(self.current_image_index)
+        # Update the image displayed
+        self.update_print_num_image()
 
         
 
@@ -81,13 +102,17 @@ class PrintUi(QMainWindow):
             self.albumPath = config['albumPath']
             self.eventAlbumPath = config['eventAlbumPath']
             self.cardPath = config['cardPath']
+            self.print_limit_num = config['print_limit_num']
+            self.shareImages = config['shareImages']
 
     def showEvent(self, a0: QShowEvent) -> None:
 
+        self.loadFromJson()
         if not self.loaded_resources:
             self.loadFromJson()
             self.loadResources()
             self.loaded_resources = True
+
 
         stripPixmap = QPixmap(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
@@ -97,13 +122,84 @@ class PrintUi(QMainWindow):
         self.strip4.setPixmap(stripPixmap)
         self.strip5.setPixmap(stripPixmap)
         self.strip6.setPixmap(stripPixmap)
+        self.strip7.setPixmap(stripPixmap)
+        self.strip8.setPixmap(stripPixmap)
 
-        # Set "radio2" as the initially checked button
-        self.findChild(QRadioButton, "radio2").setChecked(True)
+        self.strip1.setVisible(False)
+        self.strip2.setVisible(False)
+        self.strip3.setVisible(False)
+        self.strip4.setVisible(False)
+        self.strip5.setVisible(False)
+        self.strip6.setVisible(False)
+        self.strip7.setVisible(False)
+        self.strip8.setVisible(False)
+
+
+        # Load the QPixmap objects for each image
+        self.pixmaps = [
+            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "two.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "four.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "six.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "eight.png")
+        ]
+        self.current_image_index = 0
+
+        # Set the initial image
+        self.update_print_num_image()
+
+        self.max_pic_num = int((self.print_limit_num / 2 ) - 1)
+
 
         self.timeout_thread.start()
 
         return super().showEvent(a0)
+
+    def update_print_num_image(self):
+        # Get the current pixmap
+        pixmap = self.pixmaps[self.current_image_index]
+        # Scale the pixmap to fit the label while maintaining aspect ratio
+        pixmap = pixmap.scaled(self.label.size(), aspectRatioMode=True, transformMode=True)
+        # Set the scaled pixmap to the QLabel
+        self.label.setPixmap(pixmap)
+        print(self.current_image_index)
+
+        if int((self.current_image_index + 1)*2) == 2:
+            self.strip1.setVisible(True)
+            self.strip2.setVisible(True)
+            self.strip3.setVisible(False)
+            self.strip4.setVisible(False)
+            self.strip5.setVisible(False)
+            self.strip6.setVisible(False)
+            self.strip7.setVisible(False)
+            self.strip8.setVisible(False)
+        if int((self.current_image_index + 1)*2) == 4:
+            self.strip1.setVisible(True)
+            self.strip2.setVisible(True)
+            self.strip3.setVisible(True)
+            self.strip4.setVisible(True)
+            self.strip5.setVisible(False)
+            self.strip6.setVisible(False)
+            self.strip7.setVisible(False)
+            self.strip8.setVisible(False)  
+        if int((self.current_image_index + 1)*2) == 6:
+            self.strip1.setVisible(True)
+            self.strip2.setVisible(True)
+            self.strip3.setVisible(True)
+            self.strip4.setVisible(True)
+            self.strip5.setVisible(True)
+            self.strip6.setVisible(True)
+            self.strip7.setVisible(False)
+            self.strip8.setVisible(False)  
+        if int((self.current_image_index + 1)*2) == 8:
+            self.strip1.setVisible(True)
+            self.strip2.setVisible(True)
+            self.strip3.setVisible(True)
+            self.strip4.setVisible(True)
+            self.strip5.setVisible(True)
+            self.strip6.setVisible(True)
+            self.strip7.setVisible(True)
+            self.strip8.setVisible(True)  
+
 
     def printPressed(self):
 
@@ -111,16 +207,12 @@ class PrintUi(QMainWindow):
         self.timeout_thread.terminate()
 
 
-        if self.buttonGroup.checkedId() == -2:
-            kolKartica = 2
-        elif self.buttonGroup.checkedId() == -3:
-            kolKartica = 4
+        self.printaj()
+
+        if self.shareImages == True:
+            self.parent().setCurrentIndex(4)
         else:
-            print("No radio button is selected")
-
-        self.printaj(kolKartica)
-
-        self.parent().setCurrentIndex(1)
+            self.parent().setCurrentIndex(1)
 
 
     def skipPressed(self):
@@ -128,9 +220,16 @@ class PrintUi(QMainWindow):
         # kill timeout thread which set up splash window if timeout happend beacuse skip button is pressed
         self.timeout_thread.terminate()
 
-        self.parent().setCurrentIndex(1)
+        if self.shareImages == True:
+            self.parent().setCurrentIndex(4)
+        else:
+            self.parent().setCurrentIndex(1)
 
-    def printaj(self, kolKartica):
+    def printaj(self):
+
+
+        self.kolKartica = int((self.current_image_index +1) * 2)
+        print(self.kolKartica)
 
 
         im1 = Image.open(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
@@ -143,11 +242,8 @@ class PrintUi(QMainWindow):
 
         get_concat_h(im1).save(self.eventAlbumPath + self.eventId + "double" + ".jpg", quality=96)
 
-        conn.printFile(
-            PrinterUsing, self.eventAlbumPath + self.eventId + "double" + ".jpg", "title", emptyDict)
-        print('printam dve kartice')
+        #self.eventAlbumPath + self.eventId + "double" + ".jpg", "title"
 
-        if kolKartica == 4:
-            conn.printFile(
-                PrinterUsing, self.eventAlbumPath + self.eventId + "double" + ".jpg", "title", emptyDict)
-            print('printam JOS dve kartice')
+
+        for _ in range(int(self.kolKartica / 2)):
+            conn.printFile(PrinterUsing, self.eventAlbumPath + self.eventId + "double" + ".jpg", "title", emptyDict)

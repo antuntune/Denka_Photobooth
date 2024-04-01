@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1920</width>
+    <height>1080</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1920</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1920</width>
+    <height>1080</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/newPrefix/print_bg.png);
+</string>
+   </property>
+   <widget class="QRadioButton" name="radio2">
+    <property name="geometry">
+     <rect>
+      <x>900</x>
+      <y>600</y>
+      <width>252</width>
+      <height>252</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton
+{
+background-image: url(:/newPrefix/transparent.png);
+}
+
+
+QRadioButton::indicator
+{
+    width: 252px;
+    height: 252px;
+	
+}
+QRadioButton::indicator::unchecked
+{
+	image: url(:/newPrefix/print_radio_unchecked.png);
+}
+
+QRadioButton::indicator::checked 
+{
+	
+	image: url(:/newPrefix/print_radio.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>RadioButton</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QRadioButton" name="radio4">
+    <property name="geometry">
+     <rect>
+      <x>1440</x>
+      <y>590</y>
+      <width>252</width>
+      <height>252</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton
+{
+background-image: url(:/newPrefix/transparent.png);
+}
+
+
+QRadioButton::indicator
+{
+    width: 252px;
+    height: 252px;
+	
+}
+QRadioButton::indicator::unchecked
+{
+	image: url(:/newPrefix/print_radio_unchecked.png);
+}
+
+QRadioButton::indicator::checked 
+{
+	
+	image: url(:/newPrefix/print_radio.png);
+}</string>
+    </property>
+    <property name="text">
+     <string>RadioButton</string>
+    </property>
+    <attribute name="buttonGroup">
+     <string notr="true">buttonGroup</string>
+    </attribute>
+   </widget>
+   <widget class="QLabel" name="strip2">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>100</y>
+      <width>163</width>
+      <height>489</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip1">
+    <property name="geometry">
+     <rect>
+      <x>850</x>
+      <y>100</y>
+      <width>163</width>
+      <height>489</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip6">
+    <property name="geometry">
+     <rect>
+      <x>1650</x>
+      <y>50</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip5">
+    <property name="geometry">
+     <rect>
+      <x>1580</x>
+      <y>80</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip4">
+    <property name="geometry">
+     <rect>
+      <x>1520</x>
+      <y>110</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="strip3">
+    <property name="geometry">
+     <rect>
+      <x>1450</x>
+      <y>140</y>
+      <width>151</width>
+      <height>454</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap resource="res.qrc">:/newPrefix/stripPlaceholder.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1170</x>
+      <y>880</y>
+      <width>387</width>
+      <height>126</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/print_button.png);
+}
+QPushButton:pressed {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/print_buttonPressed.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="skipButton">
+    <property name="geometry">
+     <rect>
+      <x>1620</x>
+      <y>980</y>
+      <width>291</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Espiritu Condensed</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/skip_button.png);
+}
+QPushButton:pressed {
+    background-color: rgba(0, 255, 255, 0);
+	background-image: url(:/newPrefix/skip_buttonPressed.png);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="autoRepeat">
+     <bool>false</bool>
+    </property>
+    <property name="autoExclusive">
+     <bool>false</bool>
+    </property>
+    <property name="autoDefault">
+     <bool>false</bool>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+ </buttongroups>
+</ui>
