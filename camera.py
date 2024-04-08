@@ -232,10 +232,14 @@ class CameraUi(QMainWindow):
         # priprema slike za karticu
         dslr.renameImage(slika)
 
+        print("picAlbum ",self.testAlbum )
+
         if self.testAlbum == True:
-            shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "testAlbum/" + slika + shot_time + ".jpg")
-        else:
-            shutil.copy2(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
+            shutil.copy2(os.getcwd() + "/" + slika + ".jpg", self.eventAlbumPath + "testAlbum/" + slika + shot_time + ".jpg")
+            print("testAlbum")
+        if self.testAlbum == False:
+            shutil.copy2(os.getcwd() + "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
+            print("picAlbum")
 
         # prebaci u share folder     
 

@@ -16,7 +16,7 @@ import res
 app = QApplication(sys.argv)
 
 # hide cursor in app
-#app.setOverrideCursor(QCursor(Qt.BlankCursor))	
+app.setOverrideCursor(QCursor(Qt.BlankCursor))	
 
 widget = QStackedWidget()
 
