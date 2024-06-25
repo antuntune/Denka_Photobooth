@@ -10,6 +10,8 @@ from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
 from share import ShareUi
+from album import AlbumUi
+
 import res
 
 
@@ -25,6 +27,7 @@ splashUi = SplashUi()
 cameraUi = CameraUi()
 printUi = PrintUi()
 shareUi = ShareUi()
+albumUi = AlbumUi()
 configUi = ConfigUi()
 
 widget.addWidget(configUi)
@@ -36,6 +39,8 @@ widget.addWidget(cameraUi)
 widget.addWidget(printUi)
 
 widget.addWidget(shareUi)
+
+widget.addWidget(albumUi)
 
 widget.showFullScreen()
 app.exec_()

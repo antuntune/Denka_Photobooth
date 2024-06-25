@@ -212,7 +212,7 @@ class PrintUi(QMainWindow):
         if self.shareImages == True:
             self.parent().setCurrentIndex(4)
         else:
-            self.parent().setCurrentIndex(1)
+            self.parent().setCurrentIndex(5)
 
 
     def skipPressed(self):
@@ -223,7 +223,7 @@ class PrintUi(QMainWindow):
         if self.shareImages == True:
             self.parent().setCurrentIndex(4)
         else:
-            self.parent().setCurrentIndex(1)
+            self.parent().setCurrentIndex(5)
 
     def printaj(self):
 
