@@ -14,18 +14,22 @@ import string
 from dotenv import load_dotenv
 
 
+
 # Load environment variables
 load_dotenv()
 
+
 # Configure Cloudinary using environment variables
 cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
     secure=True
 )
 
 # Thread class for handling a timeout period, used for the splash screen
+
+
 class TimeOutThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
 
@@ -38,6 +42,8 @@ class TimeOutThread(QThread):
         self.finished.emit()  # Emit the 'finished' signal when the work is done
 
 # Thread class for handling image uploads to Cloudinary
+
+
 class UploadThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
 
@@ -50,12 +56,16 @@ class UploadThread(QThread):
     def run(self):
         # Upload each image to Cloudinary
         for i, image in enumerate(self.images, start=1):
-            upload(image, public_id=f"denka/{self.event_id}/{self.random_string}/slika{i}")
+            upload(
+                image, public_id=f"denka/{self.event_id}/{self.random_string}/slika{i}")
         # Upload the GIF to Cloudinary
-        upload("images/output.gif", public_id=f"denka/{self.event_id}/{self.random_string}/zx")
+        upload("images/output.gif",
+               public_id=f"denka/{self.event_id}/{self.random_string}/zx")
         self.finished.emit()  # Emit the 'finished' signal when the work is done
 
 # Main window class for the album UI
+
+
 class AlbumUi(QMainWindow):
     def __init__(self):
         super(AlbumUi, self).__init__()
@@ -63,7 +73,8 @@ class AlbumUi(QMainWindow):
         self.loaded_resources = False  # Flag to check if resources are loaded
         self.eventId = ""  # Event ID placeholder
         self.timeout_thread = TimeOutThread(parent=self)
-        self.timeout_thread.finished.connect(self.timeoutThreadFinished)  # Connect timeout thread signal to slot
+        # Connect timeout thread signal to slot
+        self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
     def timeoutThreadFinished(self):
         # Set the current index to 1 on the parent widget when timeout finishes
@@ -100,11 +111,14 @@ class AlbumUi(QMainWindow):
         print(random_string)
 
         # Create a GIF from a list of image files
-        image_filenames = ['images/slika1.jpg', 'images/slika2.jpg', 'images/slika3.jpg']
+        image_filenames = ['images/slika1.jpg',
+                           'images/slika2.jpg', 'images/slika3.jpg']
         duration = 500  # Duration for each frame in milliseconds (0.5 seconds)
         images = [Image.open(filename) for filename in image_filenames]
-        images = [image.convert('RGBA') for image in images]  # Convert images to RGBA mode
-        images[0].save('images/output.gif', save_all=True, append_images=images[1:], duration=duration, loop=0)
+        # Convert images to RGBA mode
+        images = [image.convert('RGBA') for image in images]
+        images[0].save('images/output.gif', save_all=True,
+                       append_images=images[1:], duration=duration, loop=0)
 
         # Generate a QR code for a dynamic URL
         url = f"https://www.denka.com.hr/img?folder={self.eventId}/{random_string}"
@@ -121,8 +135,10 @@ class AlbumUi(QMainWindow):
         self.timeout_thread.start()
 
         # Start the upload thread
-        self.upload_thread = UploadThread(image_filenames, self.eventId, random_string, parent=self)
-        self.upload_thread.finished.connect(self.uploadThreadFinished)  # Connect upload thread signal to slot
+        self.upload_thread = UploadThread(
+            image_filenames, self.eventId, random_string, parent=self)
+        # Connect upload thread signal to slot
+        self.upload_thread.finished.connect(self.uploadThreadFinished)
         self.upload_thread.start()
 
         return super().showEvent(a0)
