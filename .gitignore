@@ -1,2 +1,8 @@
 __pycache__/
 res/session/
+images/
+
+# Environment files
+.env
+*.env
+!.env.example

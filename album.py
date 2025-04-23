@@ -11,12 +11,17 @@ from PIL import Image
 import qrcode
 import secrets
 import string
+from dotenv import load_dotenv
 
-# Configure Cloudinary with your credentials
+
+# Load environment variables
+load_dotenv()
+
+# Configure Cloudinary using environment variables
 cloudinary.config(
-    cloud_name="dpuhwc49z",
-    api_key="544431793628367",
-    api_secret="jXcv2cki8LffeJ1Wz-FOrYU4sd8",
+    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.getenv('CLOUDINARY_API_KEY'),
+    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
     secure=True
 )
 
