@@ -29,7 +29,7 @@
    <string notr="true">background-image: url(:/newPrefix/splash_bg.png);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
       <x>765</x>
@@ -53,6 +53,27 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="configScreenButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>121</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: transparent;
+    border: none;
+    color: black; /* ili neka druga boja po želji */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
     </property>
    </widget>
   </widget>

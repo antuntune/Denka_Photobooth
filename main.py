@@ -5,20 +5,19 @@ from PyQt5.QtCore import Qt
 import os
 import sys
 import json
-from config import ConfigUi
+from config_screen import ConfigUi
 from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
-from share import ShareUi
+#from share import ShareUi
 from album import AlbumUi
-
 import res
 
 
 app = QApplication(sys.argv)
 
 # hide cursor in app
-app.setOverrideCursor(QCursor(Qt.BlankCursor))	
+#app.setOverrideCursor(QCursor(Qt.BlankCursor))	
 
 widget = QStackedWidget()
 
@@ -26,7 +25,7 @@ widget = QStackedWidget()
 splashUi = SplashUi()
 cameraUi = CameraUi()
 printUi = PrintUi()
-shareUi = ShareUi()
+#shareUi = ShareUi()
 albumUi = AlbumUi()
 configUi = ConfigUi()
 
@@ -38,7 +37,7 @@ widget.addWidget(cameraUi)
 
 widget.addWidget(printUi)
 
-widget.addWidget(shareUi)
+#widget.addWidget(shareUi)
 
 widget.addWidget(albumUi)
 

@@ -25,6 +25,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
     <string notr="true">background-image: url(:/newPrefix/album_bg.png);</string>
@@ -74,7 +77,4 @@ QPushButton:pressed {
   <include location="res.qrc"/>
  </resources>
  <connections/>
- <buttongroups>
-  <buttongroup name="buttonGroup"/>
- </buttongroups>
 </ui>

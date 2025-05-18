@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="newPrefix">
+    <file>album_bg.png</file>
+    <file>start.png</file>
+    <file>shutdown_icon.png</file>
     <file>share_bg.png</file>
     <file>minus_buttonPressed.png</file>
     <file>minus_button.png</file>

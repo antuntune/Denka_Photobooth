@@ -40,560 +40,862 @@
    <enum>QTabWidget::Rounded</enum>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tab_3">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <widget class="QTabWidget" name="MainTab">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>30</y>
+      <x>0</x>
+      <y>80</y>
       <width>1871</width>
       <height>871</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">/* 🔲 Okvir oko sadržaja tabova */
+QTabWidget::pane {
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    background: #f7f7f7;
+    padding: 6px;
+}
+
+/* 📁 Svi tabovi (neaktivni) */
+QTabBar::tab {
+    background: #eaeaea;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding: 8px 20px;
+    margin-right: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+    min-height: 56px;
+}
+
+/* ✅ Aktivni tab */
+QTabBar::tab:selected {
+    background: #ffffff;
+    border: 1px solid #999;
+    border-bottom: none;
+    color: #222;
+}
+
+/* ✨ Hover efekt */
+QTabBar::tab:hover {
+    background: #f0f0f0;
+    color: #111;
+}
+
+</string>
+    </property>
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="tab_1">
+    <widget class="QWidget" name="Postavke">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
      <attribute name="title">
-      <string>Početna</string>
+      <string>Postavke</string>
      </attribute>
-     <widget class="QCheckBox" name="shareImagesCheckBox">
+     <widget class="QWidget" name="verticalLayoutWidget_5">
       <property name="geometry">
        <rect>
-        <x>40</x>
-        <y>150</y>
-        <width>191</width>
-        <height>51</height>
+        <x>50</x>
+        <y>560</y>
+        <width>343</width>
+        <height>191</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>25</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Slanje slika</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_5">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="font">
+          <font>
+           <pointsize>-1</pointsize>
+           <weight>63</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>KOREKCIJA OSVJETLJENJA NA PRINTU</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="brightSlider">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+    border: 1px solid #bbb;
+    height: 22px;
+    border-radius: 11px;
+    background: qlineargradient(
+        spread:pad,
+        x1:0, y1:0.5,
+        x2:1, y2:0.5,
+        stop:0 #fff9e6,
+        stop:1 #f0ad4e
+    );
+}
+
+QSlider::handle:horizontal {
+    background: #f0ad4e;
+    border: 2px solid #d58512;
+    width: 50px;
+    height: 50px;
+    margin: -14px 0;  /* podignut klizač iznad groove-a */
+    border-radius: 25px;
+}
+
+QSlider::add-page:horizontal,
+QSlider::sub-page:horizontal {
+    background: transparent;
+}
+</string>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="sliderPosition">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::TicksBelow</enum>
+         </property>
+         <property name="tickInterval">
+          <number>10</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="brightLabel">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    background-color: #fdf8f0;
+    border: 2px solid #f0ad4e;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #d58512;
+    min-width: 60px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QPushButton" name="promotivnaButton">
+     <widget class="QWidget" name="verticalLayoutWidget_6">
       <property name="geometry">
        <rect>
-        <x>830</x>
-        <y>390</y>
-        <width>401</width>
-        <height>111</height>
+        <x>410</x>
+        <y>570</y>
+        <width>271</width>
+        <height>178</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Printaj 4 promotivne</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="font">
+          <font>
+           <pointsize>-1</pointsize>
+           <weight>63</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>MAX BROJ ZA PRINTANJE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QPushButton" name="plusPrintButton">
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>99</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #ffffff;
+    border: 2px solid #5cb85c;
+    color: #5cb85c;
+    font-size: 28px;
+    font-weight: 900;
+    border-radius: 20px;  /* veće zaobljenje */
+    padding: 12px;
+}
+
+QPushButton:hover {
+    background-color: #dff0d8;
+    border: 2px solid #4cae4c;
+    color: #4cae4c;
+}
+
+QPushButton:pressed {
+    background-color: #c8e5bc;
+    border: 2px solid #398439;
+    color: #398439;
+}
+</string>
+             </property>
+             <property name="text">
+              <string>+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="minusPrintButton">
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>99</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+    background-color: #ffffff;
+    border: 2px solid #d9534f;
+    color: #d9534f;
+    font-size: 28px;
+    font-weight: 900;
+    border-radius: 20px;  /* veće zaobljenje */
+    padding: 12px;
+}
+
+QPushButton:hover {
+    background-color: #f2dede;
+    border: 2px solid #c9302c;
+    color: #c9302c;
+}
+
+QPushButton:pressed {
+    background-color: #ebcccc;
+    border: 2px solid #ac2925;
+    color: #ac2925;
+}
+</string>
+             </property>
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="printNumLabel">
+           <property name="styleSheet">
+            <string notr="true">QLabel {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #fdfdfd;
+    color: red;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+    font-size: 50px;
+}
+</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
-     <widget class="QPushButton" name="slideshowButton">
+     <widget class="QWidget" name="verticalLayoutWidget_8">
       <property name="geometry">
        <rect>
-        <x>840</x>
-        <y>120</y>
-        <width>401</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Slideshow</string>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="testAlbumCheckBox">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>240</y>
-        <width>221</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>25</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Test Album</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_2">
-     <attribute name="title">
-      <string>Organizacija događaja</string>
-     </attribute>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>160</x>
-        <y>380</y>
-        <width>221</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string>SVJETLINA KARTICE</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="brightSlider">
-      <property name="geometry">
-       <rect>
-        <x>40</x>
-        <y>430</y>
-        <width>401</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="maximum">
-       <number>200</number>
-      </property>
-      <property name="sliderPosition">
-       <number>100</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>10</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="brightLabel">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>500</y>
-        <width>61</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 190, 111);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>210</y>
-        <width>311</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string>malim slovima i sve zajedno</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="inputID">
-      <property name="geometry">
-       <rect>
-        <x>280</x>
-        <y>130</y>
-        <width>381</width>
-        <height>71</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>100</y>
-        <width>231</width>
-        <height>141</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>20</y>
-        <width>221</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string>eventID:</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="deleteID">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>20</y>
-        <width>221</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Izbriši eventID</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="addID">
-      <property name="geometry">
-       <rect>
-        <x>330</x>
-        <y>250</y>
-        <width>221</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>13</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Dodaj eventID</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="albumButton">
-      <property name="geometry">
-       <rect>
-        <x>660</x>
-        <y>510</y>
-        <width>401</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Lokacija albuma</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="albumLabel">
-      <property name="geometry">
-       <rect>
-        <x>1090</x>
-        <y>530</y>
-        <width>761</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="cardLabel">
-      <property name="geometry">
-       <rect>
-        <x>1140</x>
-        <y>380</y>
+        <x>50</x>
+        <y>40</y>
         <width>491</width>
-        <height>81</height>
+        <height>471</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>20</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_8">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_7">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+             </property>
+             <property name="text">
+              <string>Event ID management</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QComboBox" name="eventIDsList">
+               <property name="font">
+                <font>
+                 <pointsize>-1</pointsize>
+                </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QComboBox {
+    background-color: #ffffff;
+    border: 2px solid #f0ad4e;  /* žarko narančasti okvir */
+    border-radius: 8px;
+    padding: 6px 36px 6px 12px;
+    font-size: 22px;
+    color: #333;
+    min-height: 36px;
+}
+
+QComboBox:hover {
+    border: 2px solid #ec971f;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 26px;
+    border: none;
+    background: transparent;
+}
+
+QComboBox::down-arrow {
+    image: url(:/icons/arrow-down.svg);  /* ✅ koristi pravu ikonu ako postoji */
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+}
+</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_3">
+               <item>
+                <widget class="QPushButton" name="deleteID">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    background-color: #fff8f0;
+    border: 2px solid #f0ad4e;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #d58512;
+}
+
+QPushButton:hover {
+    background-color: #fce5c9;
+    border-color: #ec971f;
+    color: #c76c0a;
+}
+
+QPushButton:pressed {
+    background-color: #f8d5a3;
+    border-color: #d58512;
+    color: #a95c08;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string>Izbriši eventID</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="inputID">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>200</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel {
+    font-size: 22px;
+    font-weight: 500;
+    color: #5c4a22;
+    background-color: #fff7ec;
+    border: 1px solid #f0ad4e;
+    border-radius: 6px;
+    padding: 6px 12px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="addID">
+                 <property name="font">
+                  <font>
+                   <pointsize>-1</pointsize>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    background-color: #fff8f0;
+    border: 2px solid #f0ad4e;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #d58512;
+}
+
+QPushButton:hover {
+    background-color: #fce5c9;
+    border-color: #ec971f;
+    color: #c76c0a;
+}
+
+QPushButton:pressed {
+    background-color: #f8d5a3;
+    border-color: #d58512;
+    color: #a95c08;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string>Dodaj eventID</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="testAlbumCheckBox">
+           <property name="font">
+            <font>
+             <pointsize>-1</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QCheckBox {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QCheckBox::indicator {
+    width: 24px;
+    height: 24px;
+}
+
+QCheckBox:checked {
+    color: red;
+}
+
+QCheckBox:unchecked {
+    color: green;
+}
+</string>
+           </property>
+           <property name="text">
+            <string>Test Album</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="1">
+            <widget class="QCheckBox" name="templateCheckBox">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QCheckBox::indicator {
+    width: 24px;
+    height: 24px;
+}
+
+QCheckBox:checked {
+    color: green;
+}
+
+QCheckBox:unchecked {
+    color: red;
+}
+
+</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QCheckBox" name="albumCheckBox">
+             <property name="styleSheet">
+              <string notr="true">QCheckBox {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QCheckBox::indicator {
+    width: 24px;
+    height: 24px;
+}
+
+QCheckBox:checked {
+    color: green;
+}
+
+QCheckBox:unchecked {
+    color: red;
+}
+</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QPushButton" name="templateButton">
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">/* 🎯 TIPKE */
+QPushButton {
+    background-color: #fff8f0;
+    border: 2px solid #f0ad4e;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d58512;
+}
+
+QPushButton:hover {
+    background-color: #fce5c9;
+    border-color: #ec971f;
+    color: #c76c0a;
+}
+
+QPushButton:pressed {
+    background-color: #f8d5a3;
+    border-color: #d58512;
+    color: #a95c08;
+}</string>
+             </property>
+             <property name="text">
+              <string>Odaberi template</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="albumButton">
+             <property name="font">
+              <font>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">/* 🎯 TIPKE */
+QPushButton {
+    background-color: #fff8f0;
+    border: 2px solid #f0ad4e;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #d58512;
+}
+
+QPushButton:hover {
+    background-color: #fce5c9;
+    border-color: #ec971f;
+    color: #c76c0a;
+}
+
+QPushButton:pressed {
+    background-color: #f8d5a3;
+    border-color: #d58512;
+    color: #a95c08;
+}</string>
+             </property>
+             <property name="text">
+              <string>Lokacija albuma</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
-     <widget class="QPushButton" name="karticaButton">
-      <property name="geometry">
-       <rect>
-        <x>660</x>
-        <y>370</y>
-        <width>401</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>15</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Odaberi karticu</string>
-      </property>
-     </widget>
-     <widget class="QSlider" name="picNumSlider">
+    </widget>
+    <widget class="QWidget" name="DSLR">
+     <attribute name="title">
+      <string>DSLR</string>
+     </attribute>
+     <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>640</y>
-        <width>401</width>
-        <height>61</height>
+        <y>30</y>
+        <width>531</width>
+        <height>171</height>
        </rect>
       </property>
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>4</number>
-      </property>
-      <property name="singleStep">
-       <number>1</number>
-      </property>
-      <property name="pageStep">
-       <number>5</number>
-      </property>
-      <property name="value">
-       <number>1</number>
-      </property>
-      <property name="sliderPosition">
-       <number>1</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksBelow</enum>
-      </property>
-      <property name="tickInterval">
-       <number>10</number>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>600</y>
-        <width>281</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string>BROJ SLIKA ZA PRINT (MAX)</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="picNumLabel">
-      <property name="geometry">
-       <rect>
-        <x>200</x>
-        <y>690</y>
-        <width>61</width>
-        <height>51</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>30</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(255, 190, 111);</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab">
-     <attribute name="title">
-      <string>Slanje slika</string>
-     </attribute>
-     <widget class="QPushButton" name="shareButton">
-      <property name="geometry">
-       <rect>
-        <x>220</x>
-        <y>150</y>
-        <width>141</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Start Server</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>90</y>
-        <width>351</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>16</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(239, 41, 41);</string>
-      </property>
-      <property name="text">
-       <string>POKRENI SERVER ZA SLANJE SLIKA</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QWidget" name="tab_4">
-     <attribute name="title">
-      <string>Kamera</string>
-     </attribute>
-     <widget class="QLabel" name="cameraLabel">
-      <property name="geometry">
-       <rect>
-        <x>210</x>
-        <y>70</y>
-        <width>471</width>
-        <height>81</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="cameraCheck">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>80</y>
-        <width>151</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Camera check</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="cameraPortComboBox">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>290</y>
-        <width>231</width>
-        <height>141</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Ubuntu Condensed</family>
-        <pointsize>24</pointsize>
-        <weight>9</weight>
-        <italic>false</italic>
-        <bold>false</bold>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(98, 160, 234);
-font: 75 24pt &quot;Ubuntu Condensed&quot;;</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>240</y>
-        <width>161</width>
-        <height>41</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Camera Port</string>
-      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="cameraCheck">
+         <property name="font">
+          <font>
+           <pointsize>17</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+    background-color: #fff8f0;
+    border: 2px solid #f0ad4e;
+    color: #000000;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: bold;
+}
+
+QPushButton:hover {
+    background-color: #fde3ba;
+    border: 2px solid #ec971f;
+}
+
+QPushButton:pressed {
+    background-color: #fcd49b;
+    border: 2px solid #d58512;
+}
+
+</string>
+         </property>
+         <property name="text">
+          <string>Camera check</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="cameraLabel">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    border: 1px solid #337ab7;
+    background-color: #e7f3fe;
+    color: #31708f;
+    border-radius: 5px;
+    padding: 6px;
+}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>760</x>
-      <y>930</y>
+      <x>740</x>
+      <y>960</y>
       <width>251</width>
       <height>101</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(237, 51, 59);
-font: 75 24pt &quot;Ubuntu Condensed&quot;;</string>
+     <string notr="true">QPushButton {
+    background-color: #ffffff;
+    border: 4px solid #f0ad4e;
+    border-radius: 100px;  /* pola od dimenzije (200px) za savršen krug */
+    padding: 10px;
+}
+
+QPushButton:hover {
+    background-color: #fce5c9;
+    border-color: #ec971f;
+}
+
+QPushButton:pressed {
+    background-color: #f8d5a3;
+    border-color: #d58512;
+}
+</string>
     </property>
     <property name="text">
-     <string>START BJUTN</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/newPrefix/start.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>200</width>
+      <height>200</height>
+     </size>
     </property>
    </widget>
-   <widget class="QPushButton" name="saveButton">
+   <widget class="QPushButton" name="shutdownButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>960</y>
-      <width>221</width>
-      <height>71</height>
+      <x>1770</x>
+      <y>10</y>
+      <width>111</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(46, 194, 126);
-font: 75 20pt &quot;Ubuntu Condensed&quot;;</string>
+     <string notr="true">
+
+QPushButton {
+    background-color: #ffffff;
+    border: 2px solid #d9534f;
+    border-radius: 30px;
+    padding: 10px;
+}
+
+QPushButton:hover {
+    background-color: #f2dede;
+    border-color: #c9302c;
+}
+
+QPushButton:pressed {
+    background-color: #ebcccc;
+
+
+    border-color: #ac2925;
+}
+</string>
     </property>
     <property name="text">
-     <string>Save Configuration</string>
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normalon>:/newPrefix/shutdown_icon.png</normalon>
+     </iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>80</width>
+      <height>80</height>
+     </size>
     </property>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="denka/res.qrc"/>
+ </resources>
  <connections/>
 </ui>

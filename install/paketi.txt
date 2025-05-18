@@ -4,10 +4,21 @@ pip install opencv-python-headless
 pip install sh
 pip install gphoto2
 pip install cloudinary
-pip install pyserial
+
+
+pip install PyQt5 --break-system-packages
+pip install qrcode --break-system-packages
+pip install opencv-python-headless --break-system-packages
+pip install sh --break-system-packages
+pip install gphoto2 --break-system-packages
+pip install cloudinary --break-system-packages
+
+
 
 
 sudo apt-get install gphoto2
 sudo apt-get install libxcb-xinerama0
 sudo apt install v4l-utils
 sudo apt install ffmpeg
+
+sudo apt-get install -y gphoto2 libxcb-xinerama0 v4l-utils ffmpeg

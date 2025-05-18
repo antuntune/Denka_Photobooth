@@ -80,25 +80,14 @@ class AlbumUi(QMainWindow):
         # Set the current index to 1 on the parent widget when timeout finishes
         self.parent().setCurrentIndex(1)
 
-    def loadFromJson(self):
-        # Load configuration from JSON file
-        with open('config.json', 'r') as f:
-            config = json.load(f)
-            self.eventId = config['eventId']
-            self.tema = config['tema']
-            self.albumPath = config['albumPath']
-            self.eventAlbumPath = config['eventAlbumPath']
-            self.cardPath = config['cardPath']
-
     def loadResources(self):
         # Load UI resources based on the theme specified in the config
-        uic.loadUi(os.getcwd() + "/res/ui/" + self.tema + "/album.ui", self)
+        uic.loadUi(os.getcwd() + "/res/ui/" + "denka" + "/album.ui", self)
         # Connect the push button to the sharePressed method
         self.pushButton.clicked.connect(self.sharePressed)
 
     def showEvent(self, a0: QShowEvent) -> None:
         if not self.loaded_resources:
-            self.loadFromJson()  # Load configuration
             self.loadResources()  # Load UI resources
             self.loaded_resources = True  # Mark resources as loaded
 
@@ -135,11 +124,11 @@ class AlbumUi(QMainWindow):
         self.timeout_thread.start()
 
         # Start the upload thread
-        self.upload_thread = UploadThread(
-            image_filenames, self.eventId, random_string, parent=self)
+        #self.upload_thread = UploadThread(
+        #    image_filenames, self.eventId, random_string, parent=self)
         # Connect upload thread signal to slot
-        self.upload_thread.finished.connect(self.uploadThreadFinished)
-        self.upload_thread.start()
+        #self.upload_thread.finished.connect(self.uploadThreadFinished)
+        #self.upload_thread.start()
 
         return super().showEvent(a0)
 

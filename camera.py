@@ -29,7 +29,7 @@ class WorkerThread(QThread):
         # using self.parent
         # Example: Accessing an object and calling its method
         #self.parent.some_object.some_method()
-        self.parent.slikanje()
+        #self.parent.slikanje()
         self.finished.emit()  # Emit the 'finished' signal when the work is done
 
 
@@ -126,7 +126,7 @@ class CameraUi(QMainWindow):
         self.videoLabel.hide()
         self.gif_label.show()
         self.gif_label.raise_()
-        self.camera_thread.run()
+        #self.camera_thread.run()
         QApplication.processEvents()
         
 

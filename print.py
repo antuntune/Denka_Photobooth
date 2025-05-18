@@ -10,6 +10,8 @@ import os
 import time
 import threading
 #from cloudinaryUpload import uploadImage
+from PIL import Image, ImageOps, ImageEnhance
+import config_data
 
 
 # spajanje na cups
@@ -19,7 +21,7 @@ printers = conn.getPrinters()
 
 emptyDict = {}
 AvailablePrinters = list(printers.keys())
-PrinterUsing = AvailablePrinters[0]
+#PrinterUsing = AvailablePrinters[0]
 
 class TimeOutThread(QThread):
     finished = pyqtSignal()  # Custom signal to indicate thread completion
@@ -39,7 +41,6 @@ class PrintUi(QMainWindow):
 
         self.loaded_resources = False
         
-
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
 
@@ -48,7 +49,7 @@ class PrintUi(QMainWindow):
         self.parent().setCurrentIndex(1)
 
     def loadResources(self):
-        uic.loadUi(os.getcwd() + "/res/ui/"+self.tema+"/print.ui", self)
+        uic.loadUi(os.getcwd() + "/res/ui/"+"denka"+"/print.ui", self)
 
         self.strip1 = self.findChild(QLabel, 'strip1')
         self.strip2 = self.findChild(QLabel, 'strip2')
@@ -59,11 +60,9 @@ class PrintUi(QMainWindow):
         self.strip7 = self.findChild(QLabel, 'strip7')
         self.strip8 = self.findChild(QLabel, 'strip8')
 
-
-
         # Button sound effect
         self.btn_sfx = QSoundEffect()
-        self.btn_sfx.setSource(QUrl.fromLocalFile(os.getcwd() + 'res/ui/btn.wav'))
+        self.btn_sfx.setSource(QUrl.fromLocalFile(os.getcwd() + '/res/ui/btn.wav'))
         self.pushButton.pressed.connect(self.btn_sfx.play)
 
         self.pushButton.clicked.connect(self.printPressed)
@@ -107,23 +106,23 @@ class PrintUi(QMainWindow):
 
     def showEvent(self, a0: QShowEvent) -> None:
 
-        self.loadFromJson()
+        #self.loadFromJson()
         if not self.loaded_resources:
-            self.loadFromJson()
+            #self.loadFromJson()
             self.loadResources()
             self.loaded_resources = True
 
+        #self.napraviKarticu()
+        #stripPixmap = QPixmap(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
 
-        stripPixmap = QPixmap(self.eventAlbumPath + self.eventId + "finished" + ".jpg")
-
-        self.strip1.setPixmap(stripPixmap)
-        self.strip2.setPixmap(stripPixmap)
-        self.strip3.setPixmap(stripPixmap)
-        self.strip4.setPixmap(stripPixmap)
-        self.strip5.setPixmap(stripPixmap)
-        self.strip6.setPixmap(stripPixmap)
-        self.strip7.setPixmap(stripPixmap)
-        self.strip8.setPixmap(stripPixmap)
+        #self.strip1.setPixmap(stripPixmap)
+        #self.strip2.setPixmap(stripPixmap)
+        #self.strip3.setPixmap(stripPixmap)
+        #self.strip4.setPixmap(stripPixmap)
+        #self.strip5.setPixmap(stripPixmap)
+        #self.strip6.setPixmap(stripPixmap)
+        #self.strip7.setPixmap(stripPixmap)
+        #self.strip8.setPixmap(stripPixmap)
 
         self.strip1.setVisible(False)
         self.strip2.setVisible(False)
@@ -137,17 +136,18 @@ class PrintUi(QMainWindow):
 
         # Load the QPixmap objects for each image
         self.pixmaps = [
-            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "two.png"),
-            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "four.png"),
-            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "six.png"),
-            QPixmap(os.getcwd() + "/res/ui/"+self.tema+ "/print_nums/" + "eight.png")
+            QPixmap(os.getcwd() + "/res/ui/"+ "denka" "/print_nums/" + "two.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+ "denka" + "/print_nums/" + "four.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+ "denka" + "/print_nums/" + "six.png"),
+            QPixmap(os.getcwd() + "/res/ui/"+ "denka" + "/print_nums/" + "eight.png")
         ]
         self.current_image_index = 0
 
         # Set the initial image
         self.update_print_num_image()
+        print(config_data.get_value("printNum", 0))
 
-        self.max_pic_num = int((self.print_limit_num / 2 ) - 1)
+        self.max_pic_num = int((config_data.get_value("printNum", 0) / 2 ) - 1)
 
 
         self.timeout_thread.start()
@@ -207,12 +207,9 @@ class PrintUi(QMainWindow):
         self.timeout_thread.terminate()
 
 
-        self.printaj()
+        #self.printaj()
 
-        if self.shareImages == True:
-            self.parent().setCurrentIndex(4)
-        else:
-            self.parent().setCurrentIndex(5)
+        self.parent().setCurrentIndex(1)
 
 
     def skipPressed(self):
@@ -220,10 +217,7 @@ class PrintUi(QMainWindow):
         # kill timeout thread which set up splash window if timeout happend beacuse skip button is pressed
         self.timeout_thread.terminate()
 
-        if self.shareImages == True:
-            self.parent().setCurrentIndex(4)
-        else:
-            self.parent().setCurrentIndex(5)
+        self.parent().setCurrentIndex(4)
 
     def printaj(self):
 
@@ -247,3 +241,25 @@ class PrintUi(QMainWindow):
 
         for _ in range(int(self.kolKartica / 2)):
             conn.printFile(PrinterUsing, self.eventAlbumPath + self.eventId + "double" + ".jpg", "title", emptyDict)
+
+    def napraviKarticu(self):
+
+        kartica = Image.open(self.cardPath)
+        im1 = Image.open(self.eventAlbumPath + "/slika1.jpg").resize((892, 596))
+        im2 = Image.open(self.eventAlbumPath + "/slika2.jpg").resize((892, 596))
+        im3 = Image.open(self.eventAlbumPath + "/slika3.jpg").resize((892, 596))
+
+        kartica.paste(im1, (54, 217))
+        kartica.paste(im2, (54, 879))
+        kartica.paste(im3, (54, 1541))
+
+        # Promijeni svijetlinu kartice
+        enhancer = ImageEnhance.Brightness(kartica)
+        #kartica = enhancer.enhance(int(self.cardBright)/100)
+
+        # Šarpirag ga malo
+        #enhancer = ImageEnhance.Sharpness(kartica)
+        kartica = enhancer.enhance(5.0)
+
+
+        kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)

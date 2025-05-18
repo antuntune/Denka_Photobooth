@@ -11,11 +11,6 @@ import subprocess
 from PIL import Image
 
 
-# Load configuration from config.json
-with open('config.json', 'r') as f:
-    config = json.load(f)
-    eventId = config['eventId']
-    tema = config['tema']
 
 def renameImage(name):
     for filename in os.listdir("."):
