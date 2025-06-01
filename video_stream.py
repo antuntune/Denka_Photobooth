@@ -40,6 +40,6 @@ class VideoThread(QThread):
                 image = QImage(frame.data, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
                 pixmap = QPixmap.fromImage(image)
                 self.frameCaptured.emit(pixmap)
-            self.msleep(1)
+            self.msleep(25)
 
 

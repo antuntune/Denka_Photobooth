@@ -27,14 +27,14 @@ class SplashUi(QMainWindow):
 
         self.startButton.show()
 
-        QApplication.processEvents()
+        #QApplication.processEvents()
         return super().showEvent(event)
         
 
     def startButtonPressed(self):
         self.startButton.hide()
         QApplication.processEvents()
-        self.parent().setCurrentIndex(3)
+        self.parent().setCurrentIndex(2)
 
     def return_to_conf(self):
         self.parent().setCurrentIndex(0)

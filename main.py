@@ -9,23 +9,18 @@ from config_screen import ConfigUi
 from splash import SplashUi
 from camera import CameraUi
 from print import PrintUi
-#from share import ShareUi
+
 from album import AlbumUi
 import res
 
 
 app = QApplication(sys.argv)
 
-# hide cursor in app
-#app.setOverrideCursor(QCursor(Qt.BlankCursor))	
-
 widget = QStackedWidget()
-
 
 splashUi = SplashUi()
 cameraUi = CameraUi()
 printUi = PrintUi()
-#shareUi = ShareUi()
 albumUi = AlbumUi()
 configUi = ConfigUi()
 
@@ -40,6 +35,16 @@ widget.addWidget(printUi)
 #widget.addWidget(shareUi)
 
 widget.addWidget(albumUi)
+
+# Connect the cursorVisibilityChanged signal from configUi to a slot
+def update_cursor_visibility(hide):
+    if hide:
+        app.setOverrideCursor(QCursor(Qt.BlankCursor))  # Hide the cursor
+    else:
+        app.restoreOverrideCursor()  # Restore the cursor visibility
+
+# Connecting signal to the slot
+configUi.cursorVisibilityChanged.connect(update_cursor_visibility)
 
 widget.showFullScreen()
 app.exec_()

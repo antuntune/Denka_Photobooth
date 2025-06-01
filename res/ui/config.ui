@@ -50,50 +50,19 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>80</y>
+      <y>70</y>
       <width>1871</width>
       <height>871</height>
      </rect>
     </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="styleSheet">
-     <string notr="true">/* 🔲 Okvir oko sadržaja tabova */
-QTabWidget::pane {
-    border: 1px solid #bbb;
-    border-radius: 6px;
-    background: #f7f7f7;
-    padding: 6px;
-}
-
-/* 📁 Svi tabovi (neaktivni) */
-QTabBar::tab {
-    background: #eaeaea;
-    border: 1px solid #ccc;
-    border-bottom: none;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    padding: 8px 20px;
-    margin-right: 4px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #444;
-    min-height: 56px;
-}
-
-/* ✅ Aktivni tab */
-QTabBar::tab:selected {
-    background: #ffffff;
-    border: 1px solid #999;
-    border-bottom: none;
-    color: #222;
-}
-
-/* ✨ Hover efekt */
-QTabBar::tab:hover {
-    background: #f0f0f0;
-    color: #111;
-}
-
-</string>
+     <string notr="true"/>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -728,7 +697,149 @@ QPushButton:pressed {
          </item>
         </layout>
        </item>
+       <item>
+        <widget class="QCheckBox" name="cursorCheckBox">
+         <property name="styleSheet">
+          <string notr="true">QCheckBox {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+QCheckBox::indicator {
+    width: 24px;
+    height: 24px;
+}
+
+QCheckBox:checked {
+    color:  red;
+}
+
+QCheckBox:unchecked {
+    color:green;
+}
+</string>
+         </property>
+         <property name="text">
+          <string> Vidljivost pokazivača miša</string>
+         </property>
+        </widget>
+       </item>
       </layout>
+     </widget>
+     <widget class="QWidget" name="gridLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>1380</x>
+        <y>230</y>
+        <width>381</width>
+        <height>168</height>
+       </rect>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_2">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Broj okidanja Kamere</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_6">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>Broj printanja</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLabel" name="label_7">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #fdfdfd;
+    color: red;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+    font-size: 50px;
+}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QLabel" name="labelCameraShots">
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: #fdfdfd;
+    color: red;
+    font-weight: bold;
+    qproperty-alignment: AlignCenter;
+    font-size: 50px;
+}
+</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>1380</x>
+        <y>170</y>
+        <width>311</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    font-size: 18px;
+    font-weight: 500;
+    color: #444;
+    background-color: #fdfdfd;
+    padding: 6px;
+    border-radius: 6px;
+    qproperty-alignment: AlignCenter;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Statistika pojedinog događaja</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="DSLR">
@@ -799,6 +910,52 @@ QPushButton:pressed {
         </widget>
        </item>
       </layout>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Print</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Alarmi</string>
+     </attribute>
+     <widget class="QLabel" name="log_label">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>40</y>
+        <width>1131</width>
+        <height>581</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+    border: 2px solid black;  /* Border around the label */
+    padding: 5px;
+    background-color: white;
+    font-size: 16px;  /* Font size */
+    text-align: left;  /* Align the text to the left */
+    vertical-align: top;  /* Align the text at the top of the label */
+    white-space: normal;  /* Allow normal wrapping of text */
+}
+
+QLabel:nth-of-type(odd) {
+    background-color: lightgray;  /* Light gray background for odd messages */
+}
+
+</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
    </widget>
