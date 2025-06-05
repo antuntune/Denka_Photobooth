@@ -9,14 +9,13 @@ import cups
 import os
 import time
 import threading
-#from cloudinaryUpload import uploadImage
 
 
 # spajanje na cups
 conn = cups.Connection()
 printers = conn.getPrinters()
-# printers is a dictionary containing information about all the printers available
 
+# printers is a dictionary containing information about all the printers available
 emptyDict = {}
 AvailablePrinters = list(printers.keys())
 PrinterUsing = AvailablePrinters[0]
@@ -38,7 +37,7 @@ class PrintUi(QMainWindow):
         super(PrintUi, self).__init__()
 
         self.loaded_resources = False
-        
+
 
         self.timeout_thread = TimeOutThread(parent=self)
         self.timeout_thread.finished.connect(self.timeoutThreadFinished)
@@ -74,7 +73,7 @@ class PrintUi(QMainWindow):
 
     def plus_strip_num(self):
         # Increment the current image index
-        self.current_image_index = (self.current_image_index + 1) % len(self.pixmaps) 
+        self.current_image_index = (self.current_image_index + 1) % len(self.pixmaps)
         if self.current_image_index > self.max_pic_num or self.current_image_index == 0:
             self.current_image_index = int(self.max_pic_num)
         # Update the image displayed
@@ -90,7 +89,7 @@ class PrintUi(QMainWindow):
         # Update the image displayed
         self.update_print_num_image()
 
-        
+
 
     def loadFromJson(self):
         # ucitavanje config.jsona i metanje u varijable da se lakse koristi
@@ -180,7 +179,7 @@ class PrintUi(QMainWindow):
             self.strip5.setVisible(False)
             self.strip6.setVisible(False)
             self.strip7.setVisible(False)
-            self.strip8.setVisible(False)  
+            self.strip8.setVisible(False)
         if int((self.current_image_index + 1)*2) == 6:
             self.strip1.setVisible(True)
             self.strip2.setVisible(True)
@@ -189,7 +188,7 @@ class PrintUi(QMainWindow):
             self.strip5.setVisible(True)
             self.strip6.setVisible(True)
             self.strip7.setVisible(False)
-            self.strip8.setVisible(False)  
+            self.strip8.setVisible(False)
         if int((self.current_image_index + 1)*2) == 8:
             self.strip1.setVisible(True)
             self.strip2.setVisible(True)
@@ -198,7 +197,7 @@ class PrintUi(QMainWindow):
             self.strip5.setVisible(True)
             self.strip6.setVisible(True)
             self.strip7.setVisible(True)
-            self.strip8.setVisible(True)  
+            self.strip8.setVisible(True)
 
 
     def printPressed(self):

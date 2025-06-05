@@ -49,7 +49,7 @@ class CameraUi(QMainWindow):
         self.videoLoading = QMovie(os.getcwd() + "/res/ui/videoLoading.gif")
 
         self.loadPort()
-        self.camera_thread = VideoThread(self.cameraPort)
+        self.camera_thread = VideoThread()
         self.camera_thread.frameCaptured.connect(self.updateFrame)
 
     def loadPort(self):
@@ -84,12 +84,12 @@ class CameraUi(QMainWindow):
         self.gif_label.move(400, 200)
 
         # Create a QMovie object from the gif file
-        
+
         self.gif_label.setMovie(self.movie)
         self.movie.finished.connect(self.countdownFinished)
 
         self.videoLabel.setMovie(self.videoLoading)
-        
+
 
         gledaj = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/gledajteukameru.png")
         self.fullscreenlabel.setPixmap(gledaj)
@@ -128,32 +128,34 @@ class CameraUi(QMainWindow):
         self.gif_label.raise_()
         self.camera_thread.run()
         QApplication.processEvents()
-        
+
 
     def updateFrame(self, pixmap):
         self.streamLabel.setPixmap(pixmap)
 
     def napraviKarticu(self):
+            kartica = Image.open(self.cardPath)
+            im1 = Image.open(self.eventAlbumPath + "/slika1.jpg").resize((892, 596))
+            im2 = Image.open(self.eventAlbumPath + "/slika2.jpg").resize((892, 596))
+            im3 = Image.open(self.eventAlbumPath + "/slika3.jpg").resize((892, 596))
 
-        kartica = Image.open(self.cardPath)
-        im1 = Image.open(self.eventAlbumPath + "/slika1.jpg").resize((892, 596))
-        im2 = Image.open(self.eventAlbumPath + "/slika2.jpg").resize((892, 596))
-        im3 = Image.open(self.eventAlbumPath + "/slika3.jpg").resize((892, 596))
+            kartica.paste(im1, (54, 217))
+            kartica.paste(im2, (54, 879))
+            kartica.paste(im3, (54, 1541))
 
-        kartica.paste(im1, (54, 217))
-        kartica.paste(im2, (54, 879))
-        kartica.paste(im3, (54, 1541))
+            # Promijeni svijetlinu kartice
+            enhancer = ImageEnhance.Brightness(kartica)
+            kartica = enhancer.enhance(int(self.cardBright)/100)
 
-        # Promijeni svijetlinu kartice
-        enhancer = ImageEnhance.Brightness(kartica)
-        kartica = enhancer.enhance(int(self.cardBright)/100)
+            # Šarpirag ga malo
+            enhancer = ImageEnhance.Sharpness(kartica)
+            kartica = enhancer.enhance(5.0)
 
-        # Šarpirag ga malo
-        enhancer = ImageEnhance.Sharpness(kartica)
-        kartica = enhancer.enhance(5.0)
+            # Convert to RGB before saving as JPEG
+            if kartica.mode == 'RGBA':
+                kartica = kartica.convert('RGB')
+            kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)
 
-
-        kartica.save(self.eventAlbumPath + self.eventId + "finished" + ".jpg", quality=96)
 
     # kad se prikaze ekran
     def showEvent(self, event):
@@ -176,7 +178,7 @@ class CameraUi(QMainWindow):
 
         self.loadingThread = threading.Timer(3, self.showStream)
         self.loadingThread.start()
-        
+
         # resetiranje pixmapa
         transPixmap = QPixmap(os.getcwd() + "/res/ui/"+self.tema+"/transparent.png")
         self.cardSlot1.setPixmap(transPixmap)
@@ -204,7 +206,7 @@ class CameraUi(QMainWindow):
             self.parent().setCurrentIndex(3)
         self.fullscreenlabel.setVisible(False)
         QApplication.processEvents()
-        
+
 
     def slikanje(self):
 
@@ -241,7 +243,7 @@ class CameraUi(QMainWindow):
             shutil.copy2(os.getcwd() + "/" + slika + ".jpg", self.eventAlbumPath + "picAlbum/" + slika + shot_time + ".jpg")
             print("picAlbum")
 
-        # prebaci u share folder     
+        # prebaci u share folder
 
         dslr.resizeImage(slika + ".jpg")
         # prebaci u share folder
@@ -249,11 +251,11 @@ class CameraUi(QMainWindow):
         # premjestanje u mapu dogadaja
         shutil.move(os.getcwd()+ "/" + slika + ".jpg", self.eventAlbumPath + slika + ".jpg")
         QCoreApplication.processEvents()
-        
+
         if self.count == 1:
             img1pixmap = QPixmap(self.eventAlbumPath + slika + ".jpg")
             self.cardSlot1.setPixmap(img1pixmap)
-            
+
         elif self.count == 2:
             img2pixmap = QPixmap(self.eventAlbumPath + slika + ".jpg")
             self.cardSlot2.setPixmap(img2pixmap)
@@ -268,6 +270,3 @@ class CameraUi(QMainWindow):
 
         # Increment count
         self.count += 1
-
-        
-        
